@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+* {
+  font-family: "Cairo", sans-serif;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem #109b58;
+  /* border: none; */
+  outline: none;
+}
+
+button:focus:not(:focus-visible) {
+  box-shadow: 0 0 0 0.25rem #109b58;
+}
+
+.main-color {
+  color: #109b58;
+}
+
+.primary-bg {
+  background-color: #109b58;
+}
+
+.primary-btn {
+  background-color: #109b58;
+  color: white;
+  &:hover {
+    background-color: #15b467;
+    color: white;
+  }
+  &:disabled {
+    background-color: #109b58 !important;
+    color: white;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .navBar-btn {
+    width: 100%;
+  }
+
+  .nav-item {
+    text-align: center;
+    width: 100%;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+    -webkit-transition: background-color 0.3s ease-in-out;
+    -moz-transition: background-color 0.3s ease-in-out;
+    -ms-transition: background-color 0.3s ease-in-out;
+    -o-transition: background-color 0.3s ease-in-out;
+  }
+  .nav-item:hover {
+    background-color: #15b467;
+  }
+}
