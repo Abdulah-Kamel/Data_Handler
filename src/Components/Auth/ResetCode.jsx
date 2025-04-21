@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { authService } from "../../services/authService.js";
 import { useResetCodeForm } from "../../hooks/useResetCodeForm.js";
-import FormInput from "../common/FormInput";
+import FormInput from "../common/FormInput.jsx";
 import Navbar from "../NavBar/NavBar";
 
 const ResetCode = () => {

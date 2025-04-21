@@ -4,7 +4,7 @@ import axios from "axios";
 import { PulseLoader } from "react-spinners";
 import Navbar from "../NavBar/NavBar";
 import { useLoginForm } from "../../hooks/useLoginForm";
-import FormInput from "../Common/FormInput";
+import FormInput from "../common/FormInput";
 const Login = () => {
   const [loading, setLoading] = useState(true);
   const [loginLodaing, setLoginLodaing] = useState(false);
