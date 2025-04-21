@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { PulseLoader } from "react-spinners";
 import Navbar from "../NavBar/NavBar";
-import { useLoginForm } from "../../Hooks/useLoginForm";
+import { useLoginForm } from "../../hooks/useLoginForm";
 import FormInput from "../Common/FormInput";
 const Login = () => {
   const [loading, setLoading] = useState(true);
