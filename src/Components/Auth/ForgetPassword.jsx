@@ -4,7 +4,7 @@ import { PulseLoader } from "react-spinners";
 import { authService } from "../../services/authService";
 import { useForgotPasswordForm } from "../../hooks/useForgotPasswordForm";
 import FormInput from "../common/FormInput";
-import Navbar from "../NavBar/NavBar";
+import Navbar from "../../Components/NavBar/NavBar";
 
 const ForgetPassword = () => {
   const [loading, setLoading] = useState(true);
