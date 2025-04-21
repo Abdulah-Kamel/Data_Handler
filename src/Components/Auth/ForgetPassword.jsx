@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { authService } from "../../services/authService";
+import { authService } from "../../services/AuthService";
 import { useForgotPasswordForm } from "../../hooks/useForgotPasswordForm";
 import FormInput from "../common/FormInput";
 import Navbar from "../NavBar/NavBar";
