@@ -1,0 +1,80 @@
+import React from 'react'
+
+const Categories = () => {
+    return (
+        <section className="container d-flex flex-column  align-items-center h-100 py-5">
+            <h2 className="text-center">Welcome, to Categories</h2>
+            <div className="row mt-5 g-4">
+                <div className="col-lg-4 col-md-6">
+                    <div className="card text-center text-bg-white w-100 mb-3" >
+                        <div className="card-header">Technology</div>
+                        <div className="card-body">
+                            <h5 className="card-title">Web Development</h5>
+                            <p className="card-text">Explore modern web development technologies including React, Node.js, and cloud services.</p>
+                            <div className="row g-3">
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
+                                </div>
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-4 col-md-6">
+                    <div className="card text-center text-bg-white w-100 mb-3" >
+                        <div className="card-header">Design</div>
+                        <div className="card-body">
+                            <h5 className="card-title">UI/UX Design</h5>
+                            <p className="card-text">Learn principles of user interface design, user experience, and visual communication.</p>
+                            <div className="row g-3">
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
+                                </div>
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-4 col-md-6">
+                    <div className="card text-center text-bg-white w-100 mb-3" >
+                        <div className="card-header">Marketing</div>
+                        <div className="card-body">
+                            <h5 className="card-title">Digital Marketing</h5>
+                            <p className="card-text">Master social media marketing, SEO, content strategy, and online advertising.</p>
+                            <div className="row g-3">
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
+                                </div>
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-lg-4 col-md-6">
+                    <div className="card text-center text-bg-white w-100 mb-3" >
+                        <div className="card-header">Business</div>
+                        <div className="card-body">
+                            <h5 className="card-title">Project Management</h5>
+                            <p className="card-text">Discover methodologies, tools, and best practices for successful project delivery.</p>
+                            <div className="row g-3">
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
+                                </div>
+                                <div className="col-md-6">
+                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+)
+}
+export default Categories

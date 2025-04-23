@@ -69,20 +69,6 @@ button:focus:not(:focus-visible) {
   }
 }
 
-.sidebar .nav-bg {
-  text-align: center;
-  width: 100%;
-  border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  -ms-border-radius: 8px;
-  -o-border-radius: 8px;
-  transition: background-color 0.3s ease-in-out;
-  -webkit-transition: background-color 0.3s ease-in-out;
-  -moz-transition: background-color 0.3s ease-in-out;
-  -ms-transition: background-color 0.3s ease-in-out;
-  -o-transition: background-color 0.3s ease-in-out;
-}
 
 .sidebar .nav-bg:hover {
   background-color: #15b467;

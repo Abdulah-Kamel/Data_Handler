@@ -24,22 +24,22 @@ const NavBar = () => {
             id="navbarSupportedContent"
           >
             <ul className="navbar-nav mx-auto pe-0 mb-2 mb-lg-0 align-items-center gap-3 py-2">
-              <li className="nav-item">
+              <li className="nav-item nav-bg">
                 <a href="/" className="nav-link text-dark fs-4 fw-bold">
                   الرئيسية
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item nav-bg">
                 <a href="#" className="nav-link text-dark fs-4 fw-bold">
                   الخدمات
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item nav-bg">
                 <a href="#" className="nav-link text-dark fs-4 fw-bold">
                   من نحن
                 </a>
               </li>
-              <li className="nav-item">
+              <li className="nav-item nav-bg">
                 <a href="#" className="nav-link text-dark fs-4 fw-bold">
                   اتصل بنا
                 </a>

@@ -73,14 +73,15 @@ const Login = () => {
                 )}
                 <section className="mt-5 d-flex justify-content-end align-items-center">
                   <p className="fs-5 mb-0">
-                    <span>هل نسيت كلمه السر؟</span>{" "}
+                    <span>هل نسيت كلمه السر؟</span>
+                    <br className="d-block d-sm-none" />
                     <Link to="/forget-password" className="main-color register">
                       اعادة تعيين كلمه السر
                     </Link>
                   </p>
                   <button
                     type="submit"
-                    className={`btn primary-btn text-white me-auto px-3 py-2`}
+                    className={`btn primary-btn text-white me-auto px-sm-3 py-2`}
                     disabled={!formik.isValid}
                   >
                     {loginLodaing ? (
