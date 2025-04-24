@@ -45,6 +45,8 @@ const ForgetPassword = () => {
 
   return (
     <>
+        <title>اعادة ظبط كلمه السر</title>
+        <meta name="description" content="اعادة ظبط كلمه السر" />
       <Navbar />
       <section className="container my-5 py-5">
         <section className="mt-5 py-5">

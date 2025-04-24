@@ -10,17 +10,18 @@ const Login = () => {
   const [loginLodaing, setLoginLodaing] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const baseUrl = "https://ecommerce.routemisr.com";
+  const baseUrl = "https://data-handler-gjdd.onrender.com";
   async function handleLogin(values) {
     setLoginLodaing(true);
     try {
       const { data } = await axios.post(
-        `${baseUrl}/api/v1/auth/signin`,
+        `${baseUrl}/auth/token/`,
         values
       );
       if (data.message === "success") {
         localStorage.setItem("userToken", data.token);
-        navigate("/");
+        // navigate("/");
+        console.log("Login successful", data);
       }
     } catch (err) {
       const statusMsg = err.response?.data?.statusMsg || "Error";
@@ -53,10 +54,10 @@ const Login = () => {
               <h2 className="fw-bold text-center">تسجيل الدخول</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">
                 <FormInput
-                  label="الايميل:"
-                  type="email"
-                  name="email"
-                  id="email"
+                  label="اسم المستخدم:"
+                  type="text"
+                  name="username"
+                  id="username"
                   formik={formik}
                 />
                 <FormInput

@@ -48,7 +48,7 @@ const ResetCode = () => {
   return (
     <>
         <title>Reset Code</title>
-        <meta name="description" content="Reset Code page" />
+        <meta name="description" content="Reset Code" />
       <Navbar />
       <div className="container my-5 py-5">
         <div className="mt-5 py-5">

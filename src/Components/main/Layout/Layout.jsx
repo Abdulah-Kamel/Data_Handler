@@ -3,6 +3,9 @@ import SideBar from "../SideBar/SideBar.jsx";
 
 export default function Layout() {
   return (
+      <>
+    <title>Emailer Dashboard</title>
+    <meta name="description" content="Emailer Dashboard" />
     <div className="container-fluid">
       <div className="row vh-100">
 
@@ -14,5 +17,6 @@ export default function Layout() {
         </main>
       </div>
     </div>
+      </>
   );
 }

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 export const useLoginForm = (onSubmit) => {
   return useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     validationSchema: Yup.object({

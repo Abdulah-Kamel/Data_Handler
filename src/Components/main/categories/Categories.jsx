@@ -2,6 +2,9 @@ import React from 'react'
 
 const Categories = () => {
     return (
+        <>
+        <title>Emailer Categories</title>
+        <meta name="description" content="Emailer Categories" />
         <section className="container d-flex flex-column  align-items-center h-100 py-5">
             <h2 className="text-center">Welcome, to Categories</h2>
             <div className="row mt-5 g-4">
@@ -75,6 +78,7 @@ const Categories = () => {
                 </div>
             </div>
         </section>
+        </>
 )
 }
 export default Categories
