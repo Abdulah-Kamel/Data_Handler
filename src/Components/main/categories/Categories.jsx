@@ -122,7 +122,7 @@ const Categories = () => {
     );
   }
   return (
-    <>
+    <div className="px-3">
       <title>Emailer Categories</title>
       <meta name="description" content="Emailer Categories" />
         <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
@@ -196,7 +196,7 @@ const Categories = () => {
         {(showModal || showDeleteModal) && (
           <div className="modal-backdrop fade show"></div>
         )}
-    </>
+    </div>
   );
 };
 export default Categories;
