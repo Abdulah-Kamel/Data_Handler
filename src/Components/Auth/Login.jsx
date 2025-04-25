@@ -1,102 +1,104 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { PulseLoader } from "react-spinners";
 import Navbar from "../NavBar/NavBar";
 import { useLoginForm } from "../../hooks/useLoginForm";
 import FormInput from "../common/FormInput";
+import { authService } from "../../services/authService";
+
 const Login = () => {
   const [loading, setLoading] = useState(true);
-  const [loginLodaing, setLoginLodaing] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const baseUrl = "https://data-handler-gjdd.onrender.com";
-  async function handleLogin(values) {
-    setLoginLodaing(true);
+
+  const handleLogin = async (values) => {
+    setLoginLoading(true);
     try {
-      const { data } = await axios.post(
-        `${baseUrl}/auth/token/`,
-        values
-      );
-      if (data.message === "success") {
-        localStorage.setItem("userToken", data.token);
-        // navigate("/");
-        console.log("Login successful", data);
+      const data = await authService.login(values);
+      console.log(data);
+
+      if (data.access) {
+        sessionStorage.setItem("User", JSON.stringify(data));
+        navigate("/dashboard");
       }
     } catch (err) {
-      const statusMsg = err.response?.data?.statusMsg || "Error";
-      const message = err.response?.data?.message || "Something went wrong";
-      setError(
-        `${statusMsg.charAt(0).toUpperCase() + statusMsg.slice(1)}, ${message}`
-      );
+      const errorMessage = err.response?.data?.detail;
+      setError(errorMessage);
     } finally {
-      setLoginLodaing(false);
+      setLoginLoading(false);
     }
-  }
+  };
+
   const formik = useLoginForm(handleLogin);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("User"));
+    if (user && user.access) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="position-absolute bg-main-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100 vh-100">
+        <PulseLoader color="#0aad0a" size={30} />
+      </div>
+    );
+  }
+
   return (
     <>
-      <title>Login</title>
-      <meta name="description" content="Login page" />
-      {loading ? (
-        <section className="position-absolute bg-main-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100 vh-100">
-          <PulseLoader color="#0aad0a" size={30} />
-        </section>
-      ) : (
-        <>
-          <Navbar />
-          <section className="container my-5 py-5">
-            <section className="mt-5 py-5">
-              <h2 className="fw-bold text-center">تسجيل الدخول</h2>
-              <form onSubmit={formik.handleSubmit} className="mt-4">
-                <FormInput
-                  label="اسم المستخدم:"
-                  type="text"
-                  name="username"
-                  id="username"
-                  formik={formik}
-                />
-                <FormInput
-                  label="الباسورد:"
-                  type="password"
-                  name="password"
-                  id="password"
-                  formik={formik}
-                />
-                {error && (
-                  <section className="alert alert-danger my-4">
-                    <p className="text-center fw-bold fs-5 mb-0">{error}</p>
-                  </section>
+      <title>تسجيل الدخول</title>
+      <meta name="description" content="تسجيل الدخول" />
+      <Navbar />
+      <div className="form-container my-5 py-5">
+        <div className="mt-5 py-5">
+          <h2 className="fw-bold text-center">تسجيل الدخول</h2>
+          <form onSubmit={formik.handleSubmit} className="mt-4">
+            <FormInput
+              label="اسم المستخدم:"
+              type="text"
+              name="username"
+              id="username"
+              formik={formik}
+            />
+            <FormInput
+              label="الباسورد:"
+              type="password"
+              name="password"
+              id="password"
+              formik={formik}
+            />
+            {error && (
+              <div className="alert alert-danger my-4">
+                <p className="text-center fw-bold fs-5 mb-0">{error}</p>
+              </div>
+            )}
+            <div className="mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3">
+              <Link to="/forget-password" className="main-color register fs-5">
+                هل نسيت كلمه السر؟
+              </Link>
+              <button
+                type="submit"
+                className="btn primary-btn text-white px-4 py-2"
+                disabled={!formik.isValid || loginLoading}
+              >
+                {loginLoading ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  "تسجيل الدخول"
                 )}
-                <section className="mt-5 d-flex justify-content-end align-items-center">
-                  <p className="fs-5 mb-0">
-                    <span>هل نسيت كلمه السر؟</span>
-                    <br className="d-block d-sm-none" />
-                    <Link to="/forget-password" className="main-color register">
-                      اعادة تعيين كلمه السر
-                    </Link>
-                  </p>
-                  <button
-                    type="submit"
-                    className={`btn primary-btn text-white me-auto px-sm-3 py-2`}
-                    disabled={!formik.isValid}
-                  >
-                    {loginLodaing ? (
-                      <i className="fas fa-spinner fa-spin"></i>
-                    ) : (
-                      "تسجيل الدخول"
-                    )}
-                  </button>
-                </section>
-              </form>
-            </section>
-          </section>
-        </>
-      )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </>
   );
 };

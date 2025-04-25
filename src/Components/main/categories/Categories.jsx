@@ -1,84 +1,204 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { PulseLoader } from "react-spinners";
+import categoryService from "../../../services/categoryService";
+import CategoryTable from "./CategoryTable";
+import CategoryModal from "./CategoryModal";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
 
 const Categories = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
+
+  const user = JSON.parse(sessionStorage.getItem("User"));
+  const token = user.access;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      const { data, error } = await categoryService.getAll(token);
+
+      if (data) {
+        setCategories(data);
+        setError(null);
+      } else {
+        setError(error);
+      }
+      setLoading(false);
+    };
+
+    fetchCategories();
+  }, [token, refreshTrigger]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ar-EG");
+  };
+
+  const handleSubmit = async (values, { resetForm, setSubmitting }) => {
+    setFormSubmitting(true);
+    setFormError(null);
+    try {
+      let result;
+      if (isEditing && selectedCategory) {
+        result = await categoryService.update(
+          token,
+          selectedCategory.id,
+          values
+        );
+      } else {
+        result = await categoryService.create(token, values);
+      }
+      if (result.error) {
+        setFormError(result.error);
+        return;
+      }
+      // Reset form and close modal
+      resetForm();
+      setShowModal(false);
+      setIsEditing(false);
+      setSelectedCategory(null);
+
+      // Trigger refresh
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error("Failed to save category:", err);
+      setFormError(
+        isEditing
+          ? "فشل في تعديل الفئة. يرجى المحاولة مرة أخرى."
+          : "فشل في إضافة الفئة. يرجى المحاولة مرة أخرى."
+      );
+    } finally {
+      setFormSubmitting(false);
+      setSubmitting(false);
+    }
+  };
+
+  const handleEdit = (category) => {
+    setSelectedCategory(category);
+    setIsEditing(true);
+    setFormError(null);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedCategory) return;
+    setFormSubmitting(true);
+    setDeleteError(null);
+    try {
+      const result = await categoryService.delete(token, selectedCategory.id);
+
+      if (result.error) {
+        // Don't throw a new Error, just set the error message directly
+        setDeleteError(result.error);
+        return;
+      }
+      setShowDeleteModal(false);
+      setSelectedCategory(null);
+      setRefreshTrigger((prev) => prev + 1);
+    } catch (err) {
+      console.error("Failed to delete category:", err);
+      setDeleteError("فشل في حذف الفئة. يرجى المحاولة مرة أخرى.");
+    } finally {
+      setFormSubmitting(false);
+    }
+  };
+  if (loading && categories.length === 0) {
     return (
-        <>
-        <title>Emailer Categories</title>
-        <meta name="description" content="Emailer Categories" />
-        <section className="container d-flex flex-column  align-items-center h-100 py-5">
-            <h2 className="text-center">Welcome, to Categories</h2>
-            <div className="row mt-5 g-4">
-                <div className="col-lg-4 col-md-6">
-                    <div className="card text-center text-bg-white w-100 mb-3" >
-                        <div className="card-header">Technology</div>
-                        <div className="card-body">
-                            <h5 className="card-title">Web Development</h5>
-                            <p className="card-text">Explore modern web development technologies including React, Node.js, and cloud services.</p>
-                            <div className="row g-3">
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
-                                </div>
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-lg-4 col-md-6">
-                    <div className="card text-center text-bg-white w-100 mb-3" >
-                        <div className="card-header">Design</div>
-                        <div className="card-body">
-                            <h5 className="card-title">UI/UX Design</h5>
-                            <p className="card-text">Learn principles of user interface design, user experience, and visual communication.</p>
-                            <div className="row g-3">
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
-                                </div>
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-lg-4 col-md-6">
-                    <div className="card text-center text-bg-white w-100 mb-3" >
-                        <div className="card-header">Marketing</div>
-                        <div className="card-body">
-                            <h5 className="card-title">Digital Marketing</h5>
-                            <p className="card-text">Master social media marketing, SEO, content strategy, and online advertising.</p>
-                            <div className="row g-3">
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
-                                </div>
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-lg-4 col-md-6">
-                    <div className="card text-center text-bg-white w-100 mb-3" >
-                        <div className="card-header">Business</div>
-                        <div className="card-body">
-                            <h5 className="card-title">Project Management</h5>
-                            <p className="card-text">Discover methodologies, tools, and best practices for successful project delivery.</p>
-                            <div className="row g-3">
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-primary w-100">Edit</a>
-                                </div>
-                                <div className="col-md-6">
-                                    <a href="#" className="btn btn-outline-danger w-100">Delete</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        </>
-)
-}
-export default Categories
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "70vh" }}
+      >
+        <PulseLoader color="#0aad0a" size={15} />
+      </div>
+    );
+  }
+  return (
+    <>
+      <title>Emailer Categories</title>
+      <meta name="description" content="Emailer Categories" />
+      <section className="container py-5 ">
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h2>فئات القوالب</h2>
+          <button
+            className="btn primary-btn"
+            onClick={() => {
+              setIsEditing(false);
+              setSelectedCategory(null);
+              setFormError(null);
+              setShowModal(true);
+            }}
+          >
+            إضافة فئة جديدة
+            <i className="fas fa-plus me-2"></i>
+          </button>
+        </div>
+
+        {error && (
+          <div className="alert alert-danger text-center mb-4">
+            {error}
+            <button
+              className="btn btn-sm btn-outline-danger ms-3"
+              onClick={() => setRefreshTrigger((prev) => prev + 1)}
+            >
+              إعادة المحاولة
+            </button>
+          </div>
+        )}
+
+        {categories.length === 0 && !loading ? (
+          <div className="alert alert-info text-center">
+            لا توجد فئات متاحة حالياً
+          </div>
+        ) : (
+          <CategoryTable
+            categories={categories}
+            loading={loading}
+            formatDate={formatDate}
+            onEdit={handleEdit}
+            onDelete={(category) => {
+              setSelectedCategory(category);
+              setDeleteError(null);
+              setShowDeleteModal(true);
+            }}
+          />
+        )}
+
+        {/* Category Modal */}
+        <CategoryModal
+          show={showModal}
+          isEditing={isEditing}
+          selectedCategory={selectedCategory}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleSubmit}
+          formSubmitting={formSubmitting}
+          error={formError}
+        />
+
+        {/* Delete Confirmation Modal */}
+        <DeleteConfirmationModal
+          show={showDeleteModal}
+          category={selectedCategory}
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDelete}
+          isSubmitting={formSubmitting}
+          error={deleteError}
+        />
+
+        {/* Modal backdrop */}
+        {(showModal || showDeleteModal) && (
+          <div className="modal-backdrop fade show"></div>
+        )}
+      </section>
+    </>
+  );
+};
+export default Categories;

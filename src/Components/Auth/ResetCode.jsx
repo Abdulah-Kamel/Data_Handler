@@ -50,7 +50,7 @@ const ResetCode = () => {
         <title>Reset Code</title>
         <meta name="description" content="Reset Code page" />
       <Navbar />
-      <div className="container my-5 py-5">
+      <div className="form-container my-5 py-5">
         <div className="mt-5 py-5">
           <div className="alert alert-warning my-4">
             <p className="text-center fw-bold fs-5 mb-0">

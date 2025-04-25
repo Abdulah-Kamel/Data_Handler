@@ -1,13 +1,16 @@
 import axios from "axios";
 
 const baseUrl =
-  (typeof process !== "undefined" && process.env.REACT_APP_API_URL) ||
-  "https://ecommerce.routemisr.com";
+  import.meta.env.VITE_API_URL;
 
 export const authService = {
+  login: async (credentials) => {
+    const response = await axios.post(`${baseUrl}/auth/token/`, credentials);
+    return response.data;
+  },
   forgotPassword: async (email) => {
     const response = await axios.post(
-      `${baseUrl}/api/v1/auth/forgotPasswords`,
+      `${baseUrl}/auth/password-reset/`,
       { email }
     );
     return response.data;

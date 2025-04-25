@@ -16,6 +16,8 @@ const ForgetPassword = () => {
     setSubmitLoading(true);
     try {
       const data = await authService.forgotPassword(values.email);
+      console.log(data);
+      
       if (data.statusMsg === "success") {
         navigate("/reset-code");
       }
@@ -48,7 +50,7 @@ const ForgetPassword = () => {
         <title>اعادة ظبط كلمه السر</title>
         <meta name="description" content="اعادة ظبط كلمه السر" />
       <Navbar />
-      <section className="container my-5 py-5">
+      <section className="form-container my-5 py-5">
         <section className="mt-5 py-5">
           <h2 className="fw-bold text-center">اعادة ظبط كلمه السر</h2>
           <form onSubmit={formik.handleSubmit} className="mt-4">

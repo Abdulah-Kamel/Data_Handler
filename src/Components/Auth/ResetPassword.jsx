@@ -63,7 +63,7 @@ const ResetPassword = () => {
       ) : (
         <>
           <NavBar />
-          <section className="container my-5 py-5">
+          <section className="form-container my-5 py-5">
             <section className="mt-5 py-5">
               <h2 className="text-center fw-bold">Reset Password</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">

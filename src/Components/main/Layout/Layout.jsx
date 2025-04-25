@@ -12,7 +12,7 @@ export default function Layout() {
         <SideBar/>
 
         {/* Main content */}
-        <main className="col-md-10 col-9 p-4 bg-light">
+        <main className="col-md-10 col-9 p-4">
           <Outlet />
         </main>
       </div>
