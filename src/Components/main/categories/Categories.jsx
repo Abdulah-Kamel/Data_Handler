@@ -125,8 +125,7 @@ const Categories = () => {
     <>
       <title>Emailer Categories</title>
       <meta name="description" content="Emailer Categories" />
-      <section className="container py-5 ">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
           <h2>فئات القوالب</h2>
           <button
             className="btn primary-btn"
@@ -197,7 +196,6 @@ const Categories = () => {
         {(showModal || showDeleteModal) && (
           <div className="modal-backdrop fade show"></div>
         )}
-      </section>
     </>
   );
 };

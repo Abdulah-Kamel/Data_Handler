@@ -10,24 +10,22 @@ const CategoryTable = ({
   onDelete,
 }) => {
   return (
-    <div className="position-relative">
+    <div className="position-relative mt-5">
         {loading && (
             <div className="position-absolute bg-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100" style={{zIndex: 9999}}>
             <PulseLoader color="#0aad0a" size={15} />
           </div>
         )}
-    <div className="card shadow-sm">
-      <div className="card-body">
-        <div className="table-responsive">
-          <table className="table table-hover table-striped align-middle">
-            <thead>
+        <div className="table-responsive table-wrapper">
+          <table className="table table-light table-hover table-striped table-bordered shadow align-middle custom-table">
+            <thead className="table-dark">
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">اسم الفئة</th>
                 <th scope="col">الوصف</th>
                 <th scope="col">عدد القوالب</th>
                 <th scope="col">تاريخ الإنشاء</th>
-                <th scope="col">الإجراءات</th>
+                <th scope="col" className="action-column">الإجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -46,8 +44,8 @@ const CategoryTable = ({
                     </span>
                   </td>
                   <td>{formatDate(category.created_at)}</td>
-                  <td>
-                    <div className="d-flex gap-2">
+                  <td className="action-column">
+                    <div className="d-flex gap-2 justify-content-center">
                       <Link
                         to={`/dashboard/templates/${category.id}`}
                         className="btn btn-sm btn-primary"
@@ -75,8 +73,6 @@ const CategoryTable = ({
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
     </div>
         </div>
   );

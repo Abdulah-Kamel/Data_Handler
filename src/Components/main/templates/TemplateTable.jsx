@@ -21,7 +21,7 @@ const TemplateTable = ({
   };
 
   return (
-    <div className="position-relative">
+    <div className="position-relative mt-5">
       {loading && (
         <div
           className="position-absolute bg-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100"
@@ -30,8 +30,6 @@ const TemplateTable = ({
           <PulseLoader color="#0aad0a" size={15} />
         </div>
       )}
-      <div className="card shadow-sm">
-        <div className="card-body">
           {loading && (
             <div className="text-center py-3">
               <div className="spinner-border text-primary" role="status">
@@ -39,16 +37,16 @@ const TemplateTable = ({
               </div>
             </div>
           )}
-          <div className="table-responsive">
-            <table className="table table-hover  table-striped align-middle">
-              <thead>
+          <div className="table-responsive table-wrapper">
+            <table className="table table-hover table-light table-striped table-bordered shadow align-middle custom-table">
+              <thead className="table-dark">
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">عنوان القالب</th>
                   <th scope="col">الموضوع</th>
                   <th scope="col">الملفات</th>
                   <th scope="col">تاريخ الإنشاء</th>
-                  <th scope="col">الإجراءات</th>
+                  <th scope="col" className="action-column">الإجراءات</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,8 +71,8 @@ const TemplateTable = ({
                       )}
                     </td>
                     <td>{formatDate(template.created_at)}</td>
-                    <td>
-                      <div className="d-flex gap-2">
+                    <td className="action-column">
+                      <div className="d-flex gap-2  justify-content-center">
                         <button
                           className="btn btn-sm btn-info"
                           onClick={() => onUploadFile(template)}
@@ -104,8 +102,6 @@ const TemplateTable = ({
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
     </div>
   );
 };

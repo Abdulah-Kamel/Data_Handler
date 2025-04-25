@@ -23,7 +23,7 @@ const SideBar = () => {
     };
 
     return (
-        <aside className="col-md-2 col-3 shadow-lg border-start border-2 sidebar">
+        <aside className="col-md-2 d-none d-md-block  shadow-lg border-start border-2 sidebar">
             <h4 className="text-center mt-5 fw-bold border-bottom border-3 pb-2 w-100">Menu</h4>
             <ul className="nav flex-column align-items-center pe-0 mt-3 w-100">
                 <li className={`nav-item nav-bg mt-3 w-100 text-cente  ${isActive('/dashboard')}`}>

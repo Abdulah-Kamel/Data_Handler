@@ -66,8 +66,7 @@ const Templates = () => {
     <>
       <title>Emailer Templates</title>
       <meta name="description" content="Emailer Templates" />
-      <section className="container py-5">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
           <div>
             <h2>قوالب فئة : {category?.name}</h2>
             <p className="text-muted fs-5">{category?.description}</p>
@@ -155,7 +154,6 @@ const Templates = () => {
         {(showModal || showDeleteModal || showUploadModal) && (
           <div className="modal-backdrop fade show"></div>
         )}
-      </section>
     </>
   );
 };
