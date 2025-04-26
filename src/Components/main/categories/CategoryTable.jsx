@@ -52,22 +52,22 @@ const columns = [
           to={`/dashboard/templates/${row.id}`}
           className="btn btn-outline-primary btn-sm rounded-pill"
         >
-          <i className="fas fa-eye me-1"></i>
           عرض القوالب
+          <i className="fas fa-eye me-1"></i>
         </Link>
         <button
           className="btn btn-outline-success btn-sm rounded-pill"
           onClick={() => onEdit(row)}
         >
-          <i className="fas fa-edit me-1"></i>
           تعديل
+          <i className="fas fa-edit me-1"></i>
         </button>
         <button
           className="btn btn-outline-danger btn-sm rounded-pill"
           onClick={() => onDelete(row)}
         >
-          <i className="fas fa-trash me-1"></i>
           حذف
+          <i className="fas fa-trash me-1"></i>
         </button>
       </div>
     ),

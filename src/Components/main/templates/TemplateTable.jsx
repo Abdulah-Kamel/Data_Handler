@@ -79,22 +79,22 @@ const TemplateTable = ({
             onClick={() => onUploadFile(row)}
             title="رفع ملف"
           >
-            <i className="fas fa-upload me-1"></i>
             رفع ملف
+            <i className="fas fa-upload me-1"></i>
           </button>
           <button
             className="btn btn-outline-success btn-sm rounded-pill"
             onClick={() => onEdit(row)}
           >
-            <i className="fas fa-edit me-1"></i>
             تعديل
+            <i className="fas fa-edit me-1"></i>
           </button>
           <button
             className="btn btn-outline-danger btn-sm rounded-pill"
             onClick={() => onDelete(row)}
           >
-            <i className="fas fa-trash me-1"></i>
             حذف
+            <i className="fas fa-trash me-1"></i>
           </button>
         </div>
       ),
