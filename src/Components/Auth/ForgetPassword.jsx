@@ -18,7 +18,7 @@ const ForgetPassword = () => {
       const data = await authService.forgotPassword(values.email);
       console.log(data);
       
-      if (data.statusMsg === "success") {
+      if (data.status === 200) {
         navigate("/reset-code");
       }
     } catch (err) {

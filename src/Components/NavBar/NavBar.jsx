@@ -6,7 +6,7 @@ const NavBar = () => {
       <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary border-bottom shadow">
         <div className="container">
           <a className="navbar-brand fw-bold fs-2" href="#">
-            Navbar
+            Data Handler
           </a>
           <button
             className="navbar-toggler"

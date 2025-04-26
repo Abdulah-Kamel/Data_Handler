@@ -13,7 +13,7 @@ export const authService = {
       `${baseUrl}/auth/password-reset/`,
       { email }
     );
-    return response.data;
+    return response;
   },
   verifyResetCode: async (resetCode) => {
     const response = await axios.post(

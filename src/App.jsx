@@ -9,6 +9,7 @@ import Categories from "./Components/main/categories/Categories";
 import Layout from "./Components/main/Layout/Layout";
 import ProtectedRoute from "./Components/Auth/ProtectedRoute";
 import Templates from "./Components/main/templates/Templates";
+import BulkData from "./Components/main/bulkData/BulkData";
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +28,7 @@ function App() {
           }
         >
           <Route path="" element={<Categories />} />
+          <Route path="/dashboard/bulk-data" element={<BulkData />} />
           <Route path="/dashboard/templates/:categoryId" element={<Templates />} />
         </Route>
       </Routes>
