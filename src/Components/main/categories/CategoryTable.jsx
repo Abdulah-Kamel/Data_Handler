@@ -30,7 +30,7 @@ const columns = [
     name: "عدد القوالب",
     selector: (row) => row.templates.length,
     sortable: true,
-    width: '120px',
+    width: '150px',
     cell: (row) => (
       <span className="badge bg-info">
         {row.templates.length}
@@ -94,17 +94,33 @@ const columns = [
         fixedHeader
         highlightOnHover
         customStyles={{
+          table: {
+            style: {
+              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+              borderRadius: '8px',
+              overflow: 'hidden',
+            },
+          },
           headCells: {
             style: {
               fontSize: '16px',
               fontWeight: 'bold',
+              backgroundColor: '#109b58',
+              color: 'white',
+              paddingTop: '15px',
+              paddingBottom: '15px',
             },
           },
           cells: {
             style: {
-              fontSize: '15px',
+              fontSize: '20px',
               paddingTop: '12px',
               paddingBottom: '12px',
+            },
+          },
+          pagination: {
+            style: {
+              borderTop: '1px solid #e0e0e0',
             },
           },
         }}

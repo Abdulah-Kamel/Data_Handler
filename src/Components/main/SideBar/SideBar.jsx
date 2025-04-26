@@ -28,7 +28,7 @@ const Sidebar = () => {
             }`}
           >
             <i className={`${item.icon}`}></i>
-            <span className="ms-3 small fw-medium">{item.label}</span>
+            <span className="me-2 small fw-medium">{item.label}</span>
           </Link>
         ))}
       </nav>
@@ -40,7 +40,7 @@ const Sidebar = () => {
           className="d-flex align-items-center text-secondary text-decoration-none"
         >
           <i className="fa-solid fa-right-from-bracket"></i>
-          <span className="ms-3 small fw-medium">Log Out</span>
+          <span className="me-2 small fw-medium">Log Out</span>
         </a>
       </div>
     </div>
