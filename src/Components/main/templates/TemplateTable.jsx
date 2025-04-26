@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
+import DataTable from "react-data-table-component";
 
 const TemplateTable = ({
   templates,
@@ -20,6 +21,90 @@ const TemplateTable = ({
     return decodedFileName;
   };
 
+  const columns = [
+    {
+      name: "#",
+      selector: (row, index) => index + 1,
+      sortable: true,
+      width: '60px',
+    },
+    {
+      name: "عنوان القالب",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "الموضوع",
+      selector: (row) => row.description,
+      sortable: true,
+      cell: (row) => {
+        return row.description.length > 50
+          ? `${row.description.substring(0, 50)}...`
+          : row.description;
+      },
+    },
+    {
+      name: "الملفات",
+      selector: (row) => row.word_file,
+      sortable: false,
+      cell: (row) => (
+        row.word_file ? (
+          <a
+            href={row.word_file}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="main-color"
+          >
+            <i className="fas fa-file-word me-1"></i>
+            {getFileName(row.word_file)}
+          </a>
+        ) : (
+          <span className="text-muted">لا يوجد ملف</span>
+        )
+      ),
+    },
+    {
+      name: "تاريخ الإنشاء",
+      selector: (row) => row.created_at,
+      sortable: true,
+      width: '150px',
+      cell: (row) => formatDate(row.created_at),
+    },
+    {
+      name: "الإجراءات",
+      cell: (row) => (
+        <div className="d-flex gap-2 justify-content-center">
+          <button
+            className="btn btn-outline-info btn-sm rounded-pill"
+            onClick={() => onUploadFile(row)}
+            title="رفع ملف"
+          >
+            <i className="fas fa-upload me-1"></i>
+            رفع ملف
+          </button>
+          <button
+            className="btn btn-outline-success btn-sm rounded-pill"
+            onClick={() => onEdit(row)}
+          >
+            <i className="fas fa-edit me-1"></i>
+            تعديل
+          </button>
+          <button
+            className="btn btn-outline-danger btn-sm rounded-pill"
+            onClick={() => onDelete(row)}
+          >
+            <i className="fas fa-trash me-1"></i>
+            حذف
+          </button>
+        </div>
+      ),
+      width: '350px',
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+    }
+  ];
+
   return (
     <div className="position-relative mt-5">
       {loading && (
@@ -30,78 +115,30 @@ const TemplateTable = ({
           <PulseLoader color="#0aad0a" size={15} />
         </div>
       )}
-          {loading && (
-            <div className="text-center py-3">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )}
-          <div className="table-responsive table-wrapper">
-            <table className="table table-hover table-light table-striped table-bordered shadow align-middle custom-table">
-              <thead className="table-dark">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">عنوان القالب</th>
-                  <th scope="col">الموضوع</th>
-                  <th scope="col">الملفات</th>
-                  <th scope="col">تاريخ الإنشاء</th>
-                  <th scope="col" className="action-column">الإجراءات</th>
-                </tr>
-              </thead>
-              <tbody>
-                {templates.map((template, index) => (
-                  <tr key={template.id}>
-                    <td>{index + 1}</td>
-                    <td>{template.name}</td>
-                    <td>{template.description}</td>
-                    <td>
-                      {template.word_file ? (
-                        <a
-                          href={template.word_file}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="main-color"
-                        >
-                          <i className="fas fa-file-word me-1"></i>
-                          {getFileName(template.word_file)}
-                        </a>
-                      ) : (
-                        <span className="text-muted">لا يوجد ملف</span>
-                      )}
-                    </td>
-                    <td>{formatDate(template.created_at)}</td>
-                    <td className="action-column">
-                      <div className="d-flex gap-2  justify-content-center">
-                        <button
-                          className="btn btn-sm btn-info"
-                          onClick={() => onUploadFile(template)}
-                          title="رفع ملف"
-                        >
-                            رفع ملف
-                          <i className="fas fa-upload me-1"></i>
-                        </button>
-                        <button
-                          className="btn btn-sm btn-success"
-                          onClick={() => onEdit(template)}
-                        >
-                           تعديل القالب
-                          <i className="fas fa-edit me-1"></i>
-                        </button>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => onDelete(template)}
-                        >
-                           حذف القالب
-                          <i className="fas fa-trash me-1"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      <DataTable
+        columns={columns}
+        data={templates}
+        pagination
+        paginationPerPage={10}
+        paginationRowsPerPageOptions={[10, 20, 30]}
+        fixedHeader
+        highlightOnHover
+        customStyles={{
+          headCells: {
+            style: {
+              fontSize: '16px',
+              fontWeight: 'bold',
+            },
+          },
+          cells: {
+            style: {
+              fontSize: '15px',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+            },
+          },
+        }}
+      />
     </div>
   );
 };

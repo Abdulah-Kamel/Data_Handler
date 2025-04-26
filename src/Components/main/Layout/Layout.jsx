@@ -16,9 +16,9 @@ export default function Layout() {
         <SideBar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed}/>
 
         {/* Main content */}
-        <main className={`col-10 p-0`}>
+        <main className={`col-10 p-0 bg-light`}>
           <TopBar />
-          <div className="container">
+          <div className="">
           <Outlet />
           </div>
         </main>

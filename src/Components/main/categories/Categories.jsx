@@ -122,13 +122,12 @@ const Categories = () => {
     );
   }
   return (
-    <div className="px-3">
+    <div className="px-3 mt-5">
       <title>Emailer Categories</title>
       <meta name="description" content="Emailer Categories" />
-        <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
-          <h2>فئات القوالب</h2>
+      
           <button
-            className="btn primary-btn"
+            className="btn btn-outline-success"
             onClick={() => {
               setIsEditing(false);
               setSelectedCategory(null);
@@ -139,7 +138,6 @@ const Categories = () => {
             إضافة فئة جديدة
             <i className="fas fa-plus me-2"></i>
           </button>
-        </div>
 
         {error && (
           <div className="alert alert-danger text-center mb-4">

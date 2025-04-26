@@ -63,7 +63,7 @@ const Templates = () => {
   }
 
   return (
-    <>
+    <div className="px-3 mt-5">
       <title>Emailer Templates</title>
       <meta name="description" content="Emailer Templates" />
         <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
@@ -154,7 +154,7 @@ const Templates = () => {
         {(showModal || showDeleteModal || showUploadModal) && (
           <div className="modal-backdrop fade show"></div>
         )}
-    </>
+    </div>
   );
 };
 

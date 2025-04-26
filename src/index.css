@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
 
 html,
@@ -190,3 +189,8 @@ button:focus:not(:focus-visible) {
 }
 
 
+
+.hover-success:hover {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754 !important;
+}
