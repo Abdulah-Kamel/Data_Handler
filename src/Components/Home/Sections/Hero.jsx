@@ -17,10 +17,10 @@ const Hero = () => {
               نظام مراسلة بمفهوم جديد يوفر كل ما تحتاجه في عالم الرسائل.
             </p>
             <div className="d-flex justify-content-center gap-3 mt-4">
-              <button className="btn btn-success px-sm-4 fs-4">
+              <button className="btn btn-success px-2 px-sm-4 fs-4">
                 حجز المنصة
               </button>
-              <button className="btn btn-outline-success px-sm-4 fs-4">
+              <button className="btn btn-outline-success px-2 px-sm-4 fs-4">
                 استكشاف الخدمات
               </button>
             </div>

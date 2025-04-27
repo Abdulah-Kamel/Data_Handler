@@ -81,6 +81,12 @@ button:focus:not(:focus-visible) {
   }
 }
 
+
+@media screen and (max-width: 767px) {
+  .form-container{
+    width: 90%;
+  }
+}
 .sidebar {
   background-color: #f8f9fa;
   border-left: 4px solid var(--primary-color);

@@ -80,13 +80,11 @@ const Login = () => {
                 <p className="text-center fw-bold fs-5 mb-0">{error}</p>
               </div>
             )}
-            <div className="mt-5 d-flex justify-content-between align-items-center flex-wrap gap-3">
-              <Link to="/forget-password" className="main-color register fs-5">
-                هل نسيت كلمه السر؟
-              </Link>
+            <div className="mt-5 d-flex justify-content-between align-items-center  gap-3">
+             
               <button
                 type="submit"
-                className="btn primary-btn text-white px-4 py-2"
+                className="btn primary-btn text-white px-2 px-sm-4 py-2"
                 disabled={!formik.isValid || loginLoading}
               >
                 {loginLoading ? (
@@ -95,6 +93,9 @@ const Login = () => {
                   "تسجيل الدخول"
                 )}
               </button>
+              <Link to="/forget-password" className="main-color register fs-5">
+                هل نسيت كلمه السر؟
+              </Link>
             </div>
           </form>
         </div>
