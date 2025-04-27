@@ -4,6 +4,7 @@ import BulkDataDetails from "./BulkDataDetails";
 import BulkDataModal from "./BulkDataModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import BulkDataService from "../../../services/BulkDataService";
+import ExcelUploadModal from "./ExcelUploadModal";
 
 const BulkData = () => {
   const [bulkData, setBulkData] = useState([]);
@@ -66,6 +67,7 @@ const BulkData = () => {
 
   // Handle modal submission (create or update)
   const handleModalSubmit = async (values, { setSubmitting, setErrors }) => {
+    
     // Don't set the main loading state for form submission
     setError("");
     try {
@@ -94,29 +96,24 @@ const BulkData = () => {
 
   // Handle deleting a bulk data
 
-  // Handle editing a row in bulk data
-  const handleEditRow = (row) => {
-    // Implement row edit functionality
-    console.log("Editing row:", row);
-  };
 
   // Handle deleting a row in bulk data
-  const handleDeleteRow = async (row) => {
-    if (window.confirm("هل أنت متأكد من حذف هذا السجل؟")) {
-      setLoading(true);
-      setError("");
-      try {
-        await BulkDataService.deleteRow(selectedData.id, row.id);
+  const handleDeleteRow = async (selectedData,rowId) => {
+    console.log(selectedData,rowId);
+    
+    setLoading(true);
+    setError("");
+    try {
+      await BulkDataService.deleteRow(selectedData, rowId);
 
-        // Refresh the selected data
-        const response = await BulkDataService.getBulkDataById(selectedData.id);
-        setSelectedData(response.data);
-      } catch (error) {
-        console.error("Error deleting row:", error);
-        setError("حدث خطأ أثناء حذف السجل");
-      } finally {
-        setLoading(false);
-      }
+      // Refresh the selected data
+      const response = await BulkDataService.getBulkDataById(selectedData);
+      setSelectedData(response.data);
+    } catch (error) {
+      console.error("Error deleting row:", error);
+      setError("حدث خطأ أثناء حذف السجل");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,37 +145,68 @@ const BulkData = () => {
     setDeleting(true);
     setError("");
     try {
-      if (deleteType === "data") {
         await BulkDataService.deleteBulkData(itemToDelete.id);
         // Only show loading when fetching data
         fetchBulkData();
-      } else if (deleteType === "row") {
-        await BulkDataService.deleteRow(selectedData.id, itemToDelete.id);
-
-        // For row deletion, we need to refresh the selected data
-        // Set loading only for this specific data fetch
-        setLoading(true);
-        try {
-          const response = await BulkDataService.getBulkDataById(
-            selectedData.id
-          );
-          setSelectedData(response.data);
-        } finally {
-          setLoading(false);
-        }
-      }
+      
       setShowDeleteModal(false);
     } catch (error) {
       console.error(`Error deleting ${deleteType}:`, error);
       setError(
-        `حدث خطأ أثناء حذف ${deleteType === "data" ? "البيانات" : "السجل"}`
+        `حدث خطأ أثناء حذف "السجل"}`
       );
     } finally {
       setDeleting(false);
     }
   };
 
-  // Update the handleDeleteRow function
+// Add state for Excel upload modal
+const [showExcelModal, setShowExcelModal] = useState(false);
+const [excelUploadId, setExcelUploadId] = useState(null);
+const [uploadLoading, setUploadLoading] = useState(false);
+
+// Handle opening Excel upload modal
+const handleOpenExcelUpload = (data) => {
+  setExcelUploadId(data.id);
+  setShowExcelModal(true);
+};
+
+// Handle Excel file upload
+const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
+  if (!file || !excelUploadId) return;
+  
+  setUploadLoading(true);
+  
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // Upload the file
+    await BulkDataService.uploadExcelToBulkData(excelUploadId, formData);
+    
+    // Close the modal first
+    setShowExcelModal(false);
+    resetForm();
+    
+    // Then refresh the data
+    if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
+      const response = await BulkDataService.getBulkDataById(excelUploadId);
+      setSelectedData(response.data);
+    } else {
+      // Otherwise refresh the main list
+      await fetchBulkData();
+    }
+    
+    // Show success message (you can add a toast notification here if you have one)
+    
+  } catch (error) {
+    console.error("Error uploading Excel file:", error);
+    // You can handle specific error messages here if needed
+  } finally {
+    setUploadLoading(false);
+    setSubmitting(false);
+  }
+};
 
   return (
     <>
@@ -207,8 +235,8 @@ const BulkData = () => {
             selectedData={selectedData}
             loading={loading}
             onBack={handleBack}
-            onEditRow={handleEditRow}
             onDeleteRow={handleDeleteRow}
+             setSelectedData={setSelectedData}
           />
         ) : (
           <BulkDataTable
@@ -218,6 +246,7 @@ const BulkData = () => {
             onEdit={handleEdit}
             onDelete={handleDelete}
             onViewDetails={handleViewDetails}
+            onUploadExcel={handleOpenExcelUpload}
           />
         )}
 
@@ -229,6 +258,12 @@ const BulkData = () => {
           initialValues={modalData}
           isEditing={isEditing}
           loading={loading}
+        />
+         <ExcelUploadModal
+          show={showExcelModal}
+          onHide={() => setShowExcelModal(false)}
+          onSubmit={handleExcelUpload}
+          loading={uploadLoading}
         />
       </div>
       {showModal && (

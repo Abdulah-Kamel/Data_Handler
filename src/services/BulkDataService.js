@@ -48,6 +48,12 @@ const BulkDataService = {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
   },
+  
+  updateRow: async (bulkDataId,rowId, rowData) => {
+    return axios.patch(`${BASE_URL}/bulkdata/${bulkDataId}/edit-row/${rowId}/`, rowData, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+  },
 
   // Delete a row from bulk data
   deleteRow: async (bulkDataId, rowId) => {
@@ -68,6 +74,7 @@ const BulkDataService = {
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getToken()}`,
         },
       }
     );
