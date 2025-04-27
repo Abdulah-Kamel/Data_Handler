@@ -13,12 +13,12 @@ const columns = [
     width: '60px',
   },
   {
-    name: "اسم الفئة",
+    name: "اسم التصنيفات",
     selector: (row) => row.name,
     sortable: true,
   },
   {
-    name: "الوصف",
+    name: "الموضوع",
     selector: (row) => {
       return row.description.length > 50
         ? `${row.description.substring(0, 50)}...`

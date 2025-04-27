@@ -29,7 +29,7 @@ const TemplateTable = ({
       width: '60px',
     },
     {
-      name: "عنوان القالب",
+      name: "اسم القالب",
       selector: (row) => row.name,
       sortable: true,
     },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -16,6 +16,35 @@ const ExcelUploadSchema = Yup.object().shape({
 
 const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
   const [fileName, setFileName] = useState("");
+  const formikRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // Reset form when modal is opened or closed
+  useEffect(() => {
+    if (show) {
+      // Reset state when modal opens
+      setFileName("");
+      
+      // Reset file input value
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      
+      // Reset Formik state
+      if (formikRef.current) {
+        formikRef.current.resetForm();
+      }
+    }
+  }, [show]);
+
+  // Custom onHide handler to reset form
+  const handleHide = () => {
+    setFileName("");
+    if (formikRef.current) {
+      formikRef.current.resetForm();
+    }
+    onHide();
+  };
 
   return (
     <div className={`modal fade ${show ? 'show' : ''}`} 
@@ -27,7 +56,7 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">رفع ملف Excel</h5>
-            <button type="button" className="btn-close me-auto ms-0" onClick={onHide} aria-label="Close"></button>
+            <button type="button" className="btn-close me-auto ms-0" onClick={handleHide} aria-label="Close"></button>
           </div>
           
           <Formik
@@ -36,6 +65,7 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
             onSubmit={(values, actions) => {
               onSubmit(values.file, actions);
             }}
+            innerRef={formikRef}
           >
             {({
               errors,
@@ -43,6 +73,7 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
               setFieldValue,
               handleSubmit,
               isSubmitting,
+              resetForm
             }) => (
               <Form onSubmit={handleSubmit}>
                 <div className="modal-body">
@@ -54,12 +85,14 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
                         className={`form-control ${touched.file && errors.file ? 'is-invalid' : ''}`}
                         id="file"
                         accept=".xlsx,.xls"
+                        ref={fileInputRef}
                         onChange={(event) => {
                           const file = event.currentTarget.files[0];
                           setFieldValue("file", file);
                           setFileName(file ? file.name : "");
                         }}
                         disabled={loading || isSubmitting}
+                        key={show ? "open" : "closed"} // Force re-render when modal opens/closes
                       />
                       <label className="input-group-text" htmlFor="file">
                         اختر ملف
@@ -84,7 +117,7 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
                   <button 
                     type="button" 
                     className="btn btn-secondary" 
-                    onClick={onHide} 
+                    onClick={handleHide} 
                     disabled={loading || isSubmitting}
                   >
                     إلغاء

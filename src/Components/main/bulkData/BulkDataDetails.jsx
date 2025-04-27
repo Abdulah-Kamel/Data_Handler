@@ -187,8 +187,8 @@ const BulkDataDetails = ({
         <h3 className="m-0">{selectedData?.name}</h3>
         <div className="d-flex gap-2">
           <button className="btn btn-primary" onClick={handleAddRow}>
-            <i className="fas fa-plus me-1"></i>
             إضافة سجل جديد
+            <i className="fas fa-plus me-1"></i>
           </button>
           <button className="btn btn-outline-secondary" onClick={onBack}>
             العودة
