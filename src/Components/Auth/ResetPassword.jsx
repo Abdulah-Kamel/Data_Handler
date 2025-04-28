@@ -63,16 +63,16 @@ const ResetPassword = () => {
                   </label>
                   <input
                     type="password"
-                    name="newPassword"
+                    name="password"
                     id="password"
                     className="form-control mt-2"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    value={formik.values.newPassword.trim()}
+                    value={formik.values.password.trim()}
                   />
-                  {formik.touched.newPassword && formik.errors.newPassword ? (
+                  {formik.touched.password && formik.errors.password ? (
                     <section className="alert alert-danger mt-2">
-                      {formik.errors.newPassword}
+                      {formik.errors.password}
                     </section>
                   ) : null}
                 </section>
