@@ -12,7 +12,7 @@ const TopBar = () => {
     const [isMobile, setIsMobile] = useState(false);
     const getPathName = () => {
       if (currentPath === "/dashboard") {
-        setPathName("فئات القوالب");
+        setPathName("تصنيفات القوالب");
       } else if (currentPath.startsWith("/dashboard/templates/")) {
         setPathName("القوالب");
       } else if (currentPath.startsWith("/dashboard/bulk-data")) {
@@ -65,6 +65,16 @@ const TopBar = () => {
         <div className="top-bar py-3 px-4 d-flex justify-content-between align-items-center ">
           <div className="user-info d-flex align-items-center">
             <div className="d-flex align-items-center">
+              <button
+                class="navbar-toggler btn btn-outline-success border border-3 border-success p-2 ms-2 rounded-2"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar"
+                aria-label="Toggle navigation"
+              >
+                <i className="fa-solid fa-bars fa-xl"></i>
+              </button>
               <div
                 className="user-avatar primary-bg rounded-circle d-flex justify-content-center align-items-center"
                 style={{ width: "35px", height: "35px", position: "relative" }}
@@ -102,8 +112,12 @@ const TopBar = () => {
             <i className="fa-solid fa-users me-2"></i>
             <span className="me-2">{pathName}</span>
           </div>
-          <div className={`text-white ${isMobile ? "d-none" : ""}`}>
-            <div className="date d-flex align-items-center fw-bold">
+          <div className={`text-white ${isMobile ? "" : ""}`}>
+            <div
+              className={`date d-flex align-items-center ${
+                isMobile ? "fs-6 flex-column" : "fs-5"
+              } fw-bold`}
+            >
               <div>
                 <i className="far fa-calendar-alt ms-2"></i>
                 التاريخ :{formattedDate}

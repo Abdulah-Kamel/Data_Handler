@@ -123,77 +123,77 @@ const Categories = () => {
   }
   return (
     <div className="px-3 mt-5">
-      <title>Emailer Categories</title>
-      <meta name="description" content="Emailer Categories" />
-      
+      <title>Data Handler Categories</title>
+      <meta name="description" content="Data Handler Categories" />
+
+      <button
+        className="btn btn-outline-success"
+        onClick={() => {
+          setIsEditing(false);
+          setSelectedCategory(null);
+          setFormError(null);
+          setShowModal(true);
+        }}
+      >
+        إضافة فئة جديدة
+        <i className="fas fa-plus me-2"></i>
+      </button>
+
+      {error && (
+        <div className="alert alert-danger text-center mb-4">
+          {error}
           <button
-            className="btn btn-outline-success"
-            onClick={() => {
-              setIsEditing(false);
-              setSelectedCategory(null);
-              setFormError(null);
-              setShowModal(true);
-            }}
+            className="btn btn-sm btn-outline-danger ms-3"
+            onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
-            إضافة فئة جديدة
-            <i className="fas fa-plus me-2"></i>
+            إعادة المحاولة
           </button>
+        </div>
+      )}
 
-        {error && (
-          <div className="alert alert-danger text-center mb-4">
-            {error}
-            <button
-              className="btn btn-sm btn-outline-danger ms-3"
-              onClick={() => setRefreshTrigger((prev) => prev + 1)}
-            >
-              إعادة المحاولة
-            </button>
-          </div>
-        )}
-
-        {categories.length === 0 && !loading ? (
-          <div className="alert alert-info text-center">
-            لا توجد فئات متاحة حالياً
-          </div>
-        ) : (
-          <CategoryTable
-            categories={categories}
-            loading={loading}
-            formatDate={formatDate}
-            onEdit={handleEdit}
-            onDelete={(category) => {
-              setSelectedCategory(category);
-              setDeleteError(null);
-              setShowDeleteModal(true);
-            }}
-          />
-        )}
-
-        {/* Category Modal */}
-        <CategoryModal
-          show={showModal}
-          isEditing={isEditing}
-          selectedCategory={selectedCategory}
-          onClose={() => setShowModal(false)}
-          onSubmit={handleSubmit}
-          formSubmitting={formSubmitting}
-          error={formError}
+      {categories.length === 0 && !loading ? (
+        <div className="alert alert-info text-center">
+          لا توجد فئات متاحة حالياً
+        </div>
+      ) : (
+        <CategoryTable
+          categories={categories}
+          loading={loading}
+          formatDate={formatDate}
+          onEdit={handleEdit}
+          onDelete={(category) => {
+            setSelectedCategory(category);
+            setDeleteError(null);
+            setShowDeleteModal(true);
+          }}
         />
+      )}
 
-        {/* Delete Confirmation Modal */}
-        <DeleteConfirmationModal
-          show={showDeleteModal}
-          category={selectedCategory}
-          onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDelete}
-          isSubmitting={formSubmitting}
-          error={deleteError}
-        />
+      {/* Category Modal */}
+      <CategoryModal
+        show={showModal}
+        isEditing={isEditing}
+        selectedCategory={selectedCategory}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+        formSubmitting={formSubmitting}
+        error={formError}
+      />
 
-        {/* Modal backdrop */}
-        {(showModal || showDeleteModal) && (
-          <div className="modal-backdrop fade show"></div>
-        )}
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        show={showDeleteModal}
+        category={selectedCategory}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        isSubmitting={formSubmitting}
+        error={deleteError}
+      />
+
+      {/* Modal backdrop */}
+      {(showModal || showDeleteModal) && (
+        <div className="modal-backdrop fade show"></div>
+      )}
     </div>
   );
 };

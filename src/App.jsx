@@ -10,6 +10,7 @@ import Layout from "./Components/main/Layout/Layout";
 import ProtectedRoute from "./Components/Auth/ProtectedRoute";
 import Templates from "./Components/main/templates/Templates";
 import BulkData from "./Components/main/bulkData/BulkData";
+import FilledTemplet from "./Components/main/FilledTemplet/FilledTemplet";
 function App() {
   return (
     <BrowserRouter>
@@ -18,7 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/reset-code" element={<ResetCode />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/auth/reset-password" element={<ResetPassword />} />
         <Route
           path="/dashboard"
           element={
@@ -29,6 +30,7 @@ function App() {
         >
           <Route path="" element={<Categories />} />
           <Route path="/dashboard/bulk-data" element={<BulkData />} />
+          <Route path="/dashboard/FilledTemplet" element={<FilledTemplet />} />
           <Route path="/dashboard/templates/:categoryId" element={<Templates />} />
         </Route>
       </Routes>
