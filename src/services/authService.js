@@ -9,17 +9,15 @@ export const authService = {
     return response.data;
   },
   forgotPassword: async (email) => {
-    const response = await axios.post(
-      `${baseUrl}/auth/password-reset/`,
-      { email }
-    );
+    const response = await axios.post(`${baseUrl}/auth/password-reset/`, {
+      email,
+    });
     return response;
   },
-  verifyResetCode: async (resetCode) => {
+  resetPassword: async ( token,uid,passwordConfirm) => {
     const response = await axios.post(
-      `${baseUrl}/api/v1/auth/verifyResetCode`,
-      { resetCode }
+      `${baseUrl}auth/password-reset-confirm/${uid}/${token}/`,
+      passwordConfirm
     );
-    return response.data;
   },
 };

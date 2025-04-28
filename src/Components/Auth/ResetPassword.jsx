@@ -1,45 +1,35 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { PulseLoader } from "react-spinners";
 import NavBar from "../NavBar/NavBar";
+import { authService } from "../../services/authService";
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const baseUrl = "https://ecommerce.routemisr.com";
-  async function resetPassword(values) {
+  const { uid, token } = useParams();
+  console.log(uid, token);
+  
+
+  async function resetPassword(token, uid, values) {
     setSubmitLoading(true);
-    let { data } = await axios
-      .put(`${baseUrl}/api/v1/auth/resetPassword`, values)
-      .catch((err) => {
-        setError(
-          `${string.capitalize(err.response.data.statusMsg)}, ${
-            err.response.data.message
-          }`
-        );
-        setSubmitLoading(false);
-      });
-    if (data.token) {
-      setSubmitLoading(false);
-      navigate("/login");
-    }
+    let data = await authService.resetPassword(values);
+    console.log(data);
   }
   const formik = useFormik({
     initialValues: {
-      email: "",
-      newPassword: "",
+      password: "",
     },
     onSubmit: (values) => {
       resetPassword(values);
     },
     validationSchema: Yup.object({
-      email: Yup.string().email().required("Email is required"),
-      newPassword: Yup.string()
+      password: Yup.string()
         .matches(
           /^[A-Z][A-Za-z0-9!@#$%^&*]{7,}$/,
           "Password should start with uppercase and have at least 8 characters"
@@ -67,25 +57,6 @@ const ResetPassword = () => {
             <section className="mt-5 py-5">
               <h2 className="text-center fw-bold">Reset Password</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">
-                <section className="mt-3">
-                  <label htmlFor="email" className="fs-4 fw-bold">
-                    الايميل:
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className="form-control mt-2"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.email.trim()}
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <section className="alert alert-danger mt-2">
-                      {formik.errors.email}
-                    </section>
-                  ) : null}
-                </section>
                 <section className="mt-3">
                   <label htmlFor="password" className="fs-4 fw-bold">
                     الباسورد الجديد:
