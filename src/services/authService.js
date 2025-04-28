@@ -14,10 +14,12 @@ export const authService = {
     });
     return response;
   },
-  resetPassword: async ( token,uid,passwordConfirm) => {
+  resetPassword: async ( resetData) => {
     const response = await axios.post(
-      `${baseUrl}auth/password-reset-confirm/${uid}/${token}/`,
-      passwordConfirm
+      `${baseUrl}/auth/password-reset-confirm/${resetData.uid}/${resetData.token}/`,
+      {
+        "password":resetData.password,
+      }
     );
   },
 };

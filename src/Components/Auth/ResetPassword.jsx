@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { PulseLoader } from "react-spinners";
@@ -12,15 +12,37 @@ const ResetPassword = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { uid, token } = useParams();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
+  const uid = searchParams.get('uid');
   console.log(uid, token);
   
 
-  async function resetPassword(token, uid, values) {
+  async function resetPassword(values) {
     setSubmitLoading(true);
-    let data = await authService.resetPassword(values);
-    console.log(data);
+    try {
+      // Pass token and uid along with the password
+      const resetData = {
+        password: values.password,
+        token: token,
+        uid: uid
+      };
+      let data = await authService.resetPassword(resetData);
+      console.log(data);
+      // Handle successful password reset
+      // if (data.success) {
+      //   navigate('/auth/login', { state: { message: 'Password reset successful. Please login with your new password.' } });
+      // } else {
+      //   setError(data.error || 'Failed to reset password. Please try again.');
+      // }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      console.error(err);
+    } finally {
+      setSubmitLoading(false);
+    }
   }
+  
   const formik = useFormik({
     initialValues: {
       password: "",
