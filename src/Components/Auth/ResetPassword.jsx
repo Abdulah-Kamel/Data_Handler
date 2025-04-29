@@ -15,21 +15,16 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const uid = searchParams.get('uid');
-  console.log(uid, token);
-  
 
   async function resetPassword(values) {
     setSubmitLoading(true);
     try {
-      // Pass token and uid along with the password
       const resetData = {
         password: values.password,
         token: token,
         uid: uid
       };
       let data = await authService.resetPassword(resetData);
-      console.log(data);
-      // Handle successful password reset
       if (data.status === 200) {
         navigate('/reset-code', { state: { message: 'تم تغيير كلمة المرور بنجاح' } });
       } else {

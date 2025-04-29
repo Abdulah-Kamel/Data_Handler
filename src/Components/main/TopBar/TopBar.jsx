@@ -17,11 +17,13 @@ const TopBar = () => {
         setPathName("القوالب");
       } else if (currentPath.startsWith("/dashboard/bulk-data")) {
         setPathName("بيانات مجمعه");
+      } else if (currentPath.startsWith("/dashboard/FilledTemplet")) {
+        setPathName("انشاء القوالب");
+      } else if (currentPath.startsWith("/dashboard/users")) {
+        setPathName("أداره المستخدمين");
       }
     };
-    // Update time every second
     useEffect(() => {
-      console.log(currentPath);
       const getScreenWidth = () => window.innerWidth;
       if (getScreenWidth() < 600) {
         setIsMobile(true);
@@ -31,7 +33,6 @@ const TopBar = () => {
         setCurrentTime(new Date());
       }, 1000);
 
-      // Clean up the interval on component unmount
       return () => clearInterval(timer);
     }, [currentPath]);
 
@@ -40,21 +41,18 @@ const TopBar = () => {
       navigate("/login");
     };
 
-    // Format time as HH:MM:SS
     const formattedTime = currentTime.toLocaleTimeString("ar-EG", {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
     });
 
-    // Format date
     const formattedDate = currentTime.toLocaleDateString("ar-EG", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
 
-    // Determine greeting based on time of day
     const getGreeting = () => {
       const hours = currentTime.getHours();
       return hours >= 12 ? "مساء الخير" : "صباح الخير";

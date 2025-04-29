@@ -34,15 +34,12 @@ const UserModal = ({
   const user_token = JSON.parse(sessionStorage.getItem("User"))?.access;
 
   const handleSubmit = async (values) => {
-    console.log(values);
-
     setLoading(true);
     try {
       let response;
       const submitData = { ...values };
       delete submitData.mode;
 
-      // Remove empty password for update
       if (mode === "update" && !submitData.password) {
         delete submitData.password;
       }
@@ -82,7 +79,6 @@ const UserModal = ({
     email: user?.email || "",
     organization: user?.organization || "",
     password: "",
-    // mode: mode,
   };
 
   if (!show) return null;

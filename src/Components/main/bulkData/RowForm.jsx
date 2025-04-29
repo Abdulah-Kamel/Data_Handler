@@ -3,12 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { PulseLoader } from "react-spinners";
 
-// Dynamic validation schema for row data
 const createRowSchema = (allKeys) => {
   const schemaFields = {};
   
   allKeys.forEach(key => {
-    // You can customize validation rules based on field names
     if (key.toLowerCase().includes('email')) {
       schemaFields[key] = Yup.string()
         .email("بريد إلكتروني غير صالح")
@@ -19,13 +17,11 @@ const createRowSchema = (allKeys) => {
 };
 
 const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, error, allKeys }) => {
-  // Create initial values from selected row or empty object
   const initialValues = {};
   allKeys.forEach(key => {
     initialValues[key] = selectedRow?.data?.[key] || "";
   });
 
-  // Create validation schema based on available fields
   const RowSchema = createRowSchema(allKeys);
 
   return (

@@ -19,25 +19,18 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
   const formikRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Reset form when modal is opened or closed
   useEffect(() => {
     if (show) {
-      // Reset state when modal opens
       setFileName("");
-      
-      // Reset file input value
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      
-      // Reset Formik state
       if (formikRef.current) {
         formikRef.current.resetForm();
       }
     }
   }, [show]);
 
-  // Custom onHide handler to reset form
   const handleHide = () => {
     setFileName("");
     if (formikRef.current) {
@@ -92,7 +85,7 @@ const ExcelUploadModal = ({ show, onHide, onSubmit, loading }) => {
                           setFileName(file ? file.name : "");
                         }}
                         disabled={loading || isSubmitting}
-                        key={show ? "open" : "closed"} // Force re-render when modal opens/closes
+                        key={show ? "open" : "closed"} 
                       />
                       <label className="input-group-text" htmlFor="file">
                         اختر ملف

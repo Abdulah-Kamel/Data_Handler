@@ -22,7 +22,6 @@ const BulkDataDetails = ({
   const [deleteError, setDeleteError] = useState("");
   const [allKeys, setAllKeys] = useState([]);
 
-  // Extract all unique keys from data and update state
   useEffect(() => {
     if (selectedData && selectedData.rows && selectedData.rows.length > 0) {
       const keySet = new Set();
@@ -35,7 +34,6 @@ const BulkDataDetails = ({
     }
   }, [selectedData]);
 
-  // Handle edit row
   const handleEditRow = (row) => {
     setSelectedRow(row);
     setIsEditing(true);
@@ -43,7 +41,6 @@ const BulkDataDetails = ({
     setShowEditModal(true);
   };
 
-  // Handle add new row
   const handleAddRow = () => {
     setSelectedRow(null);
     setIsEditing(false);
@@ -51,21 +48,18 @@ const BulkDataDetails = ({
     setShowEditModal(true);
   };
 
-  // Handle delete row
   const handleDeleteRow = (row) => {
     setSelectedRow(row);
     setDeleteError("");
     setShowDeleteModal(true);
   };
 
-  // Handle submit form
   const handleSubmit = async (formData) => {
     setFormSubmitting(true);
     setFormError("");
 
     try {
       if (isEditing && selectedRow) {
-        // Update existing row
         const response = await BulkDataService.updateRow(
           selectedData.id,
           selectedRow.id,
@@ -73,24 +67,18 @@ const BulkDataDetails = ({
             data: formData,
           }
         );
-
-        // Call the parent component's callback if provided
         if (onEditRow) {
           onEditRow(selectedData.id, selectedRow.id, formData);
         }
       } else {
-        // Create new row
         const response = await BulkDataService.createRow(selectedData.id, {
           data: formData,
         });
-
-        // Call the parent component's callback if provided
         if (onEditRow) {
           onEditRow(selectedData.id, formData);
         }
       }
 
-      // Close modal and potentially refresh data
       setShowEditModal(false);
       const response = await BulkDataService.getBulkDataById(selectedData.id);
       setSelectedData(response.data);
@@ -104,13 +92,11 @@ const BulkDataDetails = ({
     }
   };
 
-  // Handle confirm delete
   const handleDelete = async () => {
     setFormSubmitting(true);
     setDeleteError("");
 
     try {
-      // Call the parent component's callback if provided
       if (onDeleteRow) {
         onDeleteRow(selectedData.id, selectedRow.id);
       }
@@ -126,19 +112,16 @@ const BulkDataDetails = ({
     }
   };
 
-  // Function to generate columns dynamically based on all rows' data
   const generateColumns = () => {
     if (!selectedData || !selectedData.rows || selectedData.rows.length === 0) {
       return [];
     }
 
-    // Create columns for each key
     const dynamicColumns = allKeys.map((key) => {
-      // Set different widths based on column type/name
-      let columnWidth; // Default width
+      let columnWidth;
 
       if (key.toLowerCase().includes("email")) {
-        columnWidth = "250px"; // Wider for email columns
+        columnWidth = "250px";
       }
 
       return {
@@ -150,7 +133,6 @@ const BulkDataDetails = ({
       };
     });
 
-    // Add action column
     return [
       ...dynamicColumns,
       {
@@ -247,12 +229,10 @@ const BulkDataDetails = ({
         }}
       />
 
-      {/* Modal backdrop */}
       {(showEditModal || showDeleteModal) && (
         <div className="modal-backdrop fade show"></div>
       )}
 
-      {/* Row Edit Modal */}
       <RowEditModal
         show={showEditModal}
         isEditing={isEditing}
@@ -264,7 +244,6 @@ const BulkDataDetails = ({
         allKeys={allKeys}
       />
 
-      {/* Delete Confirmation Modal */}
       <RowDeleteModal
         show={showDeleteModal}
         row={selectedRow}

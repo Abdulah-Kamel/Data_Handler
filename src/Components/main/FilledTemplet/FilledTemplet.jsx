@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import SingleFilledTempletForm from "./SingleFilledTempletForm";
-import MultiFillTempletForm from "./MultiFillTempletForm"; // You'll need to create this component
+import MultiFillTempletForm from "./MultiFillTempletForm";
 
 const FilledTemplet = () => {
-  const [formType, setFormType] = useState("single"); // "single" or "multi"
+  const [formType, setFormType] = useState("single");
   const user = JSON.parse(sessionStorage.getItem("User"));
   const token = user.access;
 

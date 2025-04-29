@@ -3,7 +3,6 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_API_URL;
 
 export const templateService = {
-  // Get templates by category (now we can use the category endpoint directly)
   getByCategoryId: async (token, categoryId) => {
     try {
       const response = await axios.get(`${baseUrl}/categories/${categoryId}/`, {
@@ -51,7 +50,6 @@ export const templateService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error creating template:", error?.response?.data);
-      // Handle different types of error responses
       const errorMessage = 
         error?.response?.data?.name?.[0] || 
         error?.response?.data?.description?.[0] || 
@@ -76,7 +74,6 @@ export const templateService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error updating template:", error?.response?.data);
-      // Handle different types of error responses
       const errorMessage = 
         error?.response?.data?.name?.[0] || 
         error?.response?.data?.description?.[0] || 
@@ -101,7 +98,6 @@ export const templateService = {
       };
     }
   },
-  // Add this function to your existing templateService object
 
   uploadWordFile: async (token, templateId, file) => {
     try {

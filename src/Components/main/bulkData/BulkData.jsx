@@ -12,13 +12,11 @@ const BulkData = () => {
   const [selectedData, setSelectedData] = useState(null);
   const [viewingDetails, setViewingDetails] = useState(false);
 
-  // Modal states
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
 
-  // Fetch bulk data from API
   const fetchBulkData = async () => {
     setLoading(true);
     setError("");
@@ -37,19 +35,16 @@ const BulkData = () => {
     fetchBulkData();
   }, []);
 
-  // Format date for display
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString("ar-EG", options);
   };
 
-  // Handle viewing details of a bulk data
   const handleViewDetails = (data) => {
     setSelectedData(data);
     setViewingDetails(true);
   };
 
-  // Open modal for creating new bulk data
   const handleAddNew = () => {
     setModalData(null);
     setIsEditing(false);
@@ -57,7 +52,6 @@ const BulkData = () => {
     setShowModal(true);
   };
 
-  // Open modal for editing bulk data
   const handleEdit = (data) => {
     setModalData(data);
     setIsEditing(true);
@@ -65,10 +59,7 @@ const BulkData = () => {
     setShowModal(true);
   };
 
-  // Handle modal submission (create or update)
   const handleModalSubmit = async (values, { setSubmitting, setErrors }) => {
-    
-    // Don't set the main loading state for form submission
     setError("");
     try {
       if (isEditing) {
@@ -76,37 +67,26 @@ const BulkData = () => {
       } else {
         await BulkDataService.createBulkData(values);
       }
-      // After successful submission, fetch the updated data
       fetchBulkData();
       setShowModal(false);
     } catch (error) {
       console.error("Error saving bulk data:", error);
       if (error.response && error.response.data) {
-        // Set form-specific errors if available
         setErrors(error.response.data);
       } else {
-        // Set general error
         setError("حدث خطأ أثناء حفظ البيانات");
       }
     } finally {
-      // Only setSubmitting to false, don't modify the main loading state
       setSubmitting(false);
     }
   };
 
-  // Handle deleting a bulk data
-
-
-  // Handle deleting a row in bulk data
-  const handleDeleteRow = async (selectedData,rowId) => {
-    console.log(selectedData,rowId);
-    
+  const handleDeleteRow = async (selectedData, rowId) => {
     setLoading(true);
     setError("");
     try {
       await BulkDataService.deleteRow(selectedData, rowId);
 
-      // Refresh the selected data
       const response = await BulkDataService.getBulkDataById(selectedData);
       setSelectedData(response.data);
     } catch (error) {
@@ -117,36 +97,29 @@ const BulkData = () => {
     }
   };
 
-  // Handle going back to the bulk data list
   const handleBack = () => {
     setViewingDetails(false);
     setSelectedData(null);
     setError("");
   };
 
-  // Add these new state variables for delete confirmation modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [deleteType, setDeleteType] = useState(""); // 'data' or 'row'
+  const [deleteType, setDeleteType] = useState(""); 
 
-  // Update the handleDelete function
   const handleDelete = (data) => {
     setItemToDelete(data);
     setDeleteType("data");
     setShowDeleteModal(true);
   };
 
-  // Add a new function to handle the actual deletion
-  // Add a state for tracking deletion in progress
   const [deleting, setDeleting] = useState(false);
 
-  // Update the confirmDelete function
   const confirmDelete = async () => {
     setDeleting(true);
     setError("");
     try {
         await BulkDataService.deleteBulkData(itemToDelete.id);
-        // Only show loading when fetching data
         fetchBulkData();
       
       setShowDeleteModal(false);
@@ -160,48 +133,33 @@ const BulkData = () => {
     }
   };
 
-// Add state for Excel upload modal
 const [showExcelModal, setShowExcelModal] = useState(false);
 const [excelUploadId, setExcelUploadId] = useState(null);
 const [uploadLoading, setUploadLoading] = useState(false);
 
-// Handle opening Excel upload modal
 const handleOpenExcelUpload = (data) => {
   setExcelUploadId(data.id);
   setShowExcelModal(true);
 };
 
-// Handle Excel file upload
 const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
   if (!file || !excelUploadId) return;
-  
   setUploadLoading(true);
-  
   try {
     const formData = new FormData();
     formData.append('file', file);
-    
-    // Upload the file
     await BulkDataService.uploadExcelToBulkData(excelUploadId, formData);
-    
-    // Close the modal first
-    setShowExcelModal(false);
+        setShowExcelModal(false);
     resetForm();
     
-    // Then refresh the data
     if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
       const response = await BulkDataService.getBulkDataById(excelUploadId);
       setSelectedData(response.data);
     } else {
-      // Otherwise refresh the main list
       await fetchBulkData();
     }
-    
-    // Show success message (you can add a toast notification here if you have one)
-    
   } catch (error) {
     console.error("Error uploading Excel file:", error);
-    // You can handle specific error messages here if needed
   } finally {
     setUploadLoading(false);
     setSubmitting(false);

@@ -16,8 +16,6 @@ const Login = () => {
     setLoginLoading(true);
     try {
       const data = await authService.login(values);
-      console.log(data);
-
       if (data.access) {
         sessionStorage.setItem("User", JSON.stringify(data));
         navigate("/dashboard");

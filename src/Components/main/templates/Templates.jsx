@@ -10,7 +10,6 @@ import FileUploadModal from "./FileUploadModal";
 
 const Templates = () => {
   const { categoryId } = useParams();
-  // Custom hook for template data and loading state
   const {
     templates,
     category,
@@ -19,9 +18,7 @@ const Templates = () => {
     refreshTrigger,
     setRefreshTrigger,
   } = useTemplates(categoryId);
-  // Custom hook for template actions (create, edit, delete, upload)
   const {
-    // Template form state
     showModal,
     setShowModal,
     isEditing,
@@ -32,12 +29,10 @@ const Templates = () => {
     formError,
     handleSubmit,
     handleEdit,
-    // Delete modal state
     showDeleteModal,
     setShowDeleteModal,
     deleteError,
     handleDelete,
-    // Upload modal state
     showUploadModal,
     setShowUploadModal,
     isUploading,

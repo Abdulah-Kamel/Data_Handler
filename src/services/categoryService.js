@@ -31,7 +31,6 @@ export const categoryService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error creating category:", error?.response?.data?.name?.[0]);
-      // Ensure we return a string error message
       return {
         data: null,
         error: error?.response?.data?.name?.[0] || "Failed to create category",
@@ -54,7 +53,6 @@ export const categoryService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error updating category:", error?.response?.data?.name?.[0]);
-      // Ensure we return a string error message
       return { 
         data: null, 
         error: error?.response?.data?.name?.[0] || "Failed to update category" 
@@ -72,7 +70,6 @@ export const categoryService = {
       return { error: null };
     } catch (error) {
       console.error("Error deleting category:", error?.response?.data?.detail);
-      // Ensure we return a string error message
       return { 
         error: error?.response?.data?.detail || "Failed to delete category" 
       };

@@ -61,13 +61,11 @@ const Categories = () => {
         setFormError(result.error);
         return;
       }
-      // Reset form and close modal
       resetForm();
       setShowModal(false);
       setIsEditing(false);
       setSelectedCategory(null);
 
-      // Trigger refresh
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       console.error("Failed to save category:", err);
@@ -97,7 +95,6 @@ const Categories = () => {
       const result = await categoryService.delete(token, selectedCategory.id);
 
       if (result.error) {
-        // Don't throw a new Error, just set the error message directly
         setDeleteError(result.error);
         return;
       }

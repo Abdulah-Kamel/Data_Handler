@@ -62,7 +62,7 @@ export const FilledtemplateService = {
           },
         }
       );
-      return { data: response.data, error: null };
+      return { data: response, error: null };
     } catch (error) {
       console.error("Error creating bulk filled templates:", error?.response?.data);
       const errorMessage =

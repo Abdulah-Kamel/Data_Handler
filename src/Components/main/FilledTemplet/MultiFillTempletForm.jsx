@@ -13,35 +13,29 @@ const MultiFillTemplateSchema = Yup.object().shape({
   file_type: Yup.string().required("نوع الملف مطلوب"),
 });
 
-const MultiFillTempletForm = ({ token, onSubmitSuccess }) => {
+const MultiFillTempletForm = ({ token }) => {
   const [templates, setTemplates] = useState([]);
   const [bulkDataSets, setBulkDataSets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [downloadLinks, setDownloadLinks] = useState(null);
 
-  // Fetch templates and bulk data sets on component mount
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Fetch templates
         const templatesResult = await FilledtemplateService.getAllTemplates(
           token
         );
-        console.log("Fetched templates:", templatesResult);
-
         if (templatesResult) {
           setTemplates(templatesResult.data);
         }
-
-        // Fetch bulk data sets
         const bulkDataResult = await BulkDataService.getAllBulkData(token);
         if (bulkDataResult.data) {
           setBulkDataSets(bulkDataResult.data);
         }
       } catch (err) {
-        console.error("Error fetching data:", err);
         setFormError("حدث خطأ أثناء جلب البيانات");
       } finally {
         setLoading(false);
@@ -56,23 +50,16 @@ const MultiFillTempletForm = ({ token, onSubmitSuccess }) => {
     setFormError(null);
 
     try {
-      // Call API to create bulk filled templates
       const response = await FilledtemplateService.createBulkFilledTemplates(
         token,
         values
       );
-
-      if (response.data) {
-        // Success - call the success callback
-        if (onSubmitSuccess) {
-          onSubmitSuccess();
-        }
+      if (response?.data?.status === 201) {
+        setDownloadLinks(response?.data?.data?.download_link);
       } else {
-        // Handle error
         setFormError(response.error || "حدث خطأ أثناء إنشاء القوالب المملوءة");
       }
     } catch (error) {
-      console.error("Error creating bulk filled templates:", error);
       setFormError("حدث خطأ أثناء إنشاء القوالب المملوءة");
     } finally {
       setFormSubmitting(false);
@@ -94,6 +81,25 @@ const MultiFillTempletForm = ({ token, onSubmitSuccess }) => {
           <h5 className="mb-0">إنشاء قوالب متعددة</h5>
         </div>
         <div className="card-body">
+        {downloadLinks && (
+            <div className="alert alert-success mb-4">
+              <h5 className="mb-3">تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:</h5>
+              <div className="d-flex flex-column gap-2">
+                {downloadLinks && (
+                  <a 
+                    href={downloadLinks} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-outline-success"
+                  >
+                    تحميل ملف
+                    <i className="fas fa-file-download me-2"></i>
+                  </a>
+                )}
+             
+              </div>
+            </div>
+          )}
           <Formik
             initialValues={{
               template_id: "",

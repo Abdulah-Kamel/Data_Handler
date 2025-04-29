@@ -2,18 +2,15 @@ import { useState } from "react";
 import templateService from "../../../../services/templateService";
 
 export const useTemplateActions = (categoryId, setRefreshTrigger) => {
-  // Template form state
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState(null);
   
-  // Delete modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteError, setDeleteError] = useState(null);
   
-  // Upload modal state
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -26,7 +23,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
     setFormError(null);
 
     try {
-      // Create template data with just name, description, and category
       const templateData = {
         name: values.name,
         description: values.description,
@@ -50,13 +46,11 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
         return;
       }
 
-      // Reset form and close modal
       resetForm();
       setShowModal(false);
       setIsEditing(false);
       setSelectedTemplate(null);
 
-      // Trigger refresh
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
       console.error("Failed to save template:", err);
@@ -119,7 +113,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
         return;
       }
 
-      // Close modal and refresh data
       setShowUploadModal(false);
       setSelectedTemplate(null);
       setRefreshTrigger((prev) => prev + 1);
@@ -138,7 +131,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
   };
 
   return {
-    // Template form state
     showModal,
     setShowModal,
     isEditing,
@@ -150,13 +142,11 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
     handleSubmit,
     handleEdit,
     
-    // Delete modal state
     showDeleteModal,
     setShowDeleteModal,
     deleteError,
     handleDelete,
     
-    // Upload modal state
     showUploadModal,
     setShowUploadModal,
     isUploading,

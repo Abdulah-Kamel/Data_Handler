@@ -35,7 +35,6 @@ const Users = () => {
   };
 
   const handleRefresh = () => {
-    // Trigger a refresh by incrementing the refreshTrigger state
     setRefreshTrigger(prev => prev + 1);
   };
 

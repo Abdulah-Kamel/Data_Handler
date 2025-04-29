@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form as FormikForm } from "formik";
 import * as Yup from "yup";
 
-// Validation schema
 const bulkDataSchema = Yup.object().shape({
   name: Yup.string()
     .required("اسم البيانات مطلوب")

@@ -2,7 +2,6 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-// Validation schema for category form
 const CategorySchema = Yup.object().shape({
   name: Yup.string()
     .min(2, "اسم الفئة قصير جدًا")

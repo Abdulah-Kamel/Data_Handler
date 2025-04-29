@@ -22,14 +22,11 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [formSuccess, setFormSuccess] = useState(false);
 
-  // Fetch templates on component mount
   useEffect(() => {
     const fetchTemplates = async () => {
       setLoading(true);
       try {
         const result = await FilledtemplateService.getAllTemplates(token);
-        console.log(result);
-
         if (result.data) {
           setTemplates(result.data);
         }
@@ -44,7 +41,6 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     fetchTemplates();
   }, [token]);
 
-  // Fetch template variables when template changes
   useEffect(() => {
     if (!selectedTemplate) {
       setTemplateFields([]);
@@ -74,17 +70,14 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     fetchTemplateVariables();
   }, [selectedTemplate, token]);
 
-  // Find template by ID
   const handleTemplateChange = (e, setFieldValue) => {
     const templateId = e.target.value;
     const template = templates.find((t) => t.id === templateId);
     setSelectedTemplate(template || null);
 
-    // Reset filled_data when template changes
     setFieldValue("filled_data", {});
     setFieldValue("template_id", templateId);
     
-    // Reset download links if user changes template
     if (downloadLinks) {
       setDownloadLinks(null);
       setFormSuccess(false);
@@ -98,23 +91,19 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     setFormSuccess(false);
 
     try {
-      // Call your API service to create filled template
       const response = await FilledtemplateService.createFilledTemplate(
         token,
         values
       );
-
-      if (response?.data && response?.status === 201) {
-        // Success - store download links
-        console.log("Filled template created:", response?.data);
-        if (response?.data?.download_links) {
-          setDownloadLinks(response?.data?.download_links);
+      console.log(response);
+      
+        if (response?.data.status === 201) {
+            console.log("Download links:", response?.data?.data?.download_links);
+            
+          setDownloadLinks(response?.data?.data?.download_links);
           setFormSuccess(true);
         }
-      } else {
-        // Handle error
-        setFormError(response.error || "حدث خطأ أثناء حفظ البيانات");
-      }
+      
     } catch (error) {
       console.error("Error creating filled template:", error);
       setFormError("حدث خطأ أثناء حفظ البيانات");
@@ -149,8 +138,8 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                     rel="noopener noreferrer" 
                     className="btn btn-outline-success"
                   >
-                    <i className="fas fa-file-pdf me-2"></i>
                     تحميل ملف PDF
+                    <i className="fas fa-file-pdf me-2"></i>
                   </a>
                 )}
                 {downloadLinks.word && (
@@ -160,8 +149,8 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                     rel="noopener noreferrer" 
                     className="btn btn-outline-primary"
                   >
-                    <i className="fas fa-file-word me-2"></i>
                     تحميل ملف Word
+                    <i className="fas fa-file-word me-2"></i>
                   </a>
                 )}
               </div>
