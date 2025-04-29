@@ -175,7 +175,7 @@ const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
           </h2>
 
           {!viewingDetails && (
-            <button className="btn btn-outline-success" onClick={handleAddNew}>
+            <button className="btn btn-outline-success small-text" onClick={handleAddNew}>
               إضافة بيانات جديدة
               <i className="fas fa-plus me-1"></i>
             </button>
