@@ -17,14 +17,14 @@ const FilledTemplet = () => {
         <div className="btn-group" role="group">
           <button
             type="button"
-            className={`btn rounded-end-2  rounded-start-0 ${formType === "single" ? "primary-btn" : "primary-btn-outline"}`}
+            className={`btn rounded-end-2 small-text  rounded-start-0 ${formType === "single" ? "primary-btn" : "primary-btn-outline"}`}
             onClick={() => setFormType("single")}
           >
             قالب فردى
           </button>
           <button
             type="button"
-            className={`btn rounded-start-2 rounded-end-0 ${formType === "multi" ? "primary-btn" : "primary-btn-outline"}`}
+            className={`btn small-text rounded-start-2 rounded-end-0 ${formType === "multi" ? "primary-btn" : "primary-btn-outline"}`}
             onClick={() => setFormType("multi")}
           >
             قوالب متعددة

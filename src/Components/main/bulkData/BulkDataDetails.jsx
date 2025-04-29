@@ -164,17 +164,17 @@ const BulkDataDetails = ({
   };
 
   return (
-    <div className="position-relative mt-4">
+    <div className="position-relative mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h3 className="m-0">{selectedData?.name}</h3>
-        <div className="d-flex gap-2">
-          <button className="btn btn-primary" onClick={handleAddRow}>
-            إضافة سجل جديد
-            <i className="fas fa-plus me-1"></i>
-          </button>
-          <button className="btn btn-outline-secondary" onClick={onBack}>
+        <h3 className="m-0 fs-4">{selectedData?.name}</h3>
+        <div className="d-flex flex-column flex-sm-row gap-2">
+          <button className="btn btn-outline-secondary small-text" onClick={onBack}>
             العودة
             <i className="fas fa-arrow-left me-1"></i>
+          </button>
+          <button className="btn btn-primary small-text" onClick={handleAddRow}>
+            إضافة سجل جديد
+            <i className="fas fa-plus me-1"></i>
           </button>
         </div>
       </div>
