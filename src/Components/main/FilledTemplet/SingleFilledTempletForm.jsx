@@ -11,13 +11,16 @@ const FilledTemplateSchema = Yup.object().shape({
   filled_data: Yup.object().required("البيانات مطلوبة"),
 });
 
-const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
+const SingleFilledTempletForm = ({ token, onCancel }) => {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [templateFields, setTemplateFields] = useState([]);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [loadingVariables, setLoadingVariables] = useState(false);
+  const [downloadLinks, setDownloadLinks] = useState(null);
+  const [formSuccess, setFormSuccess] = useState(false);
 
   // Fetch templates on component mount
   useEffect(() => {
@@ -41,22 +44,35 @@ const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
     fetchTemplates();
   }, [token]);
 
-  // Extract fields from template content when template changes
+  // Fetch template variables when template changes
   useEffect(() => {
     if (!selectedTemplate) {
       setTemplateFields([]);
       return;
     }
 
-    // Parse template content to find placeholders like {{field_name}}
-    const content = selectedTemplate.content || "";
-    const placeholderRegex = /{{([^}]+)}}/g;
-    const matches = [...content.matchAll(placeholderRegex)];
+    const fetchTemplateVariables = async () => {
+      setLoadingVariables(true);
+      try {
+        const result = await FilledtemplateService.getVariablesOfTemplate(token, selectedTemplate.id);
+        
+        if (result.data && result.data.data && result.data.data.variables) {
+          setTemplateFields(result.data.data.variables);
+        } else {
+          setTemplateFields([]);
+          console.error("No variables found in response:", result);
+        }
+      } catch (err) {
+        console.error("Error fetching template variables:", err);
+        setFormError("حدث خطأ أثناء جلب متغيرات القالب");
+        setTemplateFields([]);
+      } finally {
+        setLoadingVariables(false);
+      }
+    };
 
-    // Extract unique field names
-    const fields = [...new Set(matches.map((match) => match[1].trim()))];
-    setTemplateFields(fields);
-  }, [selectedTemplate]);
+    fetchTemplateVariables();
+  }, [selectedTemplate, token]);
 
   // Find template by ID
   const handleTemplateChange = (e, setFieldValue) => {
@@ -67,11 +83,19 @@ const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
     // Reset filled_data when template changes
     setFieldValue("filled_data", {});
     setFieldValue("template_id", templateId);
+    
+    // Reset download links if user changes template
+    if (downloadLinks) {
+      setDownloadLinks(null);
+      setFormSuccess(false);
+    }
   };
 
   const handleSubmit = async (values) => {
     setFormSubmitting(true);
     setFormError(null);
+    setDownloadLinks(null);
+    setFormSuccess(false);
 
     try {
       // Call your API service to create filled template
@@ -80,9 +104,13 @@ const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
         values
       );
 
-      if (response.data) {
-        // Success - call the success callback
-        onSubmitSuccess();
+      if (response?.data && response?.status === 201) {
+        // Success - store download links
+        console.log("Filled template created:", response?.data);
+        if (response?.data?.download_links) {
+          setDownloadLinks(response?.data?.download_links);
+          setFormSuccess(true);
+        }
       } else {
         // Handle error
         setFormError(response.error || "حدث خطأ أثناء حفظ البيانات");
@@ -110,6 +138,36 @@ const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
           <h5 className="mb-0">إنشاء قالب فردى</h5>
         </div>
         <div className="card-body">
+          {formSuccess && downloadLinks && (
+            <div className="alert alert-success mb-4">
+              <h5 className="mb-3">تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:</h5>
+              <div className="d-flex flex-column gap-2">
+                {downloadLinks.pdf && (
+                  <a 
+                    href={downloadLinks.pdf} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-outline-success"
+                  >
+                    <i className="fas fa-file-pdf me-2"></i>
+                    تحميل ملف PDF
+                  </a>
+                )}
+                {downloadLinks.word && (
+                  <a 
+                    href={downloadLinks.word} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-outline-primary"
+                  >
+                    <i className="fas fa-file-word me-2"></i>
+                    تحميل ملف Word
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+          
           <Formik
             initialValues={{
               template_id: "",
@@ -247,38 +305,59 @@ const SingleFilledTempletForm = ({ token, onSubmitSuccess, onCancel }) => {
                   />
                 </div>
 
-                {/* Dynamic Fields based on selected template */}
-                {selectedTemplate && templateFields.length > 0 && (
+                {/* Dynamic Fields based on API variables */}
+                {selectedTemplate && (
                   <div className="mb-3">
                     <label className="form-label">بيانات القالب</label>
                     <div className="card">
                       <div className="card-body">
-                        <div className="row">
-                          {templateFields.map((field) => (
-                            <div className="col-md-6 mb-2" key={field}>
-                              <label
-                                htmlFor={`filled_data.${field}`}
-                                className="form-label"
-                              >
-                                {field}
-                              </label>
-                              <Field
-                                type="text"
-                                className="form-control"
-                                id={`filled_data.${field}`}
-                                name={`filled_data.${field}`}
-                                placeholder={`أدخل ${field}`}
-                                disabled={formSubmitting}
-                              />
-                            </div>
-                          ))}
-                        </div>
+                        {loadingVariables ? (
+                          <div className="text-center py-3">
+                            <PulseLoader color="#0aad0a" size={10} />
+                            <p className="mt-2">جاري تحميل المتغيرات...</p>
+                          </div>
+                        ) : templateFields.length > 0 ? (
+                          <div className="row">
+                            {templateFields.map((field) => (
+                              <div className="col-md-6 mb-2" key={field}>
+                                <label
+                                  htmlFor={`filled_data.${field}`}
+                                  className="form-label"
+                                >
+                                  {field}
+                                </label>
+                                <Field
+                                  type="text"
+                                  className="form-control"
+                                  id={`filled_data.${field}`}
+                                  name={`filled_data.${field}`}
+                                  placeholder={`أدخل ${field}`}
+                                  disabled={formSubmitting}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="alert alert-info mb-0">
+                            لا توجد متغيرات لهذا القالب
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 )}
 
                 <div className="d-flex justify-content-end mt-3">
+                  {onCancel && (
+                    <button
+                      type="button"
+                      className="btn btn-secondary me-2"
+                      onClick={onCancel}
+                      disabled={formSubmitting}
+                    >
+                      إلغاء
+                    </button>
+                  )}
                   <button
                     type="submit"
                     className="btn primary-btn px-4"

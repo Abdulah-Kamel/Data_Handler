@@ -27,11 +27,11 @@ export const FilledtemplateService = {
           },
         }
       );
-      return { data: response.data, error: null };
+      return { data: response, error: null };
     } catch (error) {
-      console.error("Error creating filled template:", error?.response?.data);
+      console.error("Error creating filled template:", error?.response);
       const errorMessage =
-        error?.response?.data?.detail || "Failed to create filled template";
+        error?.response?.detail || "Failed to create filled template";
       return { data: null, error: errorMessage };
     }
   },
@@ -45,7 +45,7 @@ export const FilledtemplateService = {
           }, 
         }
       );
-      return { data: response.data, error: null };
+      return { data: response, error: null };
     } catch (error) {
       console.error("Error fetching variables of template:", error);
       return { data: null, error: "Failed to load variables of template" };
