@@ -20,7 +20,7 @@ const MultiFillTempletForm = ({ token }) => {
   const [formError, setFormError] = useState(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [downloadLinks, setDownloadLinks] = useState(null);
-
+  const [selectedTemplateVars, setSelectedTemplateVars] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -66,6 +66,27 @@ const MultiFillTempletForm = ({ token }) => {
     }
   };
 
+  const handleTemplateChange = async (templateId) => {
+    if (!templateId) {
+      setSelectedTemplateVars([]);
+      return;
+    }
+
+    try {
+      const response = await FilledtemplateService.getVariablesOfTemplate(
+        token,
+        templateId
+      );
+      console.log("response", response);
+
+      if (response?.data?.status === 200) {
+        setSelectedTemplateVars(response?.data?.data?.variables);
+      }
+    } catch (error) {
+      console.error("Failed to fetch template variables:", error);
+    }
+  };
+
   return (
     <>
       {loading && (
@@ -81,22 +102,23 @@ const MultiFillTempletForm = ({ token }) => {
           <h5 className="mb-0">إنشاء قوالب متعددة</h5>
         </div>
         <div className="card-body">
-        {downloadLinks && (
+          {downloadLinks && (
             <div className="alert alert-success mb-4">
-              <h5 className="mb-3">تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:</h5>
+              <h5 className="mb-3">
+                تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:
+              </h5>
               <div className="d-flex flex-column gap-2">
                 {downloadLinks && (
-                  <a 
-                    href={downloadLinks} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={downloadLinks}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn btn-outline-success"
                   >
                     تحميل ملف
                     <i className="fas fa-file-download me-2"></i>
                   </a>
                 )}
-             
               </div>
             </div>
           )}
@@ -111,7 +133,7 @@ const MultiFillTempletForm = ({ token }) => {
             validationSchema={MultiFillTemplateSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched }) => (
+            {({ values, errors, touched, handleChange }) => (
               <Form>
                 {formError && (
                   <div className="alert alert-danger" role="alert">
@@ -135,6 +157,10 @@ const MultiFillTempletForm = ({ token }) => {
                       id="template_id"
                       name="template_id"
                       disabled={loading || formSubmitting}
+                      onChange={(e) => {
+                        handleTemplateChange(e.target.value);
+                        handleChange(e); // Use handleChange from Formik props
+                      }}
                     >
                       <option value="">اختر قالب</option>
                       {templates.map((template) => (
@@ -292,6 +318,25 @@ const MultiFillTempletForm = ({ token }) => {
                     className="text-danger"
                   />
                 </div>
+                {selectedTemplateVars.length > 0 && (
+                  <div className="mb-4">
+                    <h6 className="mb-3">متغيرات القالب المتاحة:</h6>
+                    <div className="card">
+                      <div className="card-body">
+                        <div className="row">
+                          {selectedTemplateVars.map((variable, index) => (
+                            <div key={index} className="col-2 mb-2">
+                              <div className="d-flex align-items-center">
+                                <i className="fas fa-chevron-left text-primary ms-2"></i>
+                                <code>{variable}</code>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="d-flex justify-content-end mt-3">
                   <button
