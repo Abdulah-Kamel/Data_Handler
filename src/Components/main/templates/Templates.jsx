@@ -63,16 +63,16 @@ const Templates = () => {
       <meta name="description" content="Emailer Templates" />
         <div className="d-flex justify-content-between align-items-center mb-4 mt-5 pt-5">
           <div>
-            <h2>قوالب فئة : {category?.name}</h2>
+            <h2 className="fs-3">قوالب فئة : {category?.name}</h2>
             <p className="text-muted fs-5">{category?.description}</p>
           </div>
-          <div className="d-flex gap-2">
-            <Link to="/dashboard" className="btn btn-outline-secondary">
+          <div className="d-flex flex-column flex-sm-row gap-2">
+            <Link to="/dashboard" className="btn btn-outline-secondary small-text">
               العودة للفئات
               <i className="fas fa-arrow-left me-2"></i>
             </Link>
             <button
-              className="btn primary-btn"
+              className="btn primary-btn small-text"
               onClick={() => {
                 setIsEditing(false);
                 setSelectedTemplate(null);

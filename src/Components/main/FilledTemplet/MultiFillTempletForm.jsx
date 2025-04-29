@@ -77,8 +77,6 @@ const MultiFillTempletForm = ({ token }) => {
         token,
         templateId
       );
-      console.log("response", response);
-
       if (response?.data?.status === 200) {
         setSelectedTemplateVars(response?.data?.data?.variables);
       }

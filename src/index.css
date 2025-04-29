@@ -119,6 +119,9 @@ input[name="file_type"]:checked {
 
 
 @media screen and (max-width: 767px) {
+  .small-text {
+    font-size: 0.8rem;
+  }
   .form-container{
     width: 90%;
   }
@@ -183,7 +186,3 @@ input[name="file_type"]:checked {
 }
 
 
-
-.small-text {
-  font-size: 0.8rem;
-}
