@@ -110,10 +110,11 @@ const TopBar = () => {
             <i className="fa-solid fa-users me-2"></i>
             <span className="me-2">{pathName}</span>
           </div>
-          <div className={`text-white ${isMobile ? "" : ""}`}>
+          <div className={`text-white ${isMobile ? "" : ""}`}
+          >
             <div
               className={`date d-flex align-items-center ${
-                isMobile ? "fs-6 flex-column" : "fs-5"
+                isMobile ? "small-text flex-column" : "fs-5"
               } fw-bold`}
             >
               <div>
