@@ -8,6 +8,8 @@ const Sidebar = () => {
   const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    console.log(JSON.parse(sessionStorage.getItem("User"))?.role);
+    
     setUserRole(JSON.parse(sessionStorage.getItem("User"))?.role);
     const activeItem = menuItems.find((item) => item.to === currentPath);
     if (activeItem) {
