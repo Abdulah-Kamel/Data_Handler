@@ -21,5 +21,6 @@ export const authService = {
         "password":resetData.password,
       }
     );
+    return response;
   },
 };

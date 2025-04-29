@@ -30,11 +30,11 @@ const ResetPassword = () => {
       let data = await authService.resetPassword(resetData);
       console.log(data);
       // Handle successful password reset
-      // if (data.success) {
-      //   navigate('/auth/login', { state: { message: 'Password reset successful. Please login with your new password.' } });
-      // } else {
-      //   setError(data.error || 'Failed to reset password. Please try again.');
-      // }
+      if (data.status === 200) {
+        navigate('/reset-code', { state: { message: 'تم تغيير كلمة المرور بنجاح' } });
+      } else {
+        setError(data.error || 'Failed to reset password. Please try again.');
+      }
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error(err);
