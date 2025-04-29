@@ -52,11 +52,7 @@ const ResetPassword = () => {
     },
     validationSchema: Yup.object({
       password: Yup.string()
-        .matches(
-          /^[A-Z][A-Za-z0-9!@#$%^&*]{7,}$/,
-          "Password should start with uppercase and have at least 8 characters"
-        )
-        .required("Password is required"),
+        .required("الباسورد مطلوب"),
     }),
   });
   useEffect(() => {
@@ -77,7 +73,7 @@ const ResetPassword = () => {
           <NavBar />
           <section className="form-container my-5 py-5">
             <section className="mt-5 py-5">
-              <h2 className="text-center fw-bold">Reset Password</h2>
+              <h2 className="text-center fw-bold">استعادة الباسورد</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">
                 <section className="mt-3">
                   <label htmlFor="password" className="fs-4 fw-bold">

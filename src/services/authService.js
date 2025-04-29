@@ -16,7 +16,7 @@ export const authService = {
   },
   resetPassword: async ( resetData) => {
     const response = await axios.post(
-      `${baseUrl}/auth/password-reset-confirm/${resetData.uid}/${resetData.token}/`,
+      `${baseUrl}/auth/password-reset-confirm/${resetData.token}/${resetData.uid}/`,
       {
         "password":resetData.password,
       }
