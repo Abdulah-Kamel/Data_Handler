@@ -11,6 +11,8 @@ import ProtectedRoute from "./Components/Auth/ProtectedRoute";
 import Templates from "./Components/main/templates/Templates";
 import BulkData from "./Components/main/bulkData/BulkData";
 import FilledTemplet from "./Components/main/FilledTemplet/FilledTemplet";
+import AdminRoute from "./Components/Auth/AdminRoute";
+import Users from "./Components/main/Users/Users";
 function App() {
   return (
     <BrowserRouter>
@@ -31,7 +33,18 @@ function App() {
           <Route path="" element={<Categories />} />
           <Route path="/dashboard/bulk-data" element={<BulkData />} />
           <Route path="/dashboard/FilledTemplet" element={<FilledTemplet />} />
-          <Route path="/dashboard/templates/:categoryId" element={<Templates />} />
+          <Route
+            path="/dashboard/templates/:categoryId"
+            element={<Templates />}
+          />
+          <Route
+            path="/dashboard/users"
+            element={
+              <AdminRoute>
+                <Users />
+              </AdminRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>
