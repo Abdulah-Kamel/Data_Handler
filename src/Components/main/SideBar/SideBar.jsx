@@ -5,14 +5,16 @@ const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
+    setUserRole(JSON.parse(sessionStorage.getItem("User"))?.role);
     const activeItem = menuItems.find((item) => item.to === currentPath);
     if (activeItem) {
       setActiveMenu(activeItem.label);
     }
   }, [activeMenu, currentPath]);
- 
+
   const menuItems = [
     {
       icon: "fa-solid fa-folder-open",
@@ -20,9 +22,21 @@ const Sidebar = () => {
       isActive: true,
       to: "/dashboard",
     },
-    { icon: "fa-solid fa-users", label: "بيانات مجمعه", to: "/dashboard/bulk-data" },
-    { icon: "fa-solid  fa-file-alt", label: "القوالب", to: "/dashboard/FilledTemplet" },
-   
+    {
+      icon: "fa-solid fa-users",
+      label: "بيانات مجمعه",
+      to: "/dashboard/bulk-data",
+    },
+    {
+      icon: "fa-solid  fa-file-alt",
+      label: "القوالب",
+      to: "/dashboard/FilledTemplet",
+    },
+    userRole === "admin" && {
+      icon: "fa-solid fa-user",
+      label: "المستخدمين",
+      to: "/dashboard/users",
+    },
   ];
 
   return (
