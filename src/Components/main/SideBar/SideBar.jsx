@@ -40,7 +40,6 @@ const Sidebar = () => {
   ];
 
   return (
-    
     <div
       className="offcanvas offcanvas-end"
       tabindex="-1"
@@ -49,7 +48,7 @@ const Sidebar = () => {
     >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title fw-bold fs-4" id="offcanvasNavbarLabel">
-          Data Handler
+          Dashboard
         </h5>
         <button
           type="button"
