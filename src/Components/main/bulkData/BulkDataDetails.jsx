@@ -172,7 +172,7 @@ const BulkDataDetails = ({
             العودة
             <i className="fas fa-arrow-left me-1"></i>
           </button>
-          <button className="btn btn-primary small-text" onClick={handleAddRow}>
+          <button className="btn primary-btn-outline small-text" onClick={handleAddRow}>
             إضافة سجل جديد
             <i className="fas fa-plus me-1"></i>
           </button>

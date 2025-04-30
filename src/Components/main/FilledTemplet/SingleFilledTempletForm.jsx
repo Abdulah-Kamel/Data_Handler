@@ -362,7 +362,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                         ></span>
                       </>
                     ) : (
-                      "انشاء القالب"
+                      "انشاء ملفات"
                     )}
                   </button>
                 </div>

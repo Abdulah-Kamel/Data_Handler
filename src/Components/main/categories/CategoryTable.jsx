@@ -32,7 +32,7 @@ const columns = [
     sortable: true,
     width: '150px',
     cell: (row) => (
-      <span className="badge bg-info">
+      <span className="badge primary-bg">
         {row.templates.length}
       </span>
     ),

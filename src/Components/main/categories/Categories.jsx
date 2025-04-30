@@ -123,8 +123,9 @@ const Categories = () => {
       <title>Data Handler Categories</title>
       <meta name="description" content="Data Handler Categories" />
 
-      <button
-        className="btn btn-outline-success"
+     <div className="d-flex justify-content-end">
+     <button
+        className="btn btn-outline-success me-auto"
         onClick={() => {
           setIsEditing(false);
           setSelectedCategory(null);
@@ -132,9 +133,10 @@ const Categories = () => {
           setShowModal(true);
         }}
       >
-        إضافة فئة جديدة
+        اضافة فئة نماذج جديدة
         <i className="fas fa-plus me-2"></i>
       </button>
+     </div>
 
       {error && (
         <div className="alert alert-danger text-center mb-4">

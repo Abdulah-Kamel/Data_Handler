@@ -29,7 +29,7 @@ const BulkDataTable = ({
       selector: (row) => row.rows.length,
       sortable: true,
       width: "150px",
-      cell: (row) => <span className="badge bg-info">{row.rows.length}</span>,
+      cell: (row) => <span className="badge primary-bg">{row.rows.length}</span>,
     },
     {
       name: "تاريخ الإنشاء",

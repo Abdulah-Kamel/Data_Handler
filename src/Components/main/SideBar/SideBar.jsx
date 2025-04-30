@@ -38,6 +38,10 @@ const Sidebar = () => {
       to: "/dashboard/users",
     },
   ];
+  const handleLogout = () => {
+    sessionStorage.removeItem("User");
+    navigate("/login");
+  };
 
   return (
     <div
@@ -57,8 +61,8 @@ const Sidebar = () => {
           aria-label="Close"
         ></button>
       </div>
-      <div className="offcanvas-body">
-        <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <div className="offcanvas-body d-flex flex-column justify-content-between">
+        <ul className="navbar-nav justify-content-end pe-3">
           {menuItems.map((item, index) => (
             <li className="nav-item">
               <Link
@@ -76,6 +80,15 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
+           <div className="d-flex align-items-center">
+            <button
+              className="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center "
+              onClick={handleLogout}
+            >
+              تسجيل خروج
+              <i className="fa-solid fa-right-from-bracket fs-4"></i>
+            </button>
+          </div>
       </div>
     </div>
   );

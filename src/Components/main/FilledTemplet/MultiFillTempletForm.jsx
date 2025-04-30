@@ -352,7 +352,7 @@ const MultiFillTempletForm = ({ token }) => {
                         ></span>
                       </>
                     ) : (
-                      "إنشاء القوالب"
+                      "إنشاء ملفات"
                     )}
                   </button>
                 </div>

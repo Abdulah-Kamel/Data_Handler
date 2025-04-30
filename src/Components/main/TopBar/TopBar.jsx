@@ -36,10 +36,6 @@ const TopBar = () => {
       return () => clearInterval(timer);
     }, [currentPath]);
 
-    const handleLogout = () => {
-      sessionStorage.removeItem("User");
-      navigate("/login");
-    };
 
     const formattedTime = currentTime.toLocaleTimeString("ar-EG", {
       hour: "2-digit",
@@ -64,7 +60,9 @@ const TopBar = () => {
           <div className="user-info d-flex align-items-center">
             <div className="d-flex align-items-center">
               <button
-                class={`navbar-toggler btn btn-outline-success border border-3 border-success ${isMobile ? "pt-3" : ""} p-2 ms-2 rounded-2`}
+                class={`navbar-toggler btn btn-outline-success border border-3 border-success ${
+                  isMobile ? "pt-3" : ""
+                } p-2 ms-2 rounded-2`}
                 type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasNavbar"
@@ -94,15 +92,6 @@ const TopBar = () => {
               </span>
             </div>
           </div>
-
-          <div className="d-flex align-items-center">
-            <button
-              className="btn btn-outline-danger text-white d-flex justify-content-center align-items-center text-decoration-none border border-danger rounded logout-icon"
-              onClick={handleLogout}
-            >
-              <i className="fa-solid fa-right-from-bracket fs-4"></i>
-            </button>
-          </div>
         </div>
         <div className="py-3 px-4 mb-4 d-flex justify-content-between align-items-center primary-bg">
           <div className={`text-white  ${isMobile ? "fs-6" : "fs-5"}`}>
@@ -110,8 +99,7 @@ const TopBar = () => {
             <i className="fa-solid fa-users me-2"></i>
             <span className="me-2">{pathName}</span>
           </div>
-          <div className={`text-white ${isMobile ? "" : ""}`}
-          >
+          <div className={`text-white ${isMobile ? "" : ""}`}>
             <div
               className={`date d-flex align-items-center ${
                 isMobile ? "small-text flex-column" : "fs-5"
