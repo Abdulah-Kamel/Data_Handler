@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
   const [userRole, setUserRole] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {    
     setUserRole(JSON.parse(sessionStorage.getItem("User"))?.role);
     const activeItem = menuItems.find((item) => item.to === currentPath);
