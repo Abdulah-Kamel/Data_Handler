@@ -3,7 +3,7 @@ import { PulseLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import UserModal from "./UserModal";
 
-const UsersTable = ({ users, loading,handleRefresh }) => {
+const UsersTable = ({ users, loading, onEdit, onDelete }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalMode, setModalMode] = useState('create');
@@ -15,6 +15,19 @@ const UsersTable = ({ users, loading,handleRefresh }) => {
     setShowModal(true);
   };
 
+  const handleModalSubmit = async (values) => {
+    setModalLoading(true);
+    try {
+      if (modalMode === 'delete') {
+        await onDelete(selectedUser);
+      } else if (modalMode === 'edit') {
+        await onEdit(selectedUser.id, values);
+      }
+      setShowModal(false);
+    } finally {
+      setModalLoading(false);
+    }
+  };
 
   const columns = [
     {
@@ -87,7 +100,7 @@ const UsersTable = ({ users, loading,handleRefresh }) => {
       <div className="d-flex justify-content-between align-items-center mb-5">
         <h2 className="m-0">إدارة المستخدمين</h2>
         <button
-          className="btn primary-btn-outline small-text"
+          className="btn primary-btn-outline"
           onClick={() => handleShowModal('create')}
         >
           إضافة مستخدم جديد
@@ -142,8 +155,8 @@ const UsersTable = ({ users, loading,handleRefresh }) => {
         onHide={() => setShowModal(false)}
         mode={modalMode}
         user={selectedUser}
+        onSubmit={handleModalSubmit}
         loading={modalLoading}
-        handleRefresh={handleRefresh}
       />
     </div>
   );

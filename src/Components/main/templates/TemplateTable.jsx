@@ -77,9 +77,9 @@ const TemplateTable = ({
           <button
             className="btn btn-outline-info btn-sm rounded-pill"
             onClick={() => onUploadFile(row)}
-            title="رفع ملف"
+            title="word رفع ملف"
           >
-            رفع ملف
+            رفع ملف word
             <i className="fas fa-upload me-1"></i>
           </button>
           <button

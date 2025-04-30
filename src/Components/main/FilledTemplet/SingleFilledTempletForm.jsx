@@ -124,7 +124,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
       )}
       <div className="card mb-4">
         <div className="card-header primary-bg text-white">
-          <h5 className="mb-0">ملئ قالب فردى</h5>
+          <h5 className="mb-0">انشاء مستند فردى</h5>
         </div>
         <div className="card-body">
           {formSuccess && downloadLinks && (

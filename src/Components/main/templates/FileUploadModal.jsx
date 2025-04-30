@@ -10,11 +10,25 @@ const FileUploadModal = ({
 }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [fileError, setFileError] = useState("");
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    setFileError("");
+    
     if (file) {
+      // Check if file is a Word document
+      const isWordFile = file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      
+      if (!isWordFile) {
+        setFileError("يرجى اختيار ملف Word (.docx) فقط");
+        setSelectedFile(null);
+        setFileName("");
+        fileInputRef.current.value = "";
+        return;
+      }
+      
       setSelectedFile(file);
       setFileName(file.name);
     }
@@ -22,7 +36,7 @@ const FileUploadModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedFile && template) {
+    if (selectedFile && template && !fileError) {
       onUpload(template.id, selectedFile);
     }
   };
@@ -69,7 +83,7 @@ const FileUploadModal = ({
                 </label>
                 <input
                   type="file"
-                  className="form-control"
+                  className={`form-control ${fileError ? 'is-invalid' : ''}`}
                   id="word_file"
                   name="word_file"
                   ref={fileInputRef}
@@ -80,6 +94,11 @@ const FileUploadModal = ({
                 <small className="form-text text-muted">
                   يرجى اختيار ملف بصيغة Word (.docx)
                 </small>
+                {fileError && (
+                  <div className="invalid-feedback">
+                    {fileError}
+                  </div>
+                )}
               </div>
               
               {fileName && (

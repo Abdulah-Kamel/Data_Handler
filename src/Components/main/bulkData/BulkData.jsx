@@ -166,12 +166,12 @@ const BulkData = () => {
 
   return (
     <>
-   <title>Data Handler - البيانات المجمعة</title>
-   <meta name="description" content="Data Handler - البيانات المجمعة" />
+   <title>Data Handler - اداره البيانات</title>
+   <meta name="description" content="Data Handler - اداره البيانات" />
       <div className="container-fluid py-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="card-title m-0">
-            {viewingDetails ? "تفاصيل البيانات" : "البيانات المجمعة"}
+            {viewingDetails ? "تفاصيل البيانات" : "اداره البيانات"}
           </h2>
 
           {!viewingDetails && (

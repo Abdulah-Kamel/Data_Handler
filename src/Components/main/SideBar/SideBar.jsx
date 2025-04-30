@@ -17,27 +17,27 @@ const Sidebar = () => {
 
   const menuItems = [
     {
-      icon: "fa-solid fa-folder-open",
-      label: "تصنيفات",
-      isActive: true,
-      to: "/dashboard",
-    },
-    {
       icon: "fa-solid fa-users",
-      label: "بيانات مجمعه",
+      label: "إدارة البيانات",
       to: "/dashboard/bulk-data",
     },
     {
+      icon: "fa-solid fa-folder-open",
+      label: "انشاء النماذج",
+      to: "/dashboard",
+    },
+    {
       icon: "fa-solid  fa-file-alt",
-      label: "ملئ القوالب",
+      label: "انشاء المستندات",
       to: "/dashboard/FilledTemplet",
     },
     userRole === "admin" && {
       icon: "fa-solid fa-user",
-      label: "المستخدمين",
+      label: "إدارة المستخدمين",
       to: "/dashboard/users",
     },
-  ];
+  ].filter(Boolean); // Filter out false values from conditional items
+
   const handleLogout = () => {
     sessionStorage.removeItem("User");
     navigate("/login");
@@ -64,17 +64,16 @@ const Sidebar = () => {
       <div className="offcanvas-body d-flex flex-column justify-content-between">
         <ul className="navbar-nav justify-content-end pe-3">
           {menuItems.map((item, index) => (
-            <li className="nav-item">
+            <li className="nav-item" key={index}>
               <Link
-                key={index}
-                to={`${item.to}`}
+                to={item.to}
                 className={`d-flex fs-5 rounded-2 mb-2 align-items-center px-4 py-2 text-decoration-none ${
-                  item.isActive
+                  currentPath === item.to
                     ? "bg-success text-white"
                     : "text-secondary hover-success"
                 }`}
               >
-                <i className={`${item.icon}`}></i>
+                <i className={item.icon}></i>
                 <span className="me-2 small fw-medium">{item.label}</span>
               </Link>
             </li>

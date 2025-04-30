@@ -12,13 +12,13 @@ const TopBar = () => {
     const [isMobile, setIsMobile] = useState(false);
     const getPathName = () => {
       if (currentPath === "/dashboard") {
-        setPathName("تصنيفات القوالب");
+        setPathName("انشاء النماذج");
       } else if (currentPath.startsWith("/dashboard/templates/")) {
         setPathName("القوالب");
       } else if (currentPath.startsWith("/dashboard/bulk-data")) {
-        setPathName("بيانات مجمعه");
+        setPathName("اداره البيانات");
       } else if (currentPath.startsWith("/dashboard/FilledTemplet")) {
-        setPathName("ملئ القوالب");
+        setPathName("انشاء المستندات");
       } else if (currentPath.startsWith("/dashboard/users")) {
         setPathName("أداره المستخدمين");
       }
@@ -29,19 +29,9 @@ const TopBar = () => {
         setIsMobile(true);
       }
       getPathName();
-      const timer = setInterval(() => {
         setCurrentTime(new Date());
-      }, 1000);
 
-      return () => clearInterval(timer);
     }, [currentPath]);
-
-
-    const formattedTime = currentTime.toLocaleTimeString("ar-EG", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
 
     const formattedDate = currentTime.toLocaleDateString("ar-EG", {
       year: "numeric",
@@ -87,31 +77,25 @@ const TopBar = () => {
                   }}
                 ></span>
               </div>
-              <span className={`main-color me-2 ${isMobile ? "fs-6" : "fs-5"}`}>
+              <span className={`main-color me-2 `}>
                 {getGreeting()}, {username}
               </span>
             </div>
           </div>
         </div>
         <div className="py-3 px-4 mb-4 d-flex justify-content-between align-items-center primary-bg">
-          <div className={`text-white  ${isMobile ? "fs-6" : "fs-5"}`}>
+          <div className={`text-white  `}>
             <i className="fa-solid fa-chevron-left"></i>
             <i className="fa-solid fa-users me-2"></i>
             <span className="me-2">{pathName}</span>
           </div>
-          <div className={`text-white ${isMobile ? "" : ""}`}>
+          <div className={`text-white `}>
             <div
-              className={`date d-flex align-items-center ${
-                isMobile ? "small-text flex-column" : "fs-5"
-              } fw-bold`}
+              className={`date d-flex align-items-center fw-bold`}
             >
               <div>
                 <i className="far fa-calendar-alt ms-2"></i>
-                التاريخ :{formattedDate}
-              </div>
-              <div className="me-3">
-                <i className="far fa-clock ms-2"></i>
-                الوقت :{formattedTime}
+                التاريخ: {formattedDate}
               </div>
             </div>
           </div>

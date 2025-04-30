@@ -57,10 +57,10 @@ const MultiFillTempletForm = ({ token }) => {
       if (response?.data?.status === 201) {
         setDownloadLinks(response?.data?.data?.download_link);
       } else {
-        setFormError(response.error || "حدث خطأ أثناء إنشاء القوالب المملوءة");
+        setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
       }
     } catch (error) {
-      setFormError("حدث خطأ أثناء إنشاء القوالب المملوءة");
+      setFormError("حدث خطأ أثناء إنشاء المستندات");
     } finally {
       setFormSubmitting(false);
     }
@@ -97,7 +97,7 @@ const MultiFillTempletForm = ({ token }) => {
       )}
       <div className="card mb-4">
         <div className="card-header primary-bg text-white">
-          <h5 className="mb-0">ملئ قوالب متعددة</h5>
+          <h5 className="mb-0">انشاء مستندات متعددة</h5>
         </div>
         <div className="card-body">
           {downloadLinks && (
