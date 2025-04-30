@@ -11,7 +11,7 @@ const BulkData = () => {
   const [loading, setLoading] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
   const [viewingDetails, setViewingDetails] = useState(false);
-
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -33,7 +33,7 @@ const BulkData = () => {
 
   useEffect(() => {
     fetchBulkData();
-  }, []);
+  }, [refreshTrigger]);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -105,7 +105,7 @@ const BulkData = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  const [deleteType, setDeleteType] = useState(""); 
+  const [deleteType, setDeleteType] = useState("");
 
   const handleDelete = (data) => {
     setItemToDelete(data);
@@ -119,55 +119,55 @@ const BulkData = () => {
     setDeleting(true);
     setError("");
     try {
-        await BulkDataService.deleteBulkData(itemToDelete.id);
-        fetchBulkData();
-      
+      await BulkDataService.deleteBulkData(itemToDelete.id);
+      fetchBulkData();
+
       setShowDeleteModal(false);
     } catch (error) {
       console.error(`Error deleting ${deleteType}:`, error);
-      setError(
-        `حدث خطأ أثناء حذف "السجل"}`
-      );
+      setError(`حدث خطأ أثناء حذف "السجل"}`);
     } finally {
       setDeleting(false);
     }
   };
 
-const [showExcelModal, setShowExcelModal] = useState(false);
-const [excelUploadId, setExcelUploadId] = useState(null);
-const [uploadLoading, setUploadLoading] = useState(false);
+  const [showExcelModal, setShowExcelModal] = useState(false);
+  const [excelUploadId, setExcelUploadId] = useState(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
-const handleOpenExcelUpload = (data) => {
-  setExcelUploadId(data.id);
-  setShowExcelModal(true);
-};
+  const handleOpenExcelUpload = (data) => {
+    setExcelUploadId(data.id);
+    setShowExcelModal(true);
+  };
 
-const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
-  if (!file || !excelUploadId) return;
-  setUploadLoading(true);
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    await BulkDataService.uploadExcelToBulkData(excelUploadId, formData);
-        setShowExcelModal(false);
-    resetForm();
-    
-    if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
-      const response = await BulkDataService.getBulkDataById(excelUploadId);
-      setSelectedData(response.data);
-    } else {
-      await fetchBulkData();
+  const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
+    if (!file || !excelUploadId) return;
+    setUploadLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      await BulkDataService.uploadExcelToBulkData(excelUploadId, formData);
+      setShowExcelModal(false);
+      resetForm();
+
+      if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
+        const response = await BulkDataService.getBulkDataById(excelUploadId);
+        setSelectedData(response.data);
+      } else {
+        await fetchBulkData();
+      }
+    } catch (error) {
+      console.error("Error uploading Excel file:", error);
+    } finally {
+      setUploadLoading(false);
+      setSubmitting(false);
     }
-  } catch (error) {
-    console.error("Error uploading Excel file:", error);
-  } finally {
-    setUploadLoading(false);
-    setSubmitting(false);
-  }
-};
+  };
 
   return (
     <>
+   <title>Data Handler - البيانات المجمعة</title>
+   <meta name="description" content="Data Handler - البيانات المجمعة" />
       <div className="container-fluid py-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="card-title m-0">
@@ -175,7 +175,10 @@ const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
           </h2>
 
           {!viewingDetails && (
-            <button className="btn btn-outline-success small-text" onClick={handleAddNew}>
+            <button
+              className="btn btn-outline-success small-text"
+              onClick={handleAddNew}
+            >
               إضافة بيانات جديدة
               <i className="fas fa-plus me-1"></i>
             </button>
@@ -183,8 +186,17 @@ const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
         </div>
 
         {error && (
-          <div className="alert alert-danger mb-4" role="alert">
+          <div className="alert alert-danger text-center my-4" role="alert">
             {error}
+            <button
+              className="btn btn-sm btn-outline-danger me-3"
+              onClick={() => {
+                setError("");
+                setRefreshTrigger((prev) => prev + 1);
+              }}
+            >
+              إعادة المحاولة
+            </button>
           </div>
         )}
 
@@ -194,7 +206,7 @@ const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
             loading={loading}
             onBack={handleBack}
             onDeleteRow={handleDeleteRow}
-             setSelectedData={setSelectedData}
+            setSelectedData={setSelectedData}
           />
         ) : (
           <BulkDataTable
@@ -217,7 +229,7 @@ const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
           isEditing={isEditing}
           loading={loading}
         />
-         <ExcelUploadModal
+        <ExcelUploadModal
           show={showExcelModal}
           onHide={() => setShowExcelModal(false)}
           onSubmit={handleExcelUpload}

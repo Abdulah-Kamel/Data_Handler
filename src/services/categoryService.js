@@ -12,7 +12,7 @@ export const categoryService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error fetching categories:", error);
-      return { data: null, error: "Failed to load categories" };
+      return { data: null, error: "خطأ فى جلب التصنيفات" };
     }
   },
 

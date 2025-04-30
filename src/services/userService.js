@@ -15,7 +15,7 @@ export const userService = {
       console.error("Error fetching users:", error);
       return { 
         data: null, 
-        error: error.response?.data?.detail || "Failed to load users" 
+        error:  "خطأ في جلب المستخدمين" 
       };
     }
   },

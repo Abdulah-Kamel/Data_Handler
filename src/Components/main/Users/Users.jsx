@@ -51,14 +51,14 @@ const Users = () => {
 
   return (
     <div className="px-3 mt-5">
-      <title>Data Handler - Users Management</title>
-      <meta name="description" content="Data Handler - Users Management" />
+      <title>Data Handler - أداره المستخدمين</title>
+      <meta name="description" content="Data Handler - أداره المستخدمين" />
 
       {error && (
-        <div className="alert alert-danger text-center mb-4">
+        <div className="alert alert-danger text-center my-4">
           {error}
           <button
-            className="btn btn-sm btn-outline-danger ms-3"
+            className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
             إعادة المحاولة

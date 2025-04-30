@@ -9,8 +9,8 @@ const FilledTemplet = () => {
 
   return (
     <div className="container py-3 position-relative px-3 mt-5">
-      <title>Data Handler - Fill Templet</title>
-      <meta name="description" content="Data Handler - Fill Templet" />
+      <title>Data Handler - ملئ القوالب</title>
+      <meta name="description" content="Data Handler - ملئ القوالب" />
       
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="m-0">ملئ القوالب</h2>

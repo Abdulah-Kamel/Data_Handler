@@ -120,8 +120,8 @@ const Categories = () => {
   }
   return (
     <div className="px-3 mt-5">
-      <title>Data Handler Categories</title>
-      <meta name="description" content="Data Handler Categories" />
+      <title>Data Handler - تصنيفات القوالب</title>
+      <meta name="description" content="Data Handler - تصنيفات القوالب" />
 
      <div className="d-flex justify-content-end">
      <button
@@ -139,10 +139,10 @@ const Categories = () => {
      </div>
 
       {error && (
-        <div className="alert alert-danger text-center mb-4">
+        <div className="alert alert-danger text-center my-4">
           {error}
           <button
-            className="btn btn-sm btn-outline-danger ms-3"
+            className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
             إعادة المحاولة
