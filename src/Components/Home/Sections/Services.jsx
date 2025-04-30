@@ -4,38 +4,32 @@ const Services = () => {
   return (
     <section className="bg-light py-5">
       <div className="container text-center py-5">
-        <h4 className="text-success fw-bold mb-4">OUR SERVICES</h4>
+        <h4 className="text-success fs-2 fw-bold mb-4">خدماتنا</h4>
         <div className="row mt-3 gy-5 justify-content-center align-items-center">
           <div className="col-lg-4">
             <div className="p-3 border rounded shadow">
-              <i
-                className="fa-solid fa-envelope fa-3x main-color"
-              ></i>
-              <h6 className="text-success h3 fw-bold my-3">إرسال متعدد</h6>
-              <p className="fs-5">أرسل رسائل نصية وبريدية جماعية بسهولة.</p>
+              <i className="fa-solid fa-file-word fa-3x main-color"></i>
+              <h6 className="text-success h3 fw-bold my-3">إنشاء القوالب</h6>
+              <p className="fs-5">إنشاء وتخصيص قوالب المستندات بسهولة وكفاءة</p>
             </div>
           </div>
           <div className="col-lg-4">
             <div className="p-3 border rounded shadow">
-              <i
-                className="fa-solid fa-copy  fa-3x main-color"
-              ></i>
-              <h6 className="text-success h3 fw-bold my-3">قوالب البريد</h6>
+              <i className="fa-solid fa-database fa-3x main-color"></i>
+              <h6 className="text-success h3 fw-bold my-3">إدارة البيانات</h6>
               <p className="fs-5">
-                أنشئ قوالب بريدية احترافية باستخدام أدوات مرنة.
+                تنظيم وإدارة البيانات لملء القوالب بشكل تلقائي
               </p>
             </div>
           </div>
           <div className="col-lg-4">
             <div className="p-3 border rounded shadow">
-              <i
-                className="fa-solid fa-phone fa-3x main-color"
-              ></i>
+              <i className="fa-solid fa-file-export fa-3x main-color"></i>
               <h6 className="text-success h3 fw-bold my-3">
-                دعم على مدار الساعة
+                تصدير المستندات
               </h6>
               <p className="fs-5">
-                فريق دعم متواجد دائمًا لحل مشاكلك ومساعدتك.
+                تصدير المستندات بصيغ متعددة (Word و PDF) بسهولة
               </p>
             </div>
           </div>

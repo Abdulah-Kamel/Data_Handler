@@ -5,7 +5,7 @@ const Contact = () => {
   return (
     <section className="bg-white py-5">
       <div className="container py-5">
-        <h4 className="text-center text-success fw-bold mb-4">CONTACT US</h4>
+        <h4 className="text-center fs-2 text-success fw-bold mb-4">CONTACT US</h4>
         <div className="row align-items-center mt-3 gy-5">
           <div className="col-lg-6">
             <img

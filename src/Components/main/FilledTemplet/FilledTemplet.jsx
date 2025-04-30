@@ -13,7 +13,7 @@ const FilledTemplet = () => {
       <meta name="description" content="Data Handler - Fill Templet" />
       
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="m-0">انشاء القوالب</h2>
+        <h2 className="m-0">ملئ القوالب</h2>
         <div className="btn-group" role="group">
           <button
             type="button"

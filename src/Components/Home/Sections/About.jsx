@@ -9,9 +9,9 @@ const About = () => {
           <img src={invite} alt="mobile email invite illustration" />
         </div>
         <div className="col-lg-6">
-          <h4 className="text-success fw-bold align-self-start h2">ABOUT US</h4>
+          <h4 className="text-success fw-bold align-self-start fs-2">من نحن</h4>
           <p className="mb-0" style={{ fontSize: "1.1rem" }}>
-            تقدم خدمة EmailSender من Mixtelecom Ltd، الرائدة في مجال الاتصالات
+            تقدم خدمة Data Handler  الرائدة في مجال الاتصالات
             الرقمية ومقرها لندن، للشركات إمكانية إرسال رسائل SMS باستخدام هويات
             مرسلة مخصصة، مما يعزز الاحترافية والثقة. تدعم الخدمة الرسائل الفردية
             والجماعية، مما يتيح إرسال إشعارات مستهدفة أو حملات واسعة النطاق.

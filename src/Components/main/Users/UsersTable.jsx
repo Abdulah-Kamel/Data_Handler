@@ -85,7 +85,7 @@ const UsersTable = ({ users, loading,handleRefresh }) => {
       )}
 
       <div className="d-flex justify-content-between align-items-center mb-5">
-        <h2 className="m-0 fs-4">إدارة المستخدمين</h2>
+        <h2 className="m-0">إدارة المستخدمين</h2>
         <button
           className="btn primary-btn-outline small-text"
           onClick={() => handleShowModal('create')}

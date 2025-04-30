@@ -18,7 +18,7 @@ const TopBar = () => {
       } else if (currentPath.startsWith("/dashboard/bulk-data")) {
         setPathName("بيانات مجمعه");
       } else if (currentPath.startsWith("/dashboard/FilledTemplet")) {
-        setPathName("انشاء القوالب");
+        setPathName("ملئ القوالب");
       } else if (currentPath.startsWith("/dashboard/users")) {
         setPathName("أداره المستخدمين");
       }

@@ -97,7 +97,7 @@ const MultiFillTempletForm = ({ token }) => {
       )}
       <div className="card mb-4">
         <div className="card-header primary-bg text-white">
-          <h5 className="mb-0">إنشاء قوالب متعددة</h5>
+          <h5 className="mb-0">ملئ قوالب متعددة</h5>
         </div>
         <div className="card-body">
           {downloadLinks && (
