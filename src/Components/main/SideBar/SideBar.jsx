@@ -29,7 +29,7 @@ const Sidebar = () => {
     },
     {
       icon: "fa-solid  fa-file-alt",
-      label: "القوالب",
+      label: "ملئ القوالب",
       to: "/dashboard/FilledTemplet",
     },
     userRole === "admin" && {
