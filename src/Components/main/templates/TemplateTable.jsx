@@ -143,7 +143,7 @@ const TemplateTable = ({
           },
           cells: {
             style: {
-              fontSize: '20px',
+              fontSize: '16px',
               paddingTop: '12px',
               paddingBottom: '12px',
             },

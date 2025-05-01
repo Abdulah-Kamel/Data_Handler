@@ -130,7 +130,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           {formSuccess && downloadLinks && (
             <div className="alert alert-success mb-4">
               <h5 className="mb-3">تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:</h5>
-              <div className="d-flex flex-column gap-2">
+              <div className="d-flex justify-content-center flex-wrap gap-2">
                 {downloadLinks.pdf && (
                   <a 
                     href={downloadLinks.pdf} 

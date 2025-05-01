@@ -7,7 +7,13 @@ import { PulseLoader } from "react-spinners";
 
 const MultiFillTemplateSchema = Yup.object().shape({
   template_id: Yup.string().required("يرجى اختيار قالب"),
-  bulk_data_id: Yup.string().required("يرجى اختيار مجموعة البيانات"),
+  bulk_data_id: Yup.string().test(
+    'conditional-requirement',
+    "يرجى اختيار مجموعة البيانات أو رفع ملف Excel",
+    function(value) {
+      return this.parent.file || value;
+    }
+  ),
   file_name: Yup.string().required("اسم الملف مطلوب"),
   folder_name: Yup.string().required("اسم المجلد مطلوب"),
   file_type: Yup.string().required("نوع الملف مطلوب"),
@@ -21,6 +27,7 @@ const MultiFillTempletForm = ({ token }) => {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [selectedTemplateVars, setSelectedTemplateVars] = useState([]);
+  const [excelFile, setExcelFile] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -45,26 +52,46 @@ const MultiFillTempletForm = ({ token }) => {
     fetchData();
   }, [token]);
 
-  const handleSubmit = async (values) => {
-    setFormSubmitting(true);
-    setFormError(null);
+ // Add handleExcelChange function
+const handleExcelChange = (event, setFieldValue) => {
+  const file = event.target.files[0];
+  if (file) {
+    setExcelFile(file);
+    setFieldValue('file', file);
+    setFieldValue('bulk_data_id', ''); // Clear bulk data selection
+  }
+};
 
-    try {
-      const response = await FilledtemplateService.createBulkFilledTemplates(
-        token,
-        values
-      );
-      if (response?.data?.status === 201) {
-        setDownloadLinks(response?.data?.data?.download_link);
-      } else {
-        setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
-      }
-    } catch (error) {
-      setFormError("حدث خطأ أثناء إنشاء المستندات");
-    } finally {
-      setFormSubmitting(false);
+// Update handleSubmit
+const handleSubmit = async (values) => {
+  setFormSubmitting(true);
+  setFormError(null);
+
+  try {
+    const formData = new FormData();
+    formData.append('template_id', values.template_id);
+    formData.append('file_name', values.file_name);
+    formData.append('folder_name', values.folder_name);
+    formData.append('file_type', values.file_type);
+    
+    if (excelFile) {
+      formData.append('file', excelFile);
+    } else {
+      formData.append('bulk_data_id', values.bulk_data_id);
     }
-  };
+
+    const response = await FilledtemplateService.createBulkFilledTemplates(token, formData);
+    if (response?.data?.status === 201) {
+      setDownloadLinks(response?.data?.data?.download_link);
+    } else {
+      setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
+    }
+  } catch (error) {
+    setFormError("حدث خطأ أثناء إنشاء المستندات");
+  } finally {
+    setFormSubmitting(false);
+  }
+};
 
   const handleTemplateChange = async (templateId) => {
     if (!templateId) {
@@ -105,15 +132,15 @@ const MultiFillTempletForm = ({ token }) => {
               <h5 className="mb-3">
                 تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:
               </h5>
-              <div className="d-flex flex-column gap-2">
+              <div className="d-flex justify-content-center">
                 {downloadLinks && (
                   <a
                     href={downloadLinks}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-outline-success"
+                    className="btn primary-btn fs-5"
                   >
-                    تحميل ملف
+                    تحميل مستند
                     <i className="fas fa-file-download me-2"></i>
                   </a>
                 )}
@@ -127,11 +154,12 @@ const MultiFillTempletForm = ({ token }) => {
               file_name: "",
               folder_name: "",
               file_type: "both",
+              file: null,
             }}
             validationSchema={MultiFillTemplateSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched, handleChange }) => (
+            {({ values, errors, touched, handleChange, setFieldValue }) => (
               <Form>
                 {formError && (
                   <div className="alert alert-danger" role="alert">
@@ -141,7 +169,7 @@ const MultiFillTempletForm = ({ token }) => {
 
                 <div className="row">
                   {/* Template Selection */}
-                  <div className="col-md-6 mb-3">
+                  <div className="col-12 mb-3">
                     <label htmlFor="template_id" className="form-label">
                       اختر القالب
                     </label>
@@ -157,7 +185,7 @@ const MultiFillTempletForm = ({ token }) => {
                       disabled={loading || formSubmitting}
                       onChange={(e) => {
                         handleTemplateChange(e.target.value);
-                        handleChange(e); // Use handleChange from Formik props
+                        handleChange(e);
                       }}
                     >
                       <option value="">اختر قالب</option>
@@ -173,35 +201,62 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
+                </div>
 
+                <div className="row mb-3">
                   {/* Bulk Data Selection */}
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="bulk_data_id" className="form-label">
-                      اختر مجموعة البيانات
-                    </label>
-                    <Field
-                      as="select"
-                      className={`form-select ${
-                        touched.bulk_data_id && errors.bulk_data_id
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      id="bulk_data_id"
-                      name="bulk_data_id"
-                      disabled={loading || formSubmitting}
-                    >
-                      <option value="">اختر مجموعة البيانات</option>
-                      {bulkDataSets.map((bulkData) => (
-                        <option key={bulkData.id} value={bulkData.id}>
-                          {bulkData.name}
-                        </option>
-                      ))}
-                    </Field>
-                    <ErrorMessage
-                      name="bulk_data_id"
-                      component="div"
-                      className="invalid-feedback"
-                    />
+                  <div className="col-md-6">
+                      <label htmlFor="bulk_data_id" className="form-label">
+                        اختر مجموعة البيانات
+                      </label>
+                      <Field
+                        as="select"
+                        className={`form-select ${
+                          touched.bulk_data_id && errors.bulk_data_id && !values.file
+                            ? "is-invalid"
+                            : ""
+                        }`}
+                        id="bulk_data_id"
+                        name="bulk_data_id"
+                        disabled={loading || formSubmitting || values.file}
+                      >
+                        <option value="">اختر مجموعة البيانات</option>
+                        {bulkDataSets.map((bulkData) => (
+                          <option key={bulkData.id} value={bulkData.id}>
+                            {bulkData.name}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="bulk_data_id"
+                        component="div"
+                        className="invalid-feedback"
+                      />
+                  </div>
+
+                  {/* Excel File Upload */}
+                  <div className="col-md-6">
+                      <label htmlFor="file" className="form-label">
+                        رفع ملف Excel
+                      </label>
+                      <input
+                        type="file"
+                        className={`form-control ${
+                          touched.file && errors.file ? "is-invalid" : ""
+                        }`}
+                        id="file"
+                        accept=".xlsx,.xls"
+                        onChange={(e) => handleExcelChange(e, setFieldValue)}
+                        disabled={loading || formSubmitting || values.bulk_data_id}
+                      />
+                      <small className="text-muted d-block mt-1">
+                        يرجى رفع ملف Excel (.xlsx, .xls)
+                      </small>
+                      <ErrorMessage
+                        name="file"
+                        component="div"
+                        className="invalid-feedback"
+                      />
                   </div>
                 </div>
 
