@@ -5,6 +5,8 @@ import FilledtemplateService from "../../../services/FilledtemplateService";
 import BulkDataService from "../../../services/BulkDataService";
 import { PulseLoader } from "react-spinners";
 
+const validFileExtensions = ['xlsx', 'xls'];
+
 const MultiFillTemplateSchema = Yup.object().shape({
   template_id: Yup.string().required("يرجى اختيار قالب"),
   bulk_data_id: Yup.string().test(
@@ -12,6 +14,14 @@ const MultiFillTemplateSchema = Yup.object().shape({
     "يرجى اختيار مجموعة البيانات أو رفع ملف Excel",
     function(value) {
       return this.parent.file || value;
+    }
+  ),
+  file: Yup.mixed().test(
+    "fileFormat",
+    "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Excel (.xlsx, .xls)",
+    function(value) {
+      if (!value) return true; // Allow empty value when using bulk_data_id
+      return validFileExtensions.includes(value.name.split('.').pop().toLowerCase());
     }
   ),
   file_name: Yup.string().required("اسم الملف مطلوب"),
@@ -52,46 +62,45 @@ const MultiFillTempletForm = ({ token }) => {
     fetchData();
   }, [token]);
 
- // Add handleExcelChange function
-const handleExcelChange = (event, setFieldValue) => {
-  const file = event.target.files[0];
-  if (file) {
-    setExcelFile(file);
-    setFieldValue('file', file);
-    setFieldValue('bulk_data_id', ''); // Clear bulk data selection
-  }
-};
-
-// Update handleSubmit
-const handleSubmit = async (values) => {
-  setFormSubmitting(true);
-  setFormError(null);
-
-  try {
-    const formData = new FormData();
-    formData.append('template_id', values.template_id);
-    formData.append('file_name', values.file_name);
-    formData.append('folder_name', values.folder_name);
-    formData.append('file_type', values.file_type);
-    
-    if (excelFile) {
-      formData.append('file', excelFile);
-    } else {
-      formData.append('bulk_data_id', values.bulk_data_id);
+  const handleExcelChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    if (file) {
+      setExcelFile(file);
+      setFieldValue('file', file);
+      setFieldValue('bulk_data_id', ''); // Clear bulk data selection
     }
-
-    const response = await FilledtemplateService.createBulkFilledTemplates(token, formData);
-    if (response?.data?.status === 201) {
-      setDownloadLinks(response?.data?.data?.download_link);
-    } else {
-      setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
+  };
+  
+  // Update handleSubmit
+  const handleSubmit = async (values) => {
+    setFormSubmitting(true);
+    setFormError(null);
+  
+    try {
+      const formData = new FormData();
+      formData.append('template_id', values.template_id);
+      formData.append('file_name', values.file_name);
+      formData.append('folder_name', values.folder_name);
+      formData.append('file_type', values.file_type);
+      
+      if (excelFile) {
+        formData.append('file', excelFile);
+      } else {
+        formData.append('bulk_data_id', values.bulk_data_id);
+      }
+  
+      const response = await FilledtemplateService.createBulkFilledTemplates(token, formData);
+      if (response?.data?.status === 201) {
+        setDownloadLinks(response?.data?.data?.download_link);
+      } else {
+        setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
+      }
+    } catch (error) {
+      setFormError("حدث خطأ أثناء إنشاء المستندات");
+    } finally {
+      setFormSubmitting(false);
     }
-  } catch (error) {
-    setFormError("حدث خطأ أثناء إنشاء المستندات");
-  } finally {
-    setFormSubmitting(false);
-  }
-};
+  };
 
   const handleTemplateChange = async (templateId) => {
     if (!templateId) {
@@ -154,12 +163,12 @@ const handleSubmit = async (values) => {
               file_name: "",
               folder_name: "",
               file_type: "both",
-              file: null,
+              file: "",  // Add this line
             }}
             validationSchema={MultiFillTemplateSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched, handleChange, setFieldValue }) => (
+            {({ values, errors, touched, handleChange,setFieldValue }) => (
               <Form>
                 {formError && (
                   <div className="alert alert-danger" role="alert">
@@ -232,7 +241,7 @@ const handleSubmit = async (values) => {
                         component="div"
                         className="invalid-feedback"
                       />
-                  </div>
+                    </div>
 
                   {/* Excel File Upload */}
                   <div className="col-md-6">
@@ -257,7 +266,7 @@ const handleSubmit = async (values) => {
                         component="div"
                         className="invalid-feedback"
                       />
-                  </div>
+                    </div>
                 </div>
 
                 <div className="row">
