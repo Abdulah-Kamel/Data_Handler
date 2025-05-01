@@ -44,19 +44,19 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      className="offcanvas offcanvas-end"
-      tabindex="-1"
-      id="offcanvasNavbar"
-      aria-labelledby="offcanvasNavbarLabel"
-    >
+   <div
+  className={`offcanvas offcanvas-end d-lg-flex bg-white sidebar-custom`}
+  tabIndex="-1"
+  id="offcanvasNavbar"
+  aria-labelledby="offcanvasNavbarLabel"
+>
       <div className="offcanvas-header">
         <h5 className="offcanvas-title fw-bold fs-4" id="offcanvasNavbarLabel">
           Dashboard
         </h5>
         <button
           type="button"
-          className="btn-close me-auto ms-0"
+          className="btn-close d-block d-lg-none me-auto ms-0"
           data-bs-dismiss="offcanvas"
           aria-label="Close"
         ></button>

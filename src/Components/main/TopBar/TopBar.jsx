@@ -50,7 +50,7 @@ const TopBar = () => {
           <div className="user-info d-flex align-items-center">
             <div className="d-flex align-items-center">
               <button
-                class={`navbar-toggler btn btn-outline-success border border-3 border-success ${
+                class={`navbar-toggler d-lg-none btn btn-outline-success border border-3 border-success ${
                   isMobile ? "pt-3" : ""
                 } p-2 ms-2 rounded-2`}
                 type="button"

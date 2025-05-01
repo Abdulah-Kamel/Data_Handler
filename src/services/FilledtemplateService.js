@@ -13,7 +13,7 @@ export const FilledtemplateService = {
       return { data: response.data, error: null };
     } catch (error) {
       console.error("Error fetching templates:", error);
-      return { data: null, error: "Failed to load templates" };
+      return { data: null, error: "خطأ فى جلب القوالب" };
     }
   },
   createFilledTemplate: async (token, filledTemplateData) => {
@@ -31,7 +31,7 @@ export const FilledtemplateService = {
     } catch (error) {
       console.error("Error creating filled template:", error?.response);
       const errorMessage =
-        error?.response?.detail || "Failed to create filled template";
+        error?.response?.detail || "خطأ في إنشاء المستند";
       return { data: null, error: errorMessage };
     }
   },
@@ -48,7 +48,7 @@ export const FilledtemplateService = {
       return { data: response, error: null };
     } catch (error) {
       console.error("Error fetching variables of template:", error);
-      return { data: null, error: "Failed to load variables of template" };
+      return { data: null, error: "خطأ في جلب المتغيرات" };
     } 
   },
   createBulkFilledTemplates: async (token, bulkData) => {
@@ -66,7 +66,7 @@ export const FilledtemplateService = {
     } catch (error) {
       console.error("Error creating bulk filled templates:", error?.response?.data);
       const errorMessage =
-        error?.response?.data?.detail || "Failed to create bulk filled templates";
+        error?.response?.data?.detail || "خطأ في إنشاء المستندات";
       return { data: null, error: errorMessage };
     }
   }

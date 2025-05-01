@@ -10,6 +10,8 @@ body,
 
 :root{
   --primary-color: #05755c;
+  --sidebar-width: 280px;
+
 }
 
 * {
@@ -186,3 +188,26 @@ input[name="file_type"]:checked {
 }
 
 
+
+
+
+/* Fixed sidebar behavior on large screens */
+@media (min-width: 992px) {
+  .sidebar-custom {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: var(--sidebar-width) !important;
+    z-index: 1045;
+    transform: none !important;
+    visibility: visible !important;
+    border-left: 1px solid #ddd;
+    overflow-y: auto;
+    background-color: #fff;
+  }
+
+  .main-content {
+    margin-right: var(--sidebar-width);
+  }
+}
