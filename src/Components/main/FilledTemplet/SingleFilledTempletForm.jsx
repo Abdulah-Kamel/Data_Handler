@@ -351,9 +351,9 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
 
                 {/* Dynamic Fields based on API variables */}
                 {selectedTemplate && (
-                  <div className="mb-3">
-                    <label className="form-label">بيانات القالب</label>
-                    <div className="card">
+                  <div>
+                    <label className="form-label fs-5 fw-bold mt-3">بيانات القالب</label>
+                    <div className="card border-0">
                       <div className="card-body">
                         {loadingVariables ? (
                           <div className="text-center py-3">
@@ -365,7 +365,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                             {formEntries.map((entryIndex) => (
                               <div
                                 key={entryIndex}
-                                className="mb-4 rounded border p-3"
+                                className="mb-3 rounded border p-3"
                               >
                                 {formEntries.length > 1 && (
                                   <button
@@ -408,17 +408,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                                 </div>
                               </div>
                             ))}
-                            <div className="text-center mt-3">
-                              <button
-                                type="button"
-                                className="btn btn-success"
-                                onClick={addNewForm}
-                                disabled={formSubmitting}
-                              >
-                                <i className="fas fa-plus me-2"></i>
-                                إضافة نموذج جديد
-                              </button>
-                            </div>
+                          
                           </>
                         ) : (
                           <div className="alert alert-info mb-0">
@@ -430,7 +420,16 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   </div>
                 )}
 
-                <div className="d-flex justify-content-end mt-3">
+                <div className="d-flex justify-content-between px-3">
+                              <button
+                                type="button"
+                                className="btn primary-btn"
+                                onClick={addNewForm}
+                                disabled={formSubmitting}
+                              >
+                                إضافة نموذج جديد
+                                <i className="fas fa-plus me-2"></i>
+                              </button>
                   {onCancel && (
                     <button
                       type="button"
