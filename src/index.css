@@ -205,7 +205,11 @@ input[name="file_type"]:checked {
     border-left: 1px solid #ddd;
     overflow-y: auto;
     background-color: #fff;
-  }
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    -ms-transform: none !important;
+    -o-transform: none !important;
+}
 
   .main-content {
     margin-right: var(--sidebar-width);

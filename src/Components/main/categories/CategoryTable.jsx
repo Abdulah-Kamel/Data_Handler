@@ -73,8 +73,6 @@ const columns = [
     ),
     width: '350px',
     ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
   }
 ];
 

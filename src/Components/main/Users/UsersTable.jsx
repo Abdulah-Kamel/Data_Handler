@@ -1,34 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { PulseLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import UserModal from "./UserModal";
 
-const UsersTable = ({ users, loading, onEdit, onDelete }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [modalMode, setModalMode] = useState('create');
-  const [modalLoading, setModalLoading] = useState(false);
-
-  const handleShowModal = (mode, user = null) => {
-    setModalMode(mode);
-    setSelectedUser(user);
-    setShowModal(true);
-  };
-
-  const handleModalSubmit = async (values) => {
-    setModalLoading(true);
-    try {
-      if (modalMode === 'delete') {
-        await onDelete(selectedUser);
-      } else if (modalMode === 'edit') {
-        await onEdit(selectedUser.id, values);
-      }
-      setShowModal(false);
-    } finally {
-      setModalLoading(false);
-    }
-  };
-
+const UsersTable = ({ users, loading,handleShowModal }) => {
   const columns = [
     {
       name: "#",
@@ -84,29 +59,14 @@ const UsersTable = ({ users, loading, onEdit, onDelete }) => {
       ),
       width: '250px',
       ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
     }
   ];
 
   return (
     <div className="position-relative mt-5">
-      {loading && (
-        <div className="position-absolute bg-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100" style={{ zIndex: 9999 }}>
-          <PulseLoader color="#0aad0a" size={15} />
-        </div>
-      )}
+     
 
-      <div className="d-flex justify-content-between align-items-center mb-5">
-        <h2 className="m-0">إدارة المستخدمين</h2>
-        <button
-          className="btn primary-btn-outline"
-          onClick={() => handleShowModal('create')}
-        >
-          إضافة مستخدم جديد
-          <i className="fas fa-plus me-2"></i>
-        </button>
-      </div>
+      
 
       <DataTable
         columns={columns}
@@ -150,14 +110,7 @@ const UsersTable = ({ users, loading, onEdit, onDelete }) => {
         }}
       />
 
-      <UserModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        mode={modalMode}
-        user={selectedUser}
-        onSubmit={handleModalSubmit}
-        loading={modalLoading}
-      />
+ 
     </div>
   );
 };

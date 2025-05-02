@@ -50,8 +50,11 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     const fetchTemplateVariables = async () => {
       setLoadingVariables(true);
       try {
-        const result = await FilledtemplateService.getVariablesOfTemplate(token, selectedTemplate.id);
-        
+        const result = await FilledtemplateService.getVariablesOfTemplate(
+          token,
+          selectedTemplate.id
+        );
+
         if (result.data && result.data.data && result.data.data.variables) {
           setTemplateFields(result.data.data.variables);
         } else {
@@ -77,13 +80,39 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
 
     setFieldValue("filled_data", {});
     setFieldValue("template_id", templateId);
-    
+
     if (downloadLinks) {
       setDownloadLinks(null);
       setFormSuccess(false);
     }
   };
 
+  // Add this state at the beginning of your component
+  const [formEntries, setFormEntries] = useState([0]); // Array to track form entries
+
+  // Add this function after your existing handlers
+  const addNewForm = () => {
+    setFormEntries([...formEntries, formEntries.length]);
+  };
+
+  // Modify the removeForm function to accept setFieldValue and values
+  const removeForm = (index, setFieldValue, values) => {
+    if (formEntries.length > 1) {
+      const newEntries = formEntries.filter((i) => i !== index);
+      setFormEntries(newEntries);
+
+      // Update the filled_data by removing the entry
+      const newFilledData = {};
+      Object.entries(values.filled_data).forEach(([key, value]) => {
+        if (!key.endsWith(`_${index}`)) {
+          newFilledData[key] = value;
+        }
+      });
+      setFieldValue("filled_data", newFilledData);
+    }
+  };
+
+  // Modify the handleSubmit function
   const handleSubmit = async (values) => {
     setFormSubmitting(true);
     setFormError(null);
@@ -91,19 +120,32 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     setFormSuccess(false);
 
     try {
+      // Restructure the filled_data to be an array
+      const filledDataArray = formEntries.map((index) => {
+        const entryData = {};
+        Object.keys(values.filled_data).forEach((key) => {
+          if (key.endsWith(`_${index}`)) {
+            const originalKey = key.replace(`_${index}`, "");
+            entryData[originalKey] = values.filled_data[key];
+          }
+        });
+        return entryData;
+      });
+
+      const requestData = {
+        ...values,
+        filled_data: filledDataArray,
+      };
+
       const response = await FilledtemplateService.createFilledTemplate(
         token,
-        values
+        requestData
       );
-      console.log(response);
-      
-        if (response?.data.status === 201) {
-            console.log("Download links:", response?.data?.data?.download_links);
-            
-          setDownloadLinks(response?.data?.data?.download_links);
-          setFormSuccess(true);
-        }
-      
+
+      if (response?.data.status === 201) {
+        setDownloadLinks(response?.data?.data);
+        setFormSuccess(true);
+      }
     } catch (error) {
       console.error("Error creating filled template:", error);
       setFormError("حدث خطأ أثناء حفظ البيانات");
@@ -129,34 +171,47 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         <div className="card-body">
           {formSuccess && downloadLinks && (
             <div className="alert alert-success mb-4">
-              <h5 className="mb-3">تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:</h5>
-              <div className="d-flex justify-content-center flex-wrap gap-2">
-                {downloadLinks.pdf && (
-                  <a 
-                    href={downloadLinks.pdf} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="btn btn-outline-success"
-                  >
-                    تحميل ملف PDF
-                    <i className="fas fa-file-pdf me-2"></i>
-                  </a>
-                )}
-                {downloadLinks.word && (
-                  <a 
-                    href={downloadLinks.word} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="btn btn-outline-primary"
-                  >
-                    تحميل ملف Word
-                    <i className="fas fa-file-word me-2"></i>
-                  </a>
-                )}
-              </div>
+              <h5 className="mb-3">
+                تم إنشاء القوالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:
+              </h5>
+              {downloadLinks.results.map((result, idx) => (
+                <div key={idx} className="mb-4">
+                  <h6 className="mb-2">نموذج {result.index}</h6>
+                  <div className="d-flex justify-content-center flex-wrap gap-2">
+                    {result.links.pdf && (
+                      <a
+                        href={result.links.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline-success"
+                      >
+                        تحميل ملف PDF
+                        <i className="fas fa-file-pdf me-2"></i>
+                      </a>
+                    )}
+                    {result.links.word && (
+                      <a
+                        href={result.links.word}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline-primary"
+                      >
+                        تحميل ملف Word
+                        <i className="fas fa-file-word me-2"></i>
+                      </a>
+                    )}
+                  </div>
+                  {/* <div className="mt-2 text-muted small">
+                    <strong>البيانات:</strong>{" "}
+                    {Object.entries(result.data)
+                      .map(([key, value]) => `${key}: ${value}`)
+                      .join(", ")}
+                  </div> */}
+                </div>
+              ))}
             </div>
           )}
-          
+
           <Formik
             initialValues={{
               template_id: "",
@@ -306,26 +361,65 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                             <p className="mt-2">جاري تحميل المتغيرات...</p>
                           </div>
                         ) : templateFields.length > 0 ? (
-                          <div className="row">
-                            {templateFields.map((field) => (
-                              <div className="col-md-6 mb-2" key={field}>
-                                <label
-                                  htmlFor={`filled_data.${field}`}
-                                  className="form-label"
-                                >
-                                  {field}
-                                </label>
-                                <Field
-                                  type="text"
-                                  className="form-control"
-                                  id={`filled_data.${field}`}
-                                  name={`filled_data.${field}`}
-                                  placeholder={`أدخل ${field}`}
-                                  disabled={formSubmitting}
-                                />
+                          <>
+                            {formEntries.map((entryIndex) => (
+                              <div
+                                key={entryIndex}
+                                className="mb-4 rounded border p-3"
+                              >
+                                {formEntries.length > 1 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger btn-sm "
+                                    onClick={() =>
+                                      removeForm(
+                                        entryIndex,
+                                        setFieldValue,
+                                        values
+                                      )
+                                    }
+                                  >
+                                    <i className="fas fa-times"></i>
+                                  </button>
+                                )}
+                                <h6 className="mb-3 fs-5 fw-bold text-center">نموذج {entryIndex + 1}</h6>
+                                <div className="row mt-3">
+                                  {templateFields.map((field) => (
+                                    <div
+                                      className="col-md-6 mb-2"
+                                      key={`${field}_${entryIndex}`}
+                                    >
+                                      <label
+                                        htmlFor={`filled_data.${field}_${entryIndex}`}
+                                        className="form-label"
+                                      >
+                                        {field}
+                                      </label>
+                                      <Field
+                                        type="text"
+                                        className="form-control"
+                                        id={`filled_data.${field}_${entryIndex}`}
+                                        name={`filled_data.${field}_${entryIndex}`}
+                                        placeholder={`أدخل ${field}`}
+                                        disabled={formSubmitting}
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             ))}
-                          </div>
+                            <div className="text-center mt-3">
+                              <button
+                                type="button"
+                                className="btn btn-success"
+                                onClick={addNewForm}
+                                disabled={formSubmitting}
+                              >
+                                <i className="fas fa-plus me-2"></i>
+                                إضافة نموذج جديد
+                              </button>
+                            </div>
+                          </>
                         ) : (
                           <div className="alert alert-info mb-0">
                             لا توجد متغيرات لهذا القالب

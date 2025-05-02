@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { PulseLoader } from "react-spinners";
@@ -27,14 +27,15 @@ const UserModal = ({
   onHide,
   mode,
   user,
-  loading: parentLoading,
   handleRefresh,
 }) => {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiErrors, setApiErrors] = useState({});
   const user_token = JSON.parse(sessionStorage.getItem("User"))?.access;
 
   const handleSubmit = async (values) => {
     setLoading(true);
+    setApiErrors({});
     try {
       let response;
       const submitData = { ...values };
@@ -46,27 +47,33 @@ const UserModal = ({
 
       if (mode === "create") {
         response = await userService.createUser(user_token, submitData);
-        handleRefresh();
+        if (response.status === 201) {
+          handleRefresh();
+          onHide();
+        }
       } else if (mode === "update") {
         response = await userService.updateUser(
           user_token,
           user.id,
           submitData
         );
-        handleRefresh();
+        if (response?.data?.status === 200) {
+          handleRefresh();
+          onHide();
+        }
       } else if (mode === "delete") {
         response = await userService.deleteUser(user_token, user.id);
-        handleRefresh();
+        if (response?.data?.status === 204) {
+          handleRefresh();
+          onHide();
+        }
       }
-
-      if (response?.error) {
-        console.error("Operation failed:", response.error);
-        return;
-      }
-
-      onHide();
     } catch (error) {
-      console.error("Operation failed:", error.response?.data || error);
+      if (error.response?.data) {
+        setApiErrors(error.response.data);
+      } else {
+        setApiErrors({ general: "An unexpected error occurred" });
+      }
     } finally {
       setLoading(false);
     }
@@ -105,6 +112,12 @@ const UserModal = ({
               ></button>
             </div>
             <div className="modal-body">
+              {apiErrors.general && (
+                <div className="alert alert-danger mb-3">
+                  {apiErrors.general}
+                </div>
+              )}
+              
               {isDeleteMode ? (
                 <div className="text-center">
                   <p className="mb-4 fs-5">
@@ -148,14 +161,14 @@ const UserModal = ({
                           id="username"
                           name="username"
                           className={`form-control ${
-                            touched.username && errors.username
+                            (touched.username && errors.username) || apiErrors.username
                               ? "is-invalid"
                               : ""
                           }`}
                         />
-                        {touched.username && errors.username && (
+                        {((touched.username && errors.username) || apiErrors.username) && (
                           <div className="invalid-feedback">
-                            {errors.username}
+                            {errors.username || apiErrors.username}
                           </div>
                         )}
                       </div>
@@ -169,14 +182,19 @@ const UserModal = ({
                           id="email"
                           name="email"
                           className={`form-control ${
-                            touched.email && errors.email ? "is-invalid" : ""
+                            (touched.email && errors.email) || apiErrors.email
+                              ? "is-invalid"
+                              : ""
                           }`}
                         />
-                        {touched.email && errors.email && (
-                          <div className="invalid-feedback">{errors.email}</div>
+                        {((touched.email && errors.email) || apiErrors.email) && (
+                          <div className="invalid-feedback">
+                            {errors.email || apiErrors.email}
+                          </div>
                         )}
                       </div>
 
+                      {/* Similar changes for organization field */}
                       <div className="mb-3">
                         <label htmlFor="organization" className="form-label">
                           المؤسسة
@@ -186,18 +204,19 @@ const UserModal = ({
                           id="organization"
                           name="organization"
                           className={`form-control ${
-                            touched.organization && errors.organization
+                            (touched.organization && errors.organization) || apiErrors.organization
                               ? "is-invalid"
                               : ""
                           }`}
                         />
-                        {touched.organization && errors.organization && (
+                        {((touched.organization && errors.organization) || apiErrors.organization) && (
                           <div className="invalid-feedback">
-                            {errors.organization}
+                            {errors.organization || apiErrors.organization}
                           </div>
                         )}
                       </div>
 
+                      {/* Similar changes for password field */}
                       {(isCreateMode || mode === "update") && (
                         <div className="mb-3">
                           <label htmlFor="password" className="form-label">
@@ -210,14 +229,14 @@ const UserModal = ({
                             id="password"
                             name="password"
                             className={`form-control ${
-                              touched.password && errors.password
+                              (touched.password && errors.password) || apiErrors.password
                                 ? "is-invalid"
                                 : ""
                             }`}
                           />
-                          {touched.password && errors.password && (
+                          {((touched.password && errors.password) || apiErrors.password) && (
                             <div className="invalid-feedback">
-                              {errors.password}
+                              {errors.password || apiErrors.password}
                             </div>
                           )}
                         </div>

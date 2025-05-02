@@ -75,6 +75,7 @@ const MultiFillTempletForm = ({ token }) => {
   const handleSubmit = async (values) => {
     setFormSubmitting(true);
     setFormError(null);
+    setDownloadLinks(null);
   
     try {
       const formData = new FormData();

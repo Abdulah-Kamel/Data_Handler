@@ -74,8 +74,6 @@ const BulkDataTable = ({
       ),
       width: "450px",
       ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
     },
   ];
 

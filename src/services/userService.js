@@ -31,13 +31,10 @@ export const userService = {
           },
         }
       );
-      return { data: response.data, error: null };
+      return response;
     } catch (error) {
       console.error("Error creating user:", error);
-      return {
-        data: null,
-        error: error.response?.data?.detail || "Failed to create user"
-      };
+      throw error;
     }
   },
 
@@ -52,7 +49,7 @@ export const userService = {
           },
         }
       );
-      return { data: response.data, error: null };
+      return { data: response, error: null };
     } catch (error) {
       console.error("Error updating user:", error);
       return {
@@ -64,12 +61,12 @@ export const userService = {
 
   deleteUser: async (token, userId) => {
     try {
-      await axios.delete(`${baseUrl}/auth/users/${userId}/`, {
+      const response = await axios.delete(`${baseUrl}/auth/users/${userId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      return { error: null };
+      return { error: null, data: response };
     } catch (error) {
       console.error("Error deleting user:", error);
       return {

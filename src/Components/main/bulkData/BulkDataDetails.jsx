@@ -157,8 +157,6 @@ const BulkDataDetails = ({
         ),
         width: "200px",
         ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
       },
     ];
   };
