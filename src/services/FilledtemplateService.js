@@ -12,7 +12,6 @@ export const FilledtemplateService = {
       });
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error fetching templates:", error);
       return { data: null, error: "خطأ فى جلب القوالب" };
     }
   },
@@ -28,11 +27,15 @@ export const FilledtemplateService = {
         }
       );
       return { data: response, error: null };
-    } catch (error) {
-      console.error("Error creating filled template:", error?.response);
-      const errorMessage =
-        error?.response?.detail || "خطأ في إنشاء المستند";
-      return { data: null, error: errorMessage };
+    }catch (error) {
+      const errorData = error?.response?.data;
+      return { 
+        data: null, 
+        error: {
+          message: errorData?.error || "خطأ في إنشاء المستند",
+          details: errorData?.details || []
+        }
+      };
     }
   },
   getVariablesOfTemplate: async (token, templateId) => {
@@ -47,7 +50,6 @@ export const FilledtemplateService = {
       );
       return { data: response, error: null };
     } catch (error) {
-      console.error("Error fetching variables of template:", error);
       return { data: null, error: "خطأ في جلب المتغيرات" };
     } 
   },
@@ -64,10 +66,14 @@ export const FilledtemplateService = {
       );
       return { data: response, error: null };
     } catch (error) {
-      console.error("Error creating bulk filled templates:", error?.response?.data);
-      const errorMessage =
-        error?.response?.data?.detail || "خطأ في إنشاء المستندات";
-      return { data: null, error: errorMessage };
+      const errorData = error?.response?.data;
+      return { 
+        data: null, 
+        error: {
+          message: errorData?.error || "خطأ في إنشاء المستندات",
+          details: errorData?.details || []
+        }
+      };
     }
   }
 };

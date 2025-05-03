@@ -12,7 +12,6 @@ export const userService = {
       });
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error fetching users:", error);
       return { 
         data: null, 
         error:  "خطأ في جلب المستخدمين" 
@@ -33,7 +32,6 @@ export const userService = {
       );
       return response;
     } catch (error) {
-      console.error("Error creating user:", error);
       throw error;
     }
   },
@@ -51,7 +49,6 @@ export const userService = {
       );
       return { data: response, error: null };
     } catch (error) {
-      console.error("Error updating user:", error);
       return {
         data: null,
         error: error.response?.data?.detail || "Failed to update user"
@@ -68,7 +65,6 @@ export const userService = {
       });
       return { error: null, data: response };
     } catch (error) {
-      console.error("Error deleting user:", error);
       return {
         error: error.response?.data?.detail || "Failed to delete user"
       };

@@ -11,7 +11,6 @@ export const categoryService = {
       });
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error fetching categories:", error);
       return { data: null, error: "خطأ فى جلب التصنيفات" };
     }
   },
@@ -30,7 +29,6 @@ export const categoryService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error creating category:", error?.response?.data?.name?.[0]);
       return {
         data: null,
         error: error?.response?.data?.name?.[0] || "Failed to create category",
@@ -52,7 +50,6 @@ export const categoryService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error updating category:", error?.response?.data?.name?.[0]);
       return { 
         data: null, 
         error: error?.response?.data?.name?.[0] || "Failed to update category" 
@@ -69,7 +66,6 @@ export const categoryService = {
       });
       return { error: null };
     } catch (error) {
-      console.error("Error deleting category:", error?.response?.data?.detail);
       return { 
         error: error?.response?.data?.detail || "Failed to delete category" 
       };

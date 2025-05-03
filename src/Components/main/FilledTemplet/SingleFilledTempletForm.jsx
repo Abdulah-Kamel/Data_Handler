@@ -31,7 +31,6 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           setTemplates(result.data);
         }
       } catch (err) {
-        console.error("Error fetching templates:", err);
         setFormError("حدث خطأ أثناء جلب القوالب");
       } finally {
         setLoading(false);
@@ -59,10 +58,8 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           setTemplateFields(result.data.data.variables);
         } else {
           setTemplateFields([]);
-          console.error("No variables found in response:", result);
         }
       } catch (err) {
-        console.error("Error fetching template variables:", err);
         setFormError("حدث خطأ أثناء جلب متغيرات القالب");
         setTemplateFields([]);
       } finally {
@@ -142,13 +139,20 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         requestData
       );
 
-      if (response?.data.status === 201) {
+      if (response?.data?.status === 201) {
         setDownloadLinks(response?.data?.data);
         setFormSuccess(true);
+      } else if (response?.error) {
+        setFormError({
+          message: response?.error?.message,
+          details: response?.error?.details,
+        });
       }
     } catch (error) {
-      console.error("Error creating filled template:", error);
-      setFormError("حدث خطأ أثناء حفظ البيانات");
+      setFormError({
+        message: "حدث خطأ أثناء إنشاء المستندات",
+        details: [],
+      });
     } finally {
       setFormSubmitting(false);
     }
@@ -226,7 +230,14 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
               <Form>
                 {formError && (
                   <div className="alert alert-danger" role="alert">
-                    {formError}
+                    <p className="mb-2">{formError.message}</p>
+                    {formError.details && formError.details.length > 0 && (
+                      <ul className="mb-0 mt-2">
+                        {formError.details.map((detail, index) => (
+                          <li key={index}>{detail}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 )}
 

@@ -53,7 +53,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
 
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      console.error("Failed to save template:", err);
       setFormError(
         isEditing
           ? "فشل في تعديل القالب. يرجى المحاولة مرة أخرى."
@@ -90,7 +89,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
       setSelectedTemplate(null);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      console.error("Failed to delete template:", err);
       setDeleteError("فشل في حذف القالب. يرجى المحاولة مرة أخرى.");
     } finally {
       setFormSubmitting(false);
@@ -117,7 +115,6 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
       setSelectedTemplate(null);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      console.error("Failed to upload file:", err);
       setUploadError("فشل في رفع الملف. يرجى المحاولة مرة أخرى.");
     } finally {
       setIsUploading(false);

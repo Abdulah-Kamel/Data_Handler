@@ -93,11 +93,17 @@ const MultiFillTempletForm = ({ token }) => {
       const response = await FilledtemplateService.createBulkFilledTemplates(token, formData);
       if (response?.data?.status === 201) {
         setDownloadLinks(response?.data?.data?.download_link);
-      } else {
-        setFormError(response.error || "حدث خطأ أثناء إنشاء المستندات");
+      } else if (response.error) {
+        setFormError({
+          message: response.error.message,
+          details: response.error.details
+        });
       }
     } catch (error) {
-      setFormError("حدث خطأ أثناء إنشاء المستندات");
+      setFormError({
+        message: "حدث خطأ أثناء إنشاء المستندات",
+        details: []
+      });
     } finally {
       setFormSubmitting(false);
     }
@@ -118,7 +124,6 @@ const MultiFillTempletForm = ({ token }) => {
         setSelectedTemplateVars(response?.data?.data?.variables);
       }
     } catch (error) {
-      console.error("Failed to fetch template variables:", error);
     }
   };
 
@@ -173,7 +178,14 @@ const MultiFillTempletForm = ({ token }) => {
               <Form>
                 {formError && (
                   <div className="alert alert-danger" role="alert">
-                    {formError}
+                    <p className="mb-2">{formError.message}</p>
+                    {formError.details && formError.details.length > 0 && (
+                      <ul className="mb-0 mt-2">
+                        {formError.details.map((detail, index) => (
+                          <li key={index}>{detail}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 )}
 

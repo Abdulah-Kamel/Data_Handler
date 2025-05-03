@@ -16,7 +16,6 @@ export const templateService = {
         error: null 
       };
     } catch (error) {
-      console.error("Error fetching category templates:", error);
       return { data: null, templates: [], error: "Failed to load templates" };
     }
   },
@@ -30,7 +29,6 @@ export const templateService = {
       });
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error fetching template:", error);
       return { data: null, error: "Failed to load template" };
     }
   },
@@ -49,7 +47,6 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error creating template:", error?.response?.data);
       const errorMessage = 
         error?.response?.data?.name?.[0] || 
         error?.response?.data?.description?.[0] || 
@@ -73,7 +70,6 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error updating template:", error?.response?.data);
       const errorMessage = 
         error?.response?.data?.name?.[0] || 
         error?.response?.data?.description?.[0] || 
@@ -92,7 +88,6 @@ export const templateService = {
       });
       return { error: null };
     } catch (error) {
-      console.error("Error deleting template:", error?.response?.data?.detail);
       return { 
         error: error?.response?.data?.detail || "Failed to delete template" 
       };
@@ -116,7 +111,6 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      console.error("Error uploading file:", error?.response?.data);
       const errorMessage = 
         error?.response?.data?.word_file?.[0] || 
         error?.response?.data?.detail ||

@@ -68,7 +68,6 @@ const Categories = () => {
 
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      console.error("Failed to save category:", err);
       setFormError(
         isEditing
           ? "فشل في تعديل الفئة. يرجى المحاولة مرة أخرى."
@@ -102,7 +101,6 @@ const Categories = () => {
       setSelectedCategory(null);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      console.error("Failed to delete category:", err);
       setDeleteError("فشل في حذف الفئة. يرجى المحاولة مرة أخرى.");
     } finally {
       setFormSubmitting(false);

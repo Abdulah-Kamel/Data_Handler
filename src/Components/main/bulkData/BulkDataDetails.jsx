@@ -83,7 +83,6 @@ const BulkDataDetails = ({
       const response = await BulkDataService.getBulkDataById(selectedData.id);
       setSelectedData(response.data);
     } catch (error) {
-      console.error("Error saving row:", error);
       setFormError(
         error.response?.data?.message || "حدث خطأ أثناء حفظ البيانات"
       );
@@ -103,7 +102,6 @@ const BulkDataDetails = ({
 
       setShowDeleteModal(false);
     } catch (error) {
-      console.error("Error deleting row:", error);
       setDeleteError(
         error.response?.data?.message || "حدث خطأ أثناء حذف البيانات"
       );

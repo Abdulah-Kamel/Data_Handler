@@ -24,7 +24,6 @@ const BulkData = () => {
       const response = await BulkDataService.getAllBulkData();
       setBulkData(response.data);
     } catch (error) {
-      console.error("Error fetching bulk data:", error);
       setError("حدث خطأ أثناء جلب البيانات");
     } finally {
       setLoading(false);
@@ -70,7 +69,6 @@ const BulkData = () => {
       fetchBulkData();
       setShowModal(false);
     } catch (error) {
-      console.error("Error saving bulk data:", error);
       if (error.response && error.response.data) {
         setErrors(error.response.data);
       } else {
@@ -90,7 +88,6 @@ const BulkData = () => {
       const response = await BulkDataService.getBulkDataById(selectedData);
       setSelectedData(response.data);
     } catch (error) {
-      console.error("Error deleting row:", error);
       setError("حدث خطأ أثناء حذف السجل");
     } finally {
       setLoading(false);
@@ -124,7 +121,6 @@ const BulkData = () => {
 
       setShowDeleteModal(false);
     } catch (error) {
-      console.error(`Error deleting ${deleteType}:`, error);
       setError(`حدث خطأ أثناء حذف "السجل"}`);
     } finally {
       setDeleting(false);
@@ -157,7 +153,6 @@ const BulkData = () => {
         await fetchBulkData();
       }
     } catch (error) {
-      console.error("Error uploading Excel file:", error);
     } finally {
       setUploadLoading(false);
       setSubmitting(false);
