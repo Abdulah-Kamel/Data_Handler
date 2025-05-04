@@ -10,7 +10,6 @@ const CategorySchema = Yup.object().shape({
   description: Yup.string()
     .min(5, "الوصف قصير جدًا")
     .max(200, "الوصف طويل جدًا")
-    .required("الوصف مطلوب"),
 });
 
 const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, onCancel, error }) => {

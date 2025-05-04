@@ -13,7 +13,7 @@ const columns = [
     width: '60px',
   },
   {
-    name: "اسم التصنيفات",
+    name: "اسم القسم",
     selector: (row) => row.name,
     sortable: true,
   },
@@ -27,10 +27,10 @@ const columns = [
     sortable: true,
   },
   {
-    name: "عدد القوالب",
+    name: "عدد النماذج فى القسم",
     selector: (row) => row.templates.length,
     sortable: true,
-    width: '150px',
+    width: '250px',
     cell: (row) => (
       <span className="badge primary-bg">
         {row.templates.length}
@@ -52,7 +52,7 @@ const columns = [
           to={`/dashboard/templates/${row.id}`}
           className="btn btn-outline-primary btn-sm rounded-pill"
         >
-          عرض القوالب
+          عرض النماذج
           <i className="fas fa-eye me-1"></i>
         </Link>
         <button

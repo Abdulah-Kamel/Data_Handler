@@ -131,7 +131,7 @@ const Categories = () => {
           setShowModal(true);
         }}
       >
-        اضافة فئة نماذج جديدة
+        اضافة قسم جديد
         <i className="fas fa-plus me-2"></i>
       </button>
      </div>

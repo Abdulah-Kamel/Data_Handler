@@ -145,7 +145,7 @@ const MultiFillTempletForm = ({ token }) => {
           {downloadLinks && (
             <div className="alert alert-success mb-4">
               <h5 className="mb-3">
-                تم إنشاء القالب بنجاح! يمكنك تحميل الملفات من الروابط التالية:
+                تم إنشاء المستندات بنجاح! يمكنك تحميل الملفات من الروابط التالية:
               </h5>
               <div className="d-flex justify-content-center">
                 {downloadLinks && (
@@ -155,7 +155,7 @@ const MultiFillTempletForm = ({ token }) => {
                     rel="noopener noreferrer"
                     className="btn primary-btn fs-5"
                   >
-                    تحميل مستند
+                    تحميل الملفات
                     <i className="fas fa-file-download me-2"></i>
                   </a>
                 )}

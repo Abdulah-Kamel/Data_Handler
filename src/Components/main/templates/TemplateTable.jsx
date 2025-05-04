@@ -29,7 +29,7 @@ const TemplateTable = ({
       width: '60px',
     },
     {
-      name: "اسم القالب",
+      name: "اسم النموذج",
       selector: (row) => row.name,
       sortable: true,
     },
@@ -53,10 +53,9 @@ const TemplateTable = ({
             href={row.word_file}
             target="_blank"
             rel="noopener noreferrer"
-            className="main-color"
+            className=" btn primary-btn"
           >
-            <i className="fas fa-file-word me-1"></i>
-            {getFileName(row.word_file)}
+            عرض النموذج
           </a>
         ) : (
           <span className="text-muted">لا يوجد ملف</span>
