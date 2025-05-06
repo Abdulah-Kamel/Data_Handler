@@ -8,19 +8,33 @@ import { PulseLoader } from "react-spinners";
 const validFileExtensions = ['xlsx', 'xls'];
 
 const MultiFillTemplateSchema = Yup.object().shape({
-  template_id: Yup.string().required("يرجى اختيار قالب"),
+  template_id: Yup.string().test(
+    'conditional-requirement',
+    "يرجى اختيار قالب أو رفع ملف Word",
+    function(value) {
+      return value || this.parent.word_file;
+    }
+  ),
+  word_file: Yup.mixed().test(
+    "fileFormat",
+    "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Word (.docx, .doc)",
+    function(value) {
+      if (!value) return true; 
+      return ['docx', 'doc'].includes(value.name.split('.').pop().toLowerCase());
+    }
+  ),
   bulk_data_id: Yup.string().test(
     'conditional-requirement',
     "يرجى اختيار مجموعة البيانات أو رفع ملف Excel",
     function(value) {
-      return this.parent.file || value;
+      return this.parent.excel_file || value;
     }
   ),
-  file: Yup.mixed().test(
+  excel_file: Yup.mixed().test(
     "fileFormat",
     "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Excel (.xlsx, .xls)",
     function(value) {
-      if (!value) return true; // Allow empty value when using bulk_data_id
+      if (!value) return true; 
       return validFileExtensions.includes(value.name.split('.').pop().toLowerCase());
     }
   ),
@@ -38,6 +52,7 @@ const MultiFillTempletForm = ({ token }) => {
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [selectedTemplateVars, setSelectedTemplateVars] = useState([]);
   const [excelFile, setExcelFile] = useState(null);
+    const [wordFile, setWordFile] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -66,12 +81,19 @@ const MultiFillTempletForm = ({ token }) => {
     const file = event.target.files[0];
     if (file) {
       setExcelFile(file);
-      setFieldValue('file', file);
-      setFieldValue('bulk_data_id', ''); // Clear bulk data selection
+      setFieldValue('excel_file', file);
+      setFieldValue('bulk_data_id', ''); 
+    }
+  };
+  const handleWordFileChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+    if (file) {
+      setWordFile(file);
+      setFieldValue('word_file', file);
+      setFieldValue('template_id', ''); 
     }
   };
   
-  // Update handleSubmit
   const handleSubmit = async (values) => {
     setFormSubmitting(true);
     setFormError(null);
@@ -79,13 +101,17 @@ const MultiFillTempletForm = ({ token }) => {
   
     try {
       const formData = new FormData();
-      formData.append('template_id', values.template_id);
       formData.append('file_name', values.file_name);
       formData.append('folder_name', values.folder_name);
       formData.append('file_type', values.file_type);
+      if (wordFile) {
+        formData.append('word_file', wordFile);
+      } else {
+        formData.append('template_id', values.template_id);
+      }
       
       if (excelFile) {
-        formData.append('file', excelFile);
+        formData.append('excel_file', excelFile);
       } else {
         formData.append('bulk_data_id', values.bulk_data_id);
       }
@@ -163,13 +189,14 @@ const MultiFillTempletForm = ({ token }) => {
             </div>
           )}
           <Formik
-            initialValues={{
+             initialValues={{
               template_id: "",
               bulk_data_id: "",
               file_name: "",
               folder_name: "",
               file_type: "both",
-              file: "",  // Add this line
+              excel_file: "",
+              word_file: "", 
             }}
             validationSchema={MultiFillTemplateSchema}
             onSubmit={handleSubmit}
@@ -189,22 +216,22 @@ const MultiFillTempletForm = ({ token }) => {
                   </div>
                 )}
 
-                <div className="row">
+                <div className="row justify-content-between">
                   {/* Template Selection */}
-                  <div className="col-12 mb-3">
+                  <div className="col-md-6 mb-3">
                     <label htmlFor="template_id" className="form-label">
                       اختر القالب
                     </label>
                     <Field
                       as="select"
                       className={`form-select ${
-                        touched.template_id && errors.template_id
+                        touched.template_id && errors.template_id && !values.word_file
                           ? "is-invalid"
                           : ""
                       }`}
                       id="template_id"
                       name="template_id"
-                      disabled={loading || formSubmitting}
+                      disabled={loading || formSubmitting || values.word_file}
                       onChange={(e) => {
                         handleTemplateChange(e.target.value);
                         handleChange(e);
@@ -223,6 +250,31 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
+                     
+                  {/* Word File Upload */}
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="word_file" className="form-label">
+                      رفع ملف Word
+                    </label>
+                    <input
+                      type="file"
+                      className={`form-control ${
+                        touched.word_file && errors.word_file ? "is-invalid" : ""
+                      }`}
+                      id="word_file"
+                      accept=".docx,.doc"
+                      onChange={(e) => handleWordFileChange(e, setFieldValue)}
+                      disabled={loading || formSubmitting || values.template_id}
+                    />
+                    <small className="text-muted d-block mt-1">
+                      يرجى رفع ملف Word (.docx, .doc)
+                    </small>
+                    <ErrorMessage
+                      name="word_file"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </div>
                 </div>
 
                 <div className="row mb-3">
@@ -234,13 +286,13 @@ const MultiFillTempletForm = ({ token }) => {
                       <Field
                         as="select"
                         className={`form-select ${
-                          touched.bulk_data_id && errors.bulk_data_id && !values.file
+                          touched.bulk_data_id && errors.bulk_data_id && !values.excel_file
                             ? "is-invalid"
                             : ""
                         }`}
                         id="bulk_data_id"
                         name="bulk_data_id"
-                        disabled={loading || formSubmitting || values.file}
+                        disabled={loading || formSubmitting || values.excel_file}
                       >
                         <option value="">اختر مجموعة البيانات</option>
                         {bulkDataSets.map((bulkData) => (
@@ -258,15 +310,15 @@ const MultiFillTempletForm = ({ token }) => {
 
                   {/* Excel File Upload */}
                   <div className="col-md-6">
-                      <label htmlFor="file" className="form-label">
+                      <label htmlFor="excel_file" className="form-label">
                         رفع ملف Excel
                       </label>
                       <input
                         type="file"
                         className={`form-control ${
-                          touched.file && errors.file ? "is-invalid" : ""
+                          touched.excel_file && errors.excel_file ? "is-invalid" : ""
                         }`}
-                        id="file"
+                        id="excel_file"
                         accept=".xlsx,.xls"
                         onChange={(e) => handleExcelChange(e, setFieldValue)}
                         disabled={loading || formSubmitting || values.bulk_data_id}
@@ -275,7 +327,7 @@ const MultiFillTempletForm = ({ token }) => {
                         يرجى رفع ملف Excel (.xlsx, .xls)
                       </small>
                       <ErrorMessage
-                        name="file"
+                        name="excel_file"
                         component="div"
                         className="invalid-feedback"
                       />
