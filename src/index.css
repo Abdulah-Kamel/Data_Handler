@@ -216,3 +216,20 @@ input[name="file_type"]:checked {
   }
 }
 
+.divider::after{
+ content: "";
+ background-color: var(--primary-color);
+ width: 50%;
+ height: 3px;
+ margin-top: 5px;
+ margin-right: 5px;
+}
+
+.divider::before{
+ content: "";
+ background-color: var(--primary-color);
+ width: 50%;
+ height: 3px;
+ margin-top: 5px;
+ margin-left: 5px;
+}
