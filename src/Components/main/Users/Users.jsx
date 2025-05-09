@@ -3,6 +3,7 @@ import { PulseLoader } from 'react-spinners';
 import userService from '../../../services/userService';
 import UsersTable from './UsersTable';
 import UserModal from './UserModal';
+import { useAuth } from '../../../Context/AuthContext';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -13,14 +14,12 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
-
-  const user = JSON.parse(sessionStorage.getItem("User"));
-  const token = user.access;
+  const { accessToken } = useAuth(); 
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
-      const { data, error } = await userService.getAllUsers(token);
+      const { data, error } = await userService.getAllUsers(accessToken);
       if (data) {
         setUsers(data);
         setError(null);
@@ -31,7 +30,7 @@ const Users = () => {
     };
 
     fetchUsers();
-  }, [token, refreshTrigger]);
+  }, [accessToken, refreshTrigger]);
 
   const handleUserUpdate = (updatedData) => {
     if (updatedData) {

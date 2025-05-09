@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import SingleFilledTempletForm from "./SingleFilledTempletForm";
 import MultiFillTempletForm from "./MultiFillTempletForm";
+import { useAuth } from "../../../Context/AuthContext";
 
 const FilledTemplet = () => {
   const [formType, setFormType] = useState("single");
-  const user = JSON.parse(sessionStorage.getItem("User"));
-  const token = user.access;
+  const { user, accessToken } = useAuth();
 
   return (
     <div className="container py-3 position-relative px-3 mt-5">
@@ -35,11 +35,11 @@ const FilledTemplet = () => {
       {/* Render the appropriate form based on formType */}
       {formType === "single" ? (
         <SingleFilledTempletForm 
-          token={token}
+          token={accessToken}
         />
       ) : (
         <MultiFillTempletForm 
-          token={token}
+          token={accessToken}
         />
       )}
     </div>

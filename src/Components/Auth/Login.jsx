@@ -5,8 +5,10 @@ import Navbar from "../NavBar/NavBar";
 import { useLoginForm } from "../../hooks/useLoginForm";
 import FormInput from "../common/FormInput";
 import { authService } from "../../services/authService";
+import { useAuth } from "../../Context/AuthContext";
 
 const Login = () => {
+  const { login,user  } = useAuth(); // from context
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,13 +17,10 @@ const Login = () => {
   const handleLogin = async (values) => {
     setLoginLoading(true);
     try {
-      const data = await authService.login(values);
-      if (data.access) {
-        sessionStorage.setItem("User", JSON.stringify(data));
-        navigate("/dashboard");
-      }
+      await login(values);
+      navigate("/dashboard");
     } catch (err) {
-      const errorMessage = err.response?.data?.detail;
+      const errorMessage = err.response?.data?.detail || "Login failed";
       setError(errorMessage);
     } finally {
       setLoginLoading(false);
@@ -36,11 +35,10 @@ const Login = () => {
   }, []);
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("User"));
-    if (user && user.access) {
+    if (user) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, [navigate,user]);
 
   if (loading) {
     return (

@@ -4,6 +4,7 @@ import categoryService from "../../../services/categoryService";
 import CategoryTable from "./CategoryTable";
 import CategoryModal from "./CategoryModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -17,14 +18,12 @@ const Categories = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formError, setFormError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
-
-  const user = JSON.parse(sessionStorage.getItem("User"));
-  const token = user.access;
+  const { user, accessToken } = useAuth();
 
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
-      const { data, error } = await categoryService.getAll(token);
+      const { data, error } = await categoryService.getAll(accessToken);
 
       if (data) {
         setCategories(data);
@@ -36,7 +35,7 @@ const Categories = () => {
     };
 
     fetchCategories();
-  }, [token, refreshTrigger]);
+  }, [accessToken, refreshTrigger]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -50,12 +49,12 @@ const Categories = () => {
       let result;
       if (isEditing && selectedCategory) {
         result = await categoryService.update(
-          token,
+          accessToken,
           selectedCategory.id,
           values
         );
       } else {
-        result = await categoryService.create(token, values);
+        result = await categoryService.create(accessToken, values);
       }
       if (result.error) {
         setFormError(result.error);
@@ -91,7 +90,10 @@ const Categories = () => {
     setFormSubmitting(true);
     setDeleteError(null);
     try {
-      const result = await categoryService.delete(token, selectedCategory.id);
+      const result = await categoryService.delete(
+        accessToken,
+        selectedCategory.id
+      );
 
       if (result.error) {
         setDeleteError(result.error);
@@ -121,20 +123,20 @@ const Categories = () => {
       <title>Data Handler - تصنيفات القوالب</title>
       <meta name="description" content="Data Handler - تصنيفات القوالب" />
 
-     <div className="d-flex justify-content-end">
-     <button
-        className="btn btn-outline-success me-auto"
-        onClick={() => {
-          setIsEditing(false);
-          setSelectedCategory(null);
-          setFormError(null);
-          setShowModal(true);
-        }}
-      >
-        اضافة قسم جديد
-        <i className="fas fa-plus me-2"></i>
-      </button>
-     </div>
+      <div className="d-flex justify-content-end">
+        <button
+          className="btn btn-outline-success me-auto"
+          onClick={() => {
+            setIsEditing(false);
+            setSelectedCategory(null);
+            setFormError(null);
+            setShowModal(true);
+          }}
+        >
+          اضافة قسم جديد
+          <i className="fas fa-plus me-2"></i>
+        </button>
+      </div>
 
       {error && (
         <div className="alert alert-danger text-center my-4">

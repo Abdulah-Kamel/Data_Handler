@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import templateService from "../../../../services/templateService";
+import { useAuth } from "../../../../Context/AuthContext";
 
 export const useTemplates = (categoryId) => {
   const [templates, setTemplates] = useState([]);
@@ -8,15 +9,14 @@ export const useTemplates = (categoryId) => {
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const user = JSON.parse(sessionStorage.getItem("User"));
-  const token = user.access;
+  const { user, accessToken } = useAuth(); 
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
       // Fetch category with its templates in a single request
-      const result = await templateService.getByCategoryId(token, categoryId);
+      const result = await templateService.getByCategoryId(accessToken, categoryId);
 
       if (result.error) {
         setError(result.error);
@@ -30,7 +30,7 @@ export const useTemplates = (categoryId) => {
     };
 
     fetchData();
-  }, [token, categoryId, refreshTrigger]);
+  }, [accessToken, categoryId, refreshTrigger]);
 
   return {
     templates,

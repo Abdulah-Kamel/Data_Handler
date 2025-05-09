@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { PulseLoader } from "react-spinners";
 import userService from "../../../services/userService";
+import { useAuth } from "../../../Context/AuthContext";
 
 const userSchema = Yup.object().shape({
   username: Yup.string()
@@ -31,7 +32,7 @@ const UserModal = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState({});
-  const user_token = JSON.parse(sessionStorage.getItem("User"))?.access;
+  const { accessToken } = useAuth(); 
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -46,14 +47,14 @@ const UserModal = ({
       }
 
       if (mode === "create") {
-        response = await userService.createUser(user_token, submitData);
+        response = await userService.createUser(accessToken, submitData);
         if (response.status === 201) {
           handleRefresh();
           onHide();
         }
       } else if (mode === "update") {
         response = await userService.updateUser(
-          user_token,
+          accessToken,
           user.id,
           submitData
         );
@@ -62,7 +63,7 @@ const UserModal = ({
           onHide();
         }
       } else if (mode === "delete") {
-        response = await userService.deleteUser(user_token, user.id);
+        response = await userService.deleteUser(accessToken, user.id);
         if (response?.data?.status === 204) {
           handleRefresh();
           onHide();

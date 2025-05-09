@@ -1,5 +1,6 @@
 import { useState } from "react";
 import templateService from "../../../../services/templateService";
+import { useAuth } from "../../../../Context/AuthContext";
 
 export const useTemplateActions = (categoryId, setRefreshTrigger) => {
   const [showModal, setShowModal] = useState(false);
@@ -15,8 +16,7 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
   const [uploadError, setUploadError] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  const user = JSON.parse(sessionStorage.getItem("User"));
-  const token = user.access;
+  const { user, accessToken } = useAuth(); // 👈 from context
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
     setFormSubmitting(true);
@@ -33,12 +33,12 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
 
       if (isEditing && selectedTemplate) {
         result = await templateService.update(
-          token,
+          accessToken,
           selectedTemplate.id,
           templateData
         );
       } else {
-        result = await templateService.create(token, templateData);
+        result = await templateService.create(accessToken, templateData);
       }
 
       if (result.error) {
@@ -78,7 +78,7 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
     setDeleteError(null);
 
     try {
-      const result = await templateService.delete(token, selectedTemplate.id);
+      const result = await templateService.delete(accessToken, selectedTemplate.id);
 
       if (result.error) {
         setDeleteError(result.error);
@@ -101,7 +101,7 @@ export const useTemplateActions = (categoryId, setRefreshTrigger) => {
 
     try {
       const result = await templateService.uploadWordFile(
-        token,
+        accessToken,
         templateId,
         file
       );

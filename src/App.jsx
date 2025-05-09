@@ -13,40 +13,47 @@ import BulkData from "./Components/main/bulkData/BulkData";
 import FilledTemplet from "./Components/main/FilledTemplet/FilledTemplet";
 import AdminRoute from "./Components/Auth/AdminRoute";
 import Users from "./Components/main/Users/Users";
+import { AuthProvider } from "./Context/AuthContext";
+
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forget-password" element={<ForgetPassword />} />
-        <Route path="/reset-code" element={<ResetCode />} />
-        <Route path="/auth/reset-password" element={<ResetPassword />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="" element={<Categories />} />
-          <Route path="/dashboard/bulk-data" element={<BulkData />} />
-          <Route path="/dashboard/FilledTemplet" element={<FilledTemplet />} />
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/reset-code" element={<ResetCode />} />
+          <Route path="/auth/reset-password" element={<ResetPassword />} />
           <Route
-            path="/dashboard/templates/:categoryId"
-            element={<Templates />}
-          />
-          <Route
-            path="/dashboard/users"
+            path="/dashboard"
             element={
-              <AdminRoute>
-                <Users />
-              </AdminRoute>
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
             }
-          />
-        </Route>
-      </Routes>
+          >
+            <Route path="" element={<Categories />} />
+            <Route path="/dashboard/bulk-data" element={<BulkData />} />
+            <Route
+              path="/dashboard/FilledTemplet"
+              element={<FilledTemplet />}
+            />
+            <Route
+              path="/dashboard/templates/:categoryId"
+              element={<Templates />}
+            />
+            <Route
+              path="/dashboard/users"
+              element={
+                <AdminRoute>
+                  <Users />
+                </AdminRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

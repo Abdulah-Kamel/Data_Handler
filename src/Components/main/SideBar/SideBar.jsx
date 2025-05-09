@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Context/AuthContext";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); // 👈 from context
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
-  const [userRole, setUserRole] = useState("");
-  const navigate = useNavigate();
-  useEffect(() => {    
-    setUserRole(JSON.parse(sessionStorage.getItem("User"))?.role);
+
+  useEffect(() => {
     const activeItem = menuItems.find((item) => item.to === currentPath);
     if (activeItem) {
       setActiveMenu(activeItem.label);
     }
-  }, [activeMenu, currentPath]);
+  }, [currentPath]);
 
   const menuItems = [
     {
@@ -31,25 +32,25 @@ const Sidebar = () => {
       label: "انشاء المستندات",
       to: "/dashboard/FilledTemplet",
     },
-    userRole === "admin" && {
+    user?.role === "admin" && {
       icon: "fa-solid fa-user",
       label: "إدارة المستخدمين",
       to: "/dashboard/users",
     },
-  ].filter(Boolean); // Filter out false values from conditional items
+  ].filter(Boolean);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("User");
+    logout(); // 👈 call context logout
     navigate("/login");
   };
 
   return (
-   <div
-  className={`offcanvas offcanvas-end d-lg-flex bg-white sidebar-custom`}
-  tabIndex="-1"
-  id="offcanvasNavbar"
-  aria-labelledby="offcanvasNavbarLabel"
->
+    <div
+      className={`offcanvas offcanvas-end d-lg-flex bg-white sidebar-custom`}
+      tabIndex="-1"
+      id="offcanvasNavbar"
+      aria-labelledby="offcanvasNavbarLabel"
+    >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title fw-bold fs-4" id="offcanvasNavbarLabel">
           Dashboard
@@ -79,15 +80,15 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-           <div className="d-flex align-items-center">
-            <button
-              className="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center "
-              onClick={handleLogout}
-            >
-              تسجيل خروج
-              <i className="fa-solid fa-right-from-bracket fs-4"></i>
-            </button>
-          </div>
+        <div className="d-flex align-items-center">
+          <button
+            className="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center"
+            onClick={handleLogout}
+          >
+            تسجيل خروج
+            <i className="fa-solid fa-right-from-bracket fs-4"></i>
+          </button>
+        </div>
       </div>
     </div>
   );

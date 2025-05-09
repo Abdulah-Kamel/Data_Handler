@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import RowEditModal from "./RowEditModal";
 import RowDeleteModal from "./RowDeleteModal";
 import BulkDataService from "../../../services/BulkDataService";
+import { useAuth } from "../../../Context/AuthContext";
 
 const BulkDataDetails = ({
   selectedData,
@@ -21,6 +22,7 @@ const BulkDataDetails = ({
   const [formError, setFormError] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [allKeys, setAllKeys] = useState([]);
+  const { accessToken } = useAuth(); 
 
   useEffect(() => {
     if (selectedData && selectedData.rows && selectedData.rows.length > 0) {
@@ -65,7 +67,8 @@ const BulkDataDetails = ({
           selectedRow.id,
           {
             data: formData,
-          }
+          },
+          accessToken
         );
         if (onEditRow) {
           onEditRow(selectedData.id, selectedRow.id, formData);
@@ -73,14 +76,14 @@ const BulkDataDetails = ({
       } else {
         const response = await BulkDataService.createRow(selectedData.id, {
           data: formData,
-        });
+        },accessToken);
         if (onEditRow) {
           onEditRow(selectedData.id, formData);
         }
       }
 
       setShowEditModal(false);
-      const response = await BulkDataService.getBulkDataById(selectedData.id);
+      const response = await BulkDataService.getBulkDataById(selectedData.id,accessToken);
       setSelectedData(response.data);
     } catch (error) {
       setFormError(

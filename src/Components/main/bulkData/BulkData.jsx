@@ -5,6 +5,7 @@ import BulkDataModal from "./BulkDataModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import BulkDataService from "../../../services/BulkDataService";
 import ExcelUploadModal from "./ExcelUploadModal";
+import { useAuth } from "../../../Context/AuthContext";
 
 const BulkData = () => {
   const [bulkData, setBulkData] = useState([]);
@@ -16,12 +17,13 @@ const BulkData = () => {
   const [modalData, setModalData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
+  const { accessToken } = useAuth(); 
 
   const fetchBulkData = async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await BulkDataService.getAllBulkData();
+      const response = await BulkDataService.getAllBulkData(accessToken);
       setBulkData(response.data);
     } catch (error) {
       setError("حدث خطأ أثناء جلب البيانات");
@@ -62,9 +64,9 @@ const BulkData = () => {
     setError("");
     try {
       if (isEditing) {
-        await BulkDataService.updateBulkData(modalData.id, values);
+        await BulkDataService.updateBulkData(modalData.id, values,accessToken);
       } else {
-        await BulkDataService.createBulkData(values);
+        await BulkDataService.createBulkData(values,accessToken);
       }
       fetchBulkData();
       setShowModal(false);
@@ -83,9 +85,9 @@ const BulkData = () => {
     setLoading(true);
     setError("");
     try {
-      await BulkDataService.deleteRow(selectedData, rowId);
+      await BulkDataService.deleteRow(selectedData, rowId,accessToken);
 
-      const response = await BulkDataService.getBulkDataById(selectedData);
+      const response = await BulkDataService.getBulkDataById(selectedData,accessToken);
       setSelectedData(response.data);
     } catch (error) {
       setError("حدث خطأ أثناء حذف السجل");
@@ -116,7 +118,7 @@ const BulkData = () => {
     setDeleting(true);
     setError("");
     try {
-      await BulkDataService.deleteBulkData(itemToDelete.id);
+      await BulkDataService.deleteBulkData(itemToDelete.id,accessToken);
       fetchBulkData();
 
       setShowDeleteModal(false);
@@ -142,12 +144,12 @@ const BulkData = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      await BulkDataService.uploadExcelToBulkData(excelUploadId, formData);
+      await BulkDataService.uploadExcelToBulkData(excelUploadId, formData,accessToken);
       setShowExcelModal(false);
       resetForm();
 
       if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
-        const response = await BulkDataService.getBulkDataById(excelUploadId);
+        const response = await BulkDataService.getBulkDataById(excelUploadId,accessToken);
         setSelectedData(response.data);
       } else {
         await fetchBulkData();

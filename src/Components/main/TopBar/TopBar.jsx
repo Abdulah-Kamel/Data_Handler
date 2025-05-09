@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../Context/AuthContext";
 
 const TopBar = () => {
-  const user = JSON.parse(sessionStorage.getItem("User")) || {};
+  const { user } = useAuth(); 
+
   const username = user.username || "user-admin";
   const location = useLocation();
   const currentPath = location.pathname;
