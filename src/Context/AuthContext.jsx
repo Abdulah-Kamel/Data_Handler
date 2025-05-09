@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = async (values) => {
-    const data = await authService.login(values); 
+    const data = await authService.login(values);
     setAccessToken(data.access);
     setRefreshToken(data.refresh);
     setUser(data);
@@ -27,8 +27,6 @@ export const AuthProvider = ({ children }) => {
   };
 
   const refresh = async () => {
-    console.log("refreshing");
-
     const res = await authService
       .refresh(refreshToken)
       .then((res) => {

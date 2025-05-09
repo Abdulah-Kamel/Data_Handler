@@ -4,7 +4,6 @@ import { useAuth } from "../../Context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
   const { user, accessToken } = useAuth();
-  console.log(user, accessToken);
   
   if (user === undefined) {
     return "Loading...";
