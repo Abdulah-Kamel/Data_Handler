@@ -5,23 +5,7 @@ import FilledtemplateService from "../../../services/FilledtemplateService";
 import { PulseLoader } from "react-spinners";
 
 const FilledTemplateSchema = Yup.object().shape({
-  template_id: Yup.string().test(
-    "conditional-requirement",
-    "يرجى اختيار قالب أو رفع ملف Word",
-    function (value) {
-      return value || this.parent.word_file;
-    }
-  ),
-  word_file: Yup.mixed().test(
-    "fileFormat",
-    "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Word (.docx, .doc)",
-    function (value) {
-      if (!value) return true;
-      return ["docx", "doc"].includes(
-        value.name.split(".").pop().toLowerCase()
-      );
-    }
-  ),
+  template_id: Yup.string().required("يرجى اختيار قالب"),
   file_name: Yup.string().required("اسم الملف مطلوب"),
   file_type: Yup.string().required("نوع الملف مطلوب"),
   filled_data: Yup.object().required("البيانات مطلوبة"),
@@ -37,7 +21,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
   const [loadingVariables, setLoadingVariables] = useState(false);
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [formSuccess, setFormSuccess] = useState(false);
-  const [wordFile, setWordFile] = useState(null);
+
   useEffect(() => {
     const fetchTemplates = async () => {
       setLoading(true);
@@ -99,16 +83,6 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
       setFormSuccess(false);
     }
   };
-  const handleWordFileChange = (event, setFieldValue) => {
-    const file = event.target.files[0];
-    if (file) {
-      setWordFile(file);
-      setFieldValue("word_file", file);
-      setFieldValue("template_id", "");
-      setSelectedTemplate(null);
-    }
-  };
-
   // Add this state at the beginning of your component
   const [formEntries, setFormEntries] = useState([0]); // Array to track form entries
 
@@ -142,6 +116,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     setFormSuccess(false);
 
     try {
+      // Restructure the filled_data to be an array
       const filledDataArray = formEntries.map((index) => {
         const entryData = {};
         Object.keys(values.filled_data).forEach((key) => {
@@ -153,20 +128,13 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         return entryData;
       });
 
-      const formData = new FormData();
-      formData.append("file_name", values.file_name);
-      formData.append("file_type", values.file_type);
-      formData.append("filled_data", JSON.stringify(filledDataArray));
-
-      if (wordFile) {
-        formData.append("word_file", wordFile);
-      } else {
-        formData.append("template_id", values.template_id);
-      }
-
+      const requestData = {
+        ...values,
+        filled_data: filledDataArray,
+      };
       const response = await FilledtemplateService.createFilledTemplate(
         token,
-        formData
+        requestData
       );
 
       if (response?.data?.status === 201) {
@@ -249,7 +217,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           <Formik
             initialValues={{
               template_id: "",
-              word_file: "",
+
               filled_data: {},
               file_name: "",
               file_type: "both",
@@ -274,15 +242,13 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
 
                 <div className="row">
                   {/* Template Selection */}
-                  <div className="col-md-5 mb-3">
+                  <div className="col-md-6 mb-3">
                     <label htmlFor="template_id" className="form-label">
                       اختر القالب
                     </label>
                     <select
                       className={`form-select ${
-                        touched.template_id &&
-                        errors.template_id &&
-                        !values.word_file
+                        touched.template_id && errors.template_id
                           ? "is-invalid"
                           : ""
                       }`}
@@ -290,7 +256,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       name="template_id"
                       onChange={(e) => handleTemplateChange(e, setFieldValue)}
                       value={values.template_id}
-                      disabled={formSubmitting || values.word_file}
+                      disabled={formSubmitting}
                     >
                       <option value="">اختر قالب</option>
                       {templates.map((template) => (
@@ -306,38 +272,6 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                     />
                   </div>
 
-                  <div className="col-md-2 divider d-flex align-items-center justify-content-center mb-sm-3 mb-0 fs-5">
-                    او
-                  </div>
-
-                  {/* Word File Upload */}
-                  <div className="col-md-5 mb-3">
-                    <label htmlFor="word_file" className="form-label">
-                      رفع ملف Word
-                    </label>
-                    <input
-                      type="file"
-                      className={`form-control ${
-                        touched.word_file && errors.word_file
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      id="word_file"
-                      accept=".docx,.doc"
-                      onChange={(e) => handleWordFileChange(e, setFieldValue)}
-                      disabled={formSubmitting || values.template_id}
-                    />
-                    <small className="text-muted d-block mt-1">
-                      يرجى رفع ملف Word (.docx, .doc)
-                    </small>
-                    <ErrorMessage
-                      name="word_file"
-                      component="div"
-                      className="invalid-feedback"
-                    />
-                  </div>
-                </div>
-                <div className="row">
                   {/* File Name */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="file_name" className="form-label">
@@ -361,33 +295,69 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                     {/* File Type */}
-                     <div className="mb-3 col-md-6">
+                </div>
+
+                {/* File Type */}
+                <div className="mb-3">
                   <label htmlFor="file_type" className="form-label">
                     نوع الملف
                   </label>
-                  <Field
-                    as="select"
-                    className={`form-select ${
-                      touched.file_type && errors.file_type ? "is-invalid" : ""
-                    }`}
-                    id="file_type"
-                    name="file_type"
-                    disabled={formSubmitting}
-                  >
-                    <option value="pdf">PDF</option>
-                    <option value="word">Word</option>
-                    <option value="both">كلاهما</option>
-                  </Field>
+                  <div className="d-flex gap-3">
+                    <div className="form-check">
+                      <Field
+                        type="radio"
+                        className="form-check-input"
+                        id="file_type_pdf"
+                        name="file_type"
+                        value="pdf"
+                        disabled={formSubmitting}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="file_type_pdf"
+                      >
+                        PDF
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <Field
+                        type="radio"
+                        className="form-check-input"
+                        id="file_type_word"
+                        name="file_type"
+                        value="word"
+                        disabled={formSubmitting}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="file_type_word"
+                      >
+                        Word
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <Field
+                        type="radio"
+                        className="form-check-input"
+                        id="file_type_both"
+                        name="file_type"
+                        value="both"
+                        disabled={formSubmitting}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="file_type_both"
+                      >
+                        كلاهما
+                      </label>
+                    </div>
+                  </div>
                   <ErrorMessage
                     name="file_type"
                     component="div"
-                    className="invalid-feedback"
+                    className="text-danger"
                   />
                 </div>
-                </div>
-
-             
 
                 {/* Dynamic Fields based on API variables */}
                 {selectedTemplate && (

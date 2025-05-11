@@ -10,16 +10,14 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(() => {
     return localStorage.getItem("refresh_token") || null;
   });
-  const [admin, setAdmin] = useState(localStorage.getItem("admin") || false);
 
   const login = async (values) => {
     const data = await authService.login(values);
+    console.log(data);
+    
     setAccessToken(data.access);
     setRefreshToken(data.refresh);
     setUser(data);
-    data.role === "admin" ? setAdmin(true) : setAdmin(false);
-    localStorage.setItem("admin", data.role === "admin");
-    localStorage.setItem("refresh_token", data.refresh);
   };
 
   const logout = () => {
@@ -27,17 +25,17 @@ export const AuthProvider = ({ children }) => {
     setRefreshToken(null);
     setUser(null);
     localStorage.removeItem("refresh_token");
-    localStorage.removeItem("admin");
   };
+
 
   const refresh = async () => {
     const res = await authService
       .refresh(refreshToken)
       .then((res) => {
+        console.log(res);
         setAccessToken(res.access);
         setRefreshToken(res.refresh);
-        let user = jwtDecode(res.access);
-        setUser(user);
+        setUser(res);
         localStorage.setItem("refresh_token", res.refresh);
       })
       .catch((err) => logout());
@@ -48,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, admin, login, logout }}>
+    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

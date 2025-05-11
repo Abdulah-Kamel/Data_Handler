@@ -5,7 +5,7 @@ import { useAuth } from "../../../Context/AuthContext";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { admin, logout } = useAuth(); // 👈 from context
+  const { user, logout } = useAuth(); // 👈 from context
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -32,7 +32,7 @@ const Sidebar = () => {
       label: "انشاء المستندات",
       to: "/dashboard/FilledTemplet",
     },
-    admin  && {
+    user?.role === "admin"  && {
       icon: "fa-solid fa-user",
       label: "إدارة المستخدمين",
       to: "/dashboard/users",
