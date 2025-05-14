@@ -163,7 +163,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           className="position-absolute bg-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100"
           style={{ zIndex: 1 }}
         >
-          <PulseLoader color="#0aad0a" size={15} />
+          <PulseLoader color="#05755c" size={15} />
         </div>
       )}
       <div className="card mb-4">
@@ -369,7 +369,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       <div className="card-body">
                         {loadingVariables ? (
                           <div className="text-center py-3">
-                            <PulseLoader color="#0aad0a" size={10} />
+                            <PulseLoader color="#05755c" size={10} />
                             <p className="mt-2">جاري تحميل المتغيرات...</p>
                           </div>
                         ) : templateFields.length > 0 ? (

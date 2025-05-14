@@ -42,7 +42,7 @@ const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) 
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <PulseLoader color="#ffffff" size={8} />
+                <PulseLoader color="#05755c" size={8} />
               ) : (
                 "حذف"
               )}

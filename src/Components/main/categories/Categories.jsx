@@ -114,7 +114,7 @@ const Categories = () => {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "70vh" }}
       >
-        <PulseLoader color="#0aad0a" size={15} />
+        <PulseLoader color="#05755c" size={15} />
       </div>
     );
   }

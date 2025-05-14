@@ -109,7 +109,7 @@ const TemplateTable = ({
           className="position-absolute bg-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100"
           style={{ zIndex: 9999 }}
         >
-          <PulseLoader color="#0aad0a" size={15} />
+          <PulseLoader color="#05755c" size={15} />
         </div>
       )}
       <DataTable

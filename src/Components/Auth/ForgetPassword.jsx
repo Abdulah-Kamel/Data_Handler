@@ -38,7 +38,7 @@ const ForgetPassword = () => {
   if (loading) {
     return (
       <section className="position-absolute bg-main-light top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center w-100 vh-100">
-        <PulseLoader color="#0aad0a" size={30} />
+        <PulseLoader color="#05755c" size={30} />
       </section>
     );
   }

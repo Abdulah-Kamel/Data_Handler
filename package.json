@@ -20,6 +20,7 @@
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "formik": "^2.4.6",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-data-table-component": "^7.7.0",
