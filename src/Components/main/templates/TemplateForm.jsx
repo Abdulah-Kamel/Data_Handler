@@ -10,7 +10,6 @@ const TemplateSchema = Yup.object().shape({
   description: Yup.string()
     .min(5, "الوصف قصير جدًا")
     .max(200, "الوصف طويل جدًا")
-    .required("الوصف مطلوب"),
 });
 
 const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, onCancel, error }) => {
