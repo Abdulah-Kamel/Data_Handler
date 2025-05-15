@@ -50,9 +50,9 @@ export const categoryService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      return { 
-        data: null, 
-        error: error?.response?.data?.name?.[0] || "Failed to update category" 
+      return {
+        data: null,
+        error: error?.response?.data?.name?.[0] || "Failed to update category",
       };
     }
   },
@@ -66,9 +66,21 @@ export const categoryService = {
       });
       return { error: null };
     } catch (error) {
-      return { 
-        error: error?.response?.data?.detail || "Failed to delete category" 
+      return {
+        error: error?.response?.data?.detail || "Failed to delete category",
       };
+    }
+  },
+  getById: async (token, id) => {
+    try {
+      const response = await axios.get(`${baseUrl}/categories/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return { data: response.data, error: null };
+    } catch (error) {
+      return { data: null, error: "Failed to load category" };
     }
   },
 };

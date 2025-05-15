@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FilledtemplateService from "../../../services/FilledtemplateService";
+import categoryService from "../../../services/categoryService";
 import { PulseLoader } from "react-spinners";
 
 const FilledTemplateSchema = Yup.object().shape({
+  category_id: Yup.string().required("يرجى اختيار قسم"),
   template_id: Yup.string().required("يرجى اختيار قالب"),
   file_name: Yup.string().required("اسم الملف مطلوب"),
   file_type: Yup.string().required("نوع الملف مطلوب"),
@@ -12,6 +14,7 @@ const FilledTemplateSchema = Yup.object().shape({
 });
 
 const SingleFilledTempletForm = ({ token, onCancel }) => {
+  const [categories, setCategories] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(null);
@@ -21,6 +24,62 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
   const [loadingVariables, setLoadingVariables] = useState(false);
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [formSuccess, setFormSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoading(true);
+      try {
+        const result = await categoryService.getAll(token);
+        
+        if (result.data) {
+          setCategories(result.data);
+        }
+      } catch (err) {
+        setFormError("حدث خطأ أثناء جلب الأقسام");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, [token]);
+
+  const handleCategoryChange = async (e, setFieldValue) => {
+    const categoryId = e.target.value;
+    setFieldValue("category_id", categoryId);
+    setFieldValue("template_id", "");
+    setSelectedTemplate(null);
+    setTemplateFields([]);
+    setFormError(null); // Reset form error at the start
+
+    if (!categoryId) {
+      setTemplates([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await categoryService.getById(
+        token,
+        categoryId
+      );
+      if (result) {
+        setTemplates(result?.data?.templates);
+      } else {
+        setFormError({
+          message: "لم يتم العثور على قوالب لهذا القسم",
+          details: []
+        });
+      }
+    } catch (err) {
+      setFormError({
+        message: "حدث خطأ أثناء جلب القوالب",
+        details: err.message ? [err.message] : []
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -178,7 +237,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
               </h5>
               {downloadLinks.results.map((result, idx) => (
                 <div key={idx} className="mb-4">
-                  <h6 className="mb-2">نموذج {result.index}</h6>
+                  <h6 className="mb-2">ملف {result.index}</h6>
                   <div className="d-flex justify-content-center flex-wrap gap-2">
                     {result.links.pdf && (
                       <a
@@ -216,8 +275,8 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
 
           <Formik
             initialValues={{
+              category_id: "",
               template_id: "",
-
               filled_data: {},
               file_name: "",
               file_type: "both",
@@ -240,7 +299,38 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   </div>
                 )}
 
-                <div className="row">
+                <div className="row gy-3">
+                  {/* Category Selection */}
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="category_id" className="form-label">
+                      اختر القسم
+                    </label>
+                    <select
+                      className={`form-select ${
+                        touched.category_id && errors.category_id
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      id="category_id"
+                      name="category_id"
+                      onChange={(e) => handleCategoryChange(e, setFieldValue)}
+                      value={values.category_id}
+                      disabled={formSubmitting}
+                    >
+                      <option value="">اختر قسم</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    <ErrorMessage
+                      name="category_id"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                  </div>
+
                   {/* Template Selection */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="template_id" className="form-label">
@@ -256,7 +346,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       name="template_id"
                       onChange={(e) => handleTemplateChange(e, setFieldValue)}
                       value={values.template_id}
-                      disabled={formSubmitting}
+                      disabled={formSubmitting || !values.category_id}
                     >
                       <option value="">اختر قالب</option>
                       {templates.map((template) => (
@@ -271,7 +361,6 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       className="invalid-feedback"
                     />
                   </div>
-
                   {/* File Name */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="file_name" className="form-label">
@@ -295,68 +384,32 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                </div>
-
-                {/* File Type */}
-                <div className="mb-3">
-                  <label htmlFor="file_type" className="form-label">
-                    نوع الملف
-                  </label>
-                  <div className="d-flex gap-3">
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_pdf"
-                        name="file_type"
-                        value="pdf"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_pdf"
-                      >
-                        PDF
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_word"
-                        name="file_type"
-                        value="word"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_word"
-                      >
-                        Word
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_both"
-                        name="file_type"
-                        value="both"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_both"
-                      >
-                        كلاهما
-                      </label>
-                    </div>
+                  {/* File Type */}
+                  <div className="col-md-6">
+                    <label htmlFor="file_type" className="form-label">
+                      نوع الملف
+                    </label>
+                    <Field
+                      as="select"
+                      className={`form-select ${
+                        touched.file_type && errors.file_type
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      id="file_type"
+                      name="file_type"
+                      disabled={formSubmitting}
+                    >
+                      <option value="pdf">PDF</option>
+                      <option value="word">Word</option>
+                      <option value="both">كلاهما</option>
+                    </Field>
+                    <ErrorMessage
+                      name="file_type"
+                      component="div"
+                      className="text-danger"
+                    />
                   </div>
-                  <ErrorMessage
-                    name="file_type"
-                    component="div"
-                    className="text-danger"
-                  />
                 </div>
 
                 {/* Dynamic Fields based on API variables */}
@@ -395,7 +448,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                                   </button>
                                 )}
                                 <h6 className="mb-3 fs-5 fw-bold text-center">
-                                  نموذج {entryIndex + 1}
+                                  ملف {entryIndex + 1}
                                 </h6>
                                 <div className="row mt-3">
                                   {templateFields.map((field) => (
