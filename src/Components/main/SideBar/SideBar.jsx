@@ -70,7 +70,7 @@ const Sidebar = () => {
                 to={item.to}
                 className={`d-flex fs-5 rounded-2 mb-2 align-items-center px-4 py-2 text-decoration-none ${
                   currentPath === item.to
-                    ? "bg-success text-white"
+                    ? "primary-bg text-white"
                     : "text-secondary hover-success"
                 }`}
               >

@@ -173,7 +173,7 @@ const BulkData = () => {
 
           {!viewingDetails && (
             <button
-              className="btn btn-outline-success small-text"
+              className="btn primary-btn-outline small-text"
               onClick={handleAddNew}
             >
               إضافة بيانات جديدة

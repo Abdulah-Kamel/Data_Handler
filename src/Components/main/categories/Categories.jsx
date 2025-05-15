@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PulseLoader } from "react-spinners";
 import categoryService from "../../../services/categoryService";
-import CategoryTable from "./CategoryTable";
+import CategoryGrid from "./CategoryGrid";
 import CategoryModal from "./CategoryModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useAuth } from "../../../Context/AuthContext";
@@ -119,13 +119,14 @@ const Categories = () => {
     );
   }
   return (
-    <div className="px-3 mt-5">
-      <title>Data Handler - تصنيفات القوالب</title>
+    <div className="px-3 mt-5 position-relative">
+      <title>Data Handler - اقسام النماذج</title>
       <meta name="description" content="Data Handler - تصنيفات القوالب" />
 
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-between">
+        <h2>قائمة الاقسام</h2>
         <button
-          className="btn btn-outline-success me-auto"
+          className="btn primary-btn-outline me-auto"
           onClick={() => {
             setIsEditing(false);
             setSelectedCategory(null);
@@ -155,7 +156,7 @@ const Categories = () => {
           لا توجد فئات متاحة حالياً
         </div>
       ) : (
-        <CategoryTable
+        <CategoryGrid
           categories={categories}
           loading={loading}
           formatDate={formatDate}
