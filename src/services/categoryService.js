@@ -35,7 +35,26 @@ export const categoryService = {
       };
     }
   },
-
+  search: async (token, searchParam) => {
+    try {
+      const response = await axios.get(
+        `${baseUrl}/categories/?search=${searchParam || ""}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return { data: response.data, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error:
+          error?.response?.data?.name?.[0] || "Failed to search categories",
+      };
+    }
+  },
   update: async (token, id, categoryData) => {
     try {
       const response = await axios.put(

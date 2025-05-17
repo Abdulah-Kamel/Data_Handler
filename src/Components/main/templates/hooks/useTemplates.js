@@ -32,12 +32,30 @@ export const useTemplates = (categoryId) => {
     fetchData();
   }, [accessToken, categoryId, refreshTrigger]);
 
+  const handleSearch = async (searchTerm) => {
+    setLoading(true);
+    try {
+      const result = await templateService.search(accessToken, searchTerm);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setTemplates(result.data);
+        setError(null);
+      }
+    } catch (err) {
+      setError("Failed to search templates");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     templates,
     category,
     loading,
     error,
     refreshTrigger,
-    setRefreshTrigger
+    setRefreshTrigger,
+    handleSearch
   };
 };

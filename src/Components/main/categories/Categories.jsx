@@ -5,6 +5,7 @@ import CategoryGrid from "./CategoryGrid";
 import CategoryModal from "./CategoryModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
 import { useAuth } from "../../../Context/AuthContext";
+import SearchInput from "../../common/SearchInput";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -18,6 +19,8 @@ const Categories = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [formError, setFormError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
   const { user, accessToken } = useAuth();
 
   useEffect(() => {
@@ -36,6 +39,27 @@ const Categories = () => {
 
     fetchCategories();
   }, [accessToken, refreshTrigger]);
+  const handleSearch = async () => {
+    setLoading(true);
+    const { data, error } = await categoryService.search(
+      accessToken,
+      searchTerm
+    );
+
+    if (data) {
+      setCategories(data);
+      setError(null);
+    } else {
+      setError(error);
+    }
+    setLoading(false);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -121,12 +145,20 @@ const Categories = () => {
   return (
     <div className="px-3 mt-5 position-relative">
       <title>Data Handler - اقسام النماذج</title>
-      <meta name="description" content="Data Handler - تصنيفات القوالب" />
+      <meta name="description" content="Data Handler - اقسام النماذج" />
 
-      <div className="d-flex justify-content-between">
-        <h2>قائمة الاقسام</h2>
+      <div className="d-flex category-header justify-content-between align-items-center mb-4">
+        <div className="d-flex align-items-center gap-3">
+          <h2>الاقسام</h2>
+          <SearchInput
+            value={searchTerm}
+            onChange={setSearchTerm}
+            onSearch={handleSearch}
+            placeholder="ابحث عن قسم..."
+          />
+        </div>
         <button
-          className="btn primary-btn-outline me-auto"
+          className="btn btn-outline-success mt-4 mt-md-0"
           onClick={() => {
             setIsEditing(false);
             setSelectedCategory(null);

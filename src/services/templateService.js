@@ -10,10 +10,10 @@ export const templateService = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return { 
-        data: response.data, 
+      return {
+        data: response.data,
         templates: response.data.templates || [],
-        error: null 
+        error: null,
       };
     } catch (error) {
       return { data: null, templates: [], error: "Failed to load templates" };
@@ -33,11 +33,10 @@ export const templateService = {
     }
   },
 
-  create: async (token, templateData) => {
+  search: async (token, searchParam) => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/templates/`,
-        templateData,
+      const response = await axios.get(
+        `${baseUrl}/templates/?search=${searchParam || ""}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,9 +46,26 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      const errorMessage = 
-        error?.response?.data?.name?.[0] || 
-        error?.response?.data?.description?.[0] || 
+      return {
+        data: null,
+        error:
+          error?.response?.data?.name?.[0] || "Failed to search categories",
+      };
+    }
+  },
+  create: async (token, templateData) => {
+    try {
+      const response = await axios.post(`${baseUrl}/templates/`, templateData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return { data: response.data, error: null };
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.name?.[0] ||
+        error?.response?.data?.description?.[0] ||
         error?.response?.data?.detail ||
         "Failed to create template";
       return { data: null, error: errorMessage };
@@ -70,9 +86,9 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      const errorMessage = 
-        error?.response?.data?.name?.[0] || 
-        error?.response?.data?.description?.[0] || 
+      const errorMessage =
+        error?.response?.data?.name?.[0] ||
+        error?.response?.data?.description?.[0] ||
         error?.response?.data?.detail ||
         "Failed to update template";
       return { data: null, error: errorMessage };
@@ -88,8 +104,8 @@ export const templateService = {
       });
       return { error: null };
     } catch (error) {
-      return { 
-        error: error?.response?.data?.detail || "Failed to delete template" 
+      return {
+        error: error?.response?.data?.detail || "Failed to delete template",
       };
     }
   },
@@ -97,8 +113,8 @@ export const templateService = {
   uploadWordFile: async (token, templateId, file) => {
     try {
       const formData = new FormData();
-      formData.append('file', file);
-      
+      formData.append("file", file);
+
       const response = await axios.post(
         `${baseUrl}/templates/${templateId}/upload_word/`,
         formData,
@@ -111,8 +127,8 @@ export const templateService = {
       );
       return { data: response.data, error: null };
     } catch (error) {
-      const errorMessage = 
-        error?.response?.data?.word_file?.[0] || 
+      const errorMessage =
+        error?.response?.data?.word_file?.[0] ||
         error?.response?.data?.detail ||
         "Failed to upload file";
       return { data: null, error: errorMessage };

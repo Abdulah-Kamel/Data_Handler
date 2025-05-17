@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 
-const CategoryGrid = ({ categories, loading, formatDate, onEdit, onDelete }) => {
+const CategoryGrid = ({ categories, loading,  onEdit, onDelete }) => {
   return (
     <div className="mt-5">
       {loading && (
@@ -15,7 +15,7 @@ const CategoryGrid = ({ categories, loading, formatDate, onEdit, onDelete }) => 
       )}
       
       <div className="row g-4 justify-content-evenly">
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <div key={category.id} className="col-12 col-md-6 col-lg-4">
             <div className="card h-100 shadow-sm hover-shadow border-0" style={{ transition: 'all 0.3s ease' }}>
               <div className="card-body d-flex flex-column">

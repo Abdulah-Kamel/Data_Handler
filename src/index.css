@@ -94,7 +94,20 @@ input[name="file_type"]:checked {
   .navBar-btn {
     width: 100%;
   }
-
+  .category-actions{
+    width: 100%;
+  }
+  .category-search-input{
+    width: 80% !important;
+    margin-left: auto;
+  }
+  .category-header{
+    flex-direction: column;
+    & div{
+      flex-direction: column;
+      
+    }
+  }
   .nav-bg {
     text-align: center;
     width: 100%;
@@ -127,6 +140,7 @@ input[name="file_type"]:checked {
   .form-container{
     width: 90%;
   }
+  
 }
 .sidebar {
   background-color: #f8f9fa;
@@ -238,4 +252,33 @@ input[name="file_type"]:checked {
 .hover-shadow:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+.search-container {
+  position: relative;
+  width: 300px;
+  height: max-content;
+}
+
+.search-container input {
+  padding-right: 40px;
+  border-radius: 20px;
+}
+
+.search-icon-btn {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  padding: 5px 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.search-icon-btn:hover {
+  color: #05755c;
 }
