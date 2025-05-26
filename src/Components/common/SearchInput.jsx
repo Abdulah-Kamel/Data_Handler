@@ -24,7 +24,7 @@ const SearchInput = ({
         onKeyPress={handleKeyPress}
       />
       <button
-        className="btn btn-link search-icon-btn"
+        className="btn btn-link search-icon-btn "
         onClick={onSearch}
         aria-label="Search"
       >

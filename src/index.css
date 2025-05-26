@@ -270,6 +270,7 @@ input[name="file_type"]:checked {
   position: absolute;
   left: 5px;
   top: 50%;
+  margin-top: 4px;
   transform: translateY(-50%);
   color: #6c757d;
   padding: 5px 10px;

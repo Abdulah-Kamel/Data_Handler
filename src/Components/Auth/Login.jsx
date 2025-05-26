@@ -80,11 +80,11 @@ const Login = () => {
              
               <button
                 type="submit"
-                className="btn primary-btn text-white px-2 px-sm-4 py-2"
+                className="btn primary-btn text-white px-2 px-sm-4 py-2 d-flex align-items-center gap-2"
                 disabled={!formik.isValid || loginLoading}
               >
                 {loginLoading ? (
-                  <i className="fas fa-spinner fa-spin"></i>
+                  <PulseLoader color="#fff" size={10} />
                 ) : (
                   "تسجيل الدخول"
                 )}
