@@ -76,13 +76,13 @@ const Templates = () => {
         <div className="d-flex flex-row gap-2 justify-content-end category-actions order-1 order-lg-2 mb-4 mb-md-0">
           <Link
             to="/dashboard"
-            className="btn btn-outline-secondary small-text flex-grow-1 flex-md-grow-0"
+            className="btn btn-outline-secondary small-text flex-grow-1 flex-md-grow-0 d-flex align-items-center"
           >
             العودة للاقسام
             <i className="fas fa-arrow-left me-2"></i>
           </Link>
           <button
-            className="btn primary-btn small-text flex-grow-1 flex-md-grow-0"
+            className="btn primary-btn small-text flex-grow-1 flex-md-grow-0 d-flex align-items-center"
             onClick={() => {
               setIsEditing(false);
               setSelectedTemplate(null);

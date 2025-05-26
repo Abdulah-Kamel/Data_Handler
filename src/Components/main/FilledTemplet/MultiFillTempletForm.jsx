@@ -3,39 +3,44 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FilledtemplateService from "../../../services/FilledtemplateService";
 import BulkDataService from "../../../services/BulkDataService";
+import categoryService from "../../../services/categoryService";
 import { PulseLoader } from "react-spinners";
 
-const validFileExtensions = ['xlsx', 'xls'];
+const validFileExtensions = ["xlsx", "xls"];
 
 const MultiFillTemplateSchema = Yup.object().shape({
   template_id: Yup.string().test(
-    'conditional-requirement',
+    "conditional-requirement",
     "يرجى اختيار قالب أو رفع ملف Word",
-    function(value) {
+    function (value) {
       return value || this.parent.word_file;
     }
   ),
   word_file: Yup.mixed().test(
     "fileFormat",
     "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Word (.docx, .doc)",
-    function(value) {
-      if (!value) return true; 
-      return ['docx', 'doc'].includes(value.name.split('.').pop().toLowerCase());
+    function (value) {
+      if (!value) return true;
+      return ["docx", "doc"].includes(
+        value.name.split(".").pop().toLowerCase()
+      );
     }
   ),
   bulk_data_id: Yup.string().test(
-    'conditional-requirement',
+    "conditional-requirement",
     "يرجى اختيار مجموعة البيانات أو رفع ملف Excel",
-    function(value) {
+    function (value) {
       return this.parent.excel_file || value;
     }
   ),
   excel_file: Yup.mixed().test(
     "fileFormat",
     "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Excel (.xlsx, .xls)",
-    function(value) {
-      if (!value) return true; 
-      return validFileExtensions.includes(value.name.split('.').pop().toLowerCase());
+    function (value) {
+      if (!value) return true;
+      return validFileExtensions.includes(
+        value.name.split(".").pop().toLowerCase()
+      );
     }
   ),
   file_name: Yup.string().required("اسم الملف مطلوب"),
@@ -45,6 +50,7 @@ const MultiFillTemplateSchema = Yup.object().shape({
 
 const MultiFillTempletForm = ({ token }) => {
   const [templates, setTemplates] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [bulkDataSets, setBulkDataSets] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState(null);
@@ -52,48 +58,89 @@ const MultiFillTempletForm = ({ token }) => {
   const [downloadLinks, setDownloadLinks] = useState(null);
   const [selectedTemplateVars, setSelectedTemplateVars] = useState([]);
   const [excelFile, setExcelFile] = useState(null);
-    const [wordFile, setWordFile] = useState(null);
+  const [wordFile, setWordFile] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategories = async () => {
       setLoading(true);
       try {
-        const templatesResult = await FilledtemplateService.getAllTemplates(
-          token
-        );
-        if (templatesResult) {
-          setTemplates(templatesResult.data);
-        }
-        const bulkDataResult = await BulkDataService.getAllBulkData(token);
-        if (bulkDataResult.data) {
-          setBulkDataSets(bulkDataResult.data);
+        const result = await categoryService.getAll(token);
+        if (result.data) {
+          setCategories(result.data);
         }
       } catch (err) {
-        setFormError("حدث خطأ أثناء جلب البيانات");
+        setFormError("حدث خطأ أثناء جلب الأقسام");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchCategories();
   }, [token]);
+
+  useEffect(() => {
+    const fetchBulkData = async () => {
+      try {
+        const bulkDataResult = await BulkDataService.getAllBulkData(token);
+        if (bulkDataResult.data) {
+          setBulkDataSets(bulkDataResult.data);
+        }
+      } catch (err) {
+        setFormError("حدث خطأ أثناء جلب مجموعات البيانات");
+      }
+    };
+
+    fetchBulkData();
+  }, [token]);
+
+  const handleCategoryChange = async (e, setFieldValue) => {
+    const categoryId = e.target.value;
+    setSelectedCategory(categoryId);
+    setFieldValue("template_id", "");
+    setSelectedTemplateVars([]);
+    setFormError(null);
+
+    if (!categoryId) {
+      setTemplates([]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const result = await categoryService.getById(token, categoryId);
+      if (result) {
+        setTemplates(result?.data?.templates || []);
+      } else {
+        setTemplates([]);
+      }
+    } catch (err) {
+      setFormError({
+        message: "حدث خطأ أثناء جلب القوالب",
+        details: err.message ? [err.message] : [],
+      });
+      setTemplates([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleExcelChange = (event, setFieldValue) => {
     const file = event.target.files[0];
     if (file) {
       setExcelFile(file);
-      setFieldValue('excel_file', file);
-      setFieldValue('bulk_data_id', ''); 
+      setFieldValue("excel_file", file);
+      setFieldValue("bulk_data_id", "");
     }
   };
   const handleWordFileChange = (event, setFieldValue) => {
     const file = event.target.files[0];
     if (file) {
       setWordFile(file);
-      setFieldValue('word_file', file);
-      setFieldValue('template_id', ''); 
+      setFieldValue("word_file", file);
+      setFieldValue("template_id", "");
     }
   };
-  
+
   const handleSubmit = async (values) => {
     setFormSubmitting(true);
     setFormError(null);
@@ -141,10 +188,17 @@ const MultiFillTempletForm = ({ token }) => {
     }
   };
 
-  const handleTemplateChange = async (templateId) => {
+  const handleTemplateChange = async (templateId, setFieldValue) => {
     if (!templateId) {
       setSelectedTemplateVars([]);
+      setFieldValue("word_file", null);
+      setWordFile(null);
       return;
+    }
+
+    const template = templates.find((t) => t.id === templateId);
+    if (template) {
+      setSelectedTemplateVars(template.variables || []);
     }
 
     try {
@@ -153,9 +207,11 @@ const MultiFillTempletForm = ({ token }) => {
         templateId
       );
       if (response?.data?.status === 200) {
-        setSelectedTemplateVars(response?.data?.data?.variables);
+        setSelectedTemplateVars(response?.data?.data?.variables || []);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching template variables:", error);
+    }
   };
 
   return (
@@ -172,7 +228,7 @@ const MultiFillTempletForm = ({ token }) => {
         <div className="card-header primary-bg text-white">
           <h5 className="mb-0">انشاء مستندات متعددة</h5>
         </div>
-        <div className="card-body">
+        <div className="card-body d-flex flex-column gap-3">
           {downloadLinks && (
             <div className="alert alert-success mb-4">
               <h5 className="mb-3">
@@ -233,7 +289,34 @@ const MultiFillTempletForm = ({ token }) => {
                   </div>
                 )}
 
-                <div className="row justify-content-between ">
+                <div className="row">
+                  {/* Category Selection */}
+                  <div className="col-md-5 mb-3">
+                    <label htmlFor="category_id" className="form-label">
+                      اختر القسم
+                    </label>
+                    <Field
+                      as="select"
+                      className="form-select"
+                      id="category_id"
+                      name="category_id"
+                      onChange={(e) => handleCategoryChange(e, setFieldValue)}
+                      value={selectedCategory}
+                      disabled={formSubmitting}
+                    >
+                      <option value="">اختر قسم</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+
+                  <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
+                    او
+                  </div>
+
                   {/* Template Selection */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="template_id" className="form-label">
@@ -250,9 +333,14 @@ const MultiFillTempletForm = ({ token }) => {
                       }`}
                       id="template_id"
                       name="template_id"
-                      disabled={loading || formSubmitting || values.word_file}
+                      disabled={
+                        loading ||
+                        formSubmitting ||
+                        values.word_file ||
+                        !selectedCategory
+                      }
                       onChange={(e) => {
-                        handleTemplateChange(e.target.value);
+                        handleTemplateChange(e.target.value, setFieldValue);
                         handleChange(e);
                       }}
                     >
@@ -269,12 +357,9 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                  <div className="col-md-2 divider d-flex align-items-center justify-content-center mb-3 fs-5">
-                    او
-                  </div>
 
                   {/* Word File Upload */}
-                  <div className="col-md-5 mb-3">
+                  <div className="col-md-5 mb-3 mt-3 mt-sm-0">
                     <label htmlFor="word_file" className="form-label">
                       رفع ملف Word
                     </label>
@@ -299,9 +384,9 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                </div>
-
-                <div className="row mb-3">
+                  <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
+                    او
+                  </div>
                   {/* Bulk Data Selection */}
                   <div className="col-md-5">
                     <label htmlFor="bulk_data_id" className="form-label">
@@ -333,11 +418,11 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                  <div className="col-md-2 divider d-flex align-items-center justify-content-center my-3 my-md-0  fs-5">
-                    او
-                  </div>
+                </div>
+
+                <div className="row mb-3">
                   {/* Excel File Upload */}
-                  <div className="col-md-5">
+                  <div className="col-md-5 mt-3 mt-sm-0">
                     <label htmlFor="excel_file" className="form-label">
                       رفع ملف Excel
                     </label>
@@ -364,11 +449,13 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
-                </div>
 
-                <div className="row">
+                  <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
+                    او
+                  </div>
+
                   {/* File Name */}
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-5 mb-3">
                     <label htmlFor="file_name" className="form-label">
                       اسم الملف
                     </label>
@@ -390,9 +477,11 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
+                </div>
 
+                <div className="row">
                   {/* Folder Name */}
-                  <div className="col-md-6 mb-3">
+                  <div className="col-md-5 mb-3">
                     <label htmlFor="folder_name" className="form-label">
                       اسم المجلد
                     </label>
@@ -414,69 +503,37 @@ const MultiFillTempletForm = ({ token }) => {
                       className="invalid-feedback"
                     />
                   </div>
+                  <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
+                    او
+                  </div>
+                  {/* File Type */}
+                  <div className="col-md-5 mb-3">
+                    <label htmlFor="file_type" className="form-label">
+                      نوع الملف
+                    </label>
+                    <Field
+                      as="select"
+                      className={`form-select ${
+                        touched.file_type && errors.file_type ? "is-invalid" : ""
+                      }`}
+                      id="file_type"
+                      name="file_type"
+                      disabled={formSubmitting}
+                    >
+                      <option value="">اختر نوع الملف</option>
+                      <option value="pdf">PDF</option>
+                      <option value="word">Word</option>
+                      <option value="both">كلاهما</option>
+                    </Field>
+                    <ErrorMessage
+                      name="file_type"
+                      component="div"
+                      className="text-danger"
+                    />
+                  </div>
                 </div>
 
-                {/* File Type */}
-                <div className="mb-3">
-                  <label htmlFor="file_type" className="form-label">
-                    نوع الملف
-                  </label>
-                  <div className="d-flex gap-3">
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_pdf"
-                        name="file_type"
-                        value="pdf"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_pdf"
-                      >
-                        PDF
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_word"
-                        name="file_type"
-                        value="word"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_word"
-                      >
-                        Word
-                      </label>
-                    </div>
-                    <div className="form-check">
-                      <Field
-                        type="radio"
-                        className="form-check-input"
-                        id="file_type_both"
-                        name="file_type"
-                        value="both"
-                        disabled={formSubmitting}
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="file_type_both"
-                      >
-                        كلاهما
-                      </label>
-                    </div>
-                  </div>
-                  <ErrorMessage
-                    name="file_type"
-                    component="div"
-                    className="text-danger"
-                  />
-                </div>
+                
                 {selectedTemplateVars.length > 0 && (
                   <div className="mb-4">
                     <h6 className="mb-3">متغيرات القالب المتاحة:</h6>

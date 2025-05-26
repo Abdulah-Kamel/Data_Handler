@@ -22,7 +22,7 @@ const BulkDataDetails = ({
   const [formError, setFormError] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [allKeys, setAllKeys] = useState([]);
-  const { accessToken } = useAuth(); 
+  const { accessToken } = useAuth();
 
   useEffect(() => {
     if (selectedData && selectedData.rows && selectedData.rows.length > 0) {
@@ -74,16 +74,23 @@ const BulkDataDetails = ({
           onEditRow(selectedData.id, selectedRow.id, formData);
         }
       } else {
-        const response = await BulkDataService.createRow(selectedData.id, {
-          data: formData,
-        },accessToken);
+        const response = await BulkDataService.createRow(
+          selectedData.id,
+          {
+            data: formData,
+          },
+          accessToken
+        );
         if (onEditRow) {
           onEditRow(selectedData.id, formData);
         }
       }
 
       setShowEditModal(false);
-      const response = await BulkDataService.getBulkDataById(selectedData.id,accessToken);
+      const response = await BulkDataService.getBulkDataById(
+        selectedData.id,
+        accessToken
+      );
       setSelectedData(response.data);
     } catch (error) {
       setFormError(
@@ -130,7 +137,7 @@ const BulkDataDetails = ({
         selector: (row) =>
           row.data && row.data[key] !== undefined ? row.data[key] : "",
         sortable: true,
-        width: columnWidth ? columnWidth : "auto" ,
+        width: columnWidth ? columnWidth : "auto",
       };
     });
 
@@ -141,14 +148,15 @@ const BulkDataDetails = ({
         cell: (row) => (
           <div className="d-flex gap-2 justify-content-center">
             <button
-              className="btn btn-outline-success btn-sm rounded-pill"
+              className="btn btn-outline-success btn-sm rounded-pill d-flex align-items-center gap-1"
               onClick={() => handleEditRow(row)}
             >
-              تعديل
-              <i className="fas fa-edit me-1"></i>
+              <span>تعديل</span>
+              <i className="fas fa-edit d-flex align-items-center"></i>
             </button>
+
             <button
-              className="btn btn-outline-danger btn-sm rounded-pill"
+              className="btn btn-outline-danger btn-sm rounded-pill d-flex align-items-center"
               onClick={() => handleDeleteRow(row)}
             >
               حذف
@@ -167,11 +175,17 @@ const BulkDataDetails = ({
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h3 className="m-0 fs-4">{selectedData?.name}</h3>
         <div className="d-flex flex-column flex-sm-row gap-2">
-          <button className="btn btn-outline-secondary small-text" onClick={onBack}>
+          <button
+            className="btn btn-outline-secondary small-text d-flex align-items-center"
+            onClick={onBack}
+          >
             العودة
             <i className="fas fa-arrow-left me-1"></i>
           </button>
-          <button className="btn primary-btn-outline small-text" onClick={handleAddRow}>
+          <button
+            className="btn primary-btn-outline small-text d-flex align-items-center"
+            onClick={handleAddRow}
+          >
             إضافة سجل جديد
             <i className="fas fa-plus me-1"></i>
           </button>

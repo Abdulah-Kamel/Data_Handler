@@ -158,7 +158,7 @@ const Categories = () => {
           />
         </div>
         <button
-          className="btn btn-outline-success mt-4 mt-md-0"
+          className="btn d-flex align-items-center primary-btn-outline mt-4 mt-md-0"
           onClick={() => {
             setIsEditing(false);
             setSelectedCategory(null);

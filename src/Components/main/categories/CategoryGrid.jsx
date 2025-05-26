@@ -35,20 +35,20 @@ const CategoryGrid = ({ categories, loading,  onEdit, onDelete }) => {
                 <div className="d-flex gap-2 justify-content-between mt-auto">
                   <Link
                     to={`/dashboard/templates/${category.id}`}
-                    className="btn btn-outline-primary btn-sm"
+                    className="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center"
                     style={{ flex: '1' }}
                   >
                     عرض النماذج
                     <i className="fas fa-eye me-1"></i>
                   </Link>
                   <button
-                    className="btn btn-outline-success btn-sm"
+                    className="btn btn-outline-success btn-sm d-flex align-items-center"
                     onClick={() => onEdit(category)}
                   >
                     <i className="fas fa-edit"></i>
                   </button>
                   <button
-                    className="btn btn-outline-danger btn-sm"
+                    className="btn btn-outline-danger btn-sm d-flex align-items-center"
                     onClick={() => onDelete(category)}
                   >
                     <i className="fas fa-trash"></i>

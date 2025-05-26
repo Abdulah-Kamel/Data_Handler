@@ -74,7 +74,7 @@ const TemplateTable = ({
       cell: (row) => (
         <div className="d-flex gap-2 justify-content-center">
           <button
-            className="btn btn-outline-info btn-sm rounded-pill"
+            className="btn btn-outline-info btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onUploadFile(row)}
             title="word رفع ملف"
           >
@@ -82,14 +82,14 @@ const TemplateTable = ({
             <i className="fas fa-upload me-1"></i>
           </button>
           <button
-            className="btn btn-outline-success btn-sm rounded-pill"
+            className="btn btn-outline-success btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onEdit(row)}
           >
             تعديل
             <i className="fas fa-edit me-1"></i>
           </button>
           <button
-            className="btn btn-outline-danger btn-sm rounded-pill"
+            className="btn btn-outline-danger btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onDelete(row)}
           >
             حذف

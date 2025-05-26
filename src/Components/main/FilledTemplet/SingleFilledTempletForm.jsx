@@ -30,7 +30,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
       setLoading(true);
       try {
         const result = await categoryService.getAll(token);
-        
+
         if (result.data) {
           setCategories(result.data);
         }
@@ -59,22 +59,19 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
 
     setLoading(true);
     try {
-      const result = await categoryService.getById(
-        token,
-        categoryId
-      );
+      const result = await categoryService.getById(token, categoryId);
       if (result) {
         setTemplates(result?.data?.templates);
       } else {
         setFormError({
           message: "لم يتم العثور على قوالب لهذا القسم",
-          details: []
+          details: [],
         });
       }
     } catch (err) {
       setFormError({
         message: "حدث خطأ أثناء جلب القوالب",
-        details: err.message ? [err.message] : []
+        details: err.message ? [err.message] : [],
       });
     } finally {
       setLoading(false);
@@ -486,10 +483,10 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   </div>
                 )}
 
-                <div className="d-flex justify-content-between px-3">
+                <div className="d-flex gap-2 justify-content-between mt-3">
                   <button
                     type="button"
-                    className="btn primary-btn"
+                    className="btn d-flex align-items-center small-text primary-btn"
                     onClick={addNewForm}
                     disabled={formSubmitting}
                   >
@@ -499,7 +496,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   {onCancel && (
                     <button
                       type="button"
-                      className="btn btn-secondary me-2"
+                      className="btn small-text btn-secondary me-2"
                       onClick={onCancel}
                       disabled={formSubmitting}
                     >
@@ -508,7 +505,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   )}
                   <button
                     type="submit"
-                    className="btn primary-btn px-4"
+                    className="btn small-text primary-btn px-4"
                     disabled={formSubmitting}
                   >
                     {formSubmitting ? (

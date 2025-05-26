@@ -78,7 +78,7 @@ const Users = () => {
       <div className="d-flex justify-content-between align-items-center mb-5">
         <h2 className="m-0">إدارة المستخدمين</h2>
         <button
-          className="btn primary-btn-outline"
+          className="btn d-flex align-items-center primary-btn-outline"
           onClick={() => handleShowModal('create')}
         >
           إضافة مستخدم جديد
