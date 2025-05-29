@@ -6,9 +6,10 @@ import { useLoginForm } from "../../hooks/useLoginForm";
 import FormInput from "../common/FormInput";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../Context/AuthContext";
+import loginImage from "../../assets/login.jpg";
 
 const Login = () => {
-  const { login,user  } = useAuth(); // from context
+  const { login, user } = useAuth(); // from context
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -38,7 +39,7 @@ const Login = () => {
     if (user) {
       navigate("/dashboard");
     }
-  }, [navigate,user]);
+  }, [navigate, user]);
 
   if (loading) {
     return (
@@ -53,47 +54,59 @@ const Login = () => {
       <title>تسجيل الدخول</title>
       <meta name="description" content="تسجيل الدخول" />
       <Navbar />
-      <div className="form-container my-5 py-5">
-        <div className="mt-5 py-5">
-          <h2 className="fw-bold text-center">تسجيل الدخول</h2>
-          <form onSubmit={formik.handleSubmit} className="mt-4">
-            <FormInput
-              label="اسم المستخدم:"
-              type="text"
-              name="username"
-              id="username"
-              formik={formik}
-            />
-            <FormInput
-              label="الباسورد:"
-              type="password"
-              name="password"
-              id="password"
-              formik={formik}
-            />
-            {error && (
-              <div className="alert alert-danger my-4">
-                <p className="text-center fw-bold fs-5 mb-0">{error}</p>
-              </div>
-            )}
-            <div className="mt-5 d-flex justify-content-between align-items-center  gap-3">
-             
-              <button
-                type="submit"
-                className="btn primary-btn text-white px-2 px-sm-4 py-2 d-flex align-items-center gap-2"
-                disabled={!formik.isValid || loginLoading}
-              >
-                {loginLoading ? (
-                  <PulseLoader color="#fff" size={10} />
-                ) : (
-                  "تسجيل الدخول"
+      <div className="container-lg py-5 mt-5">
+        <div className="row px-4 align-items-center">
+         
+          <div className="col-md-6 order-2 order-md-1">
+            <div className="mt-5 py-5">
+              <h2 className="fw-bold text-center">تسجيل الدخول</h2>
+              <form onSubmit={formik.handleSubmit} className="mt-4">
+                <FormInput
+                  label="اسم المستخدم:"
+                  type="text"
+                  name="username"
+                  id="username"
+                  formik={formik}
+                />
+                <FormInput
+                  label="الباسورد:"
+                  type="password"
+                  name="password"
+                  id="password"
+                  formik={formik}
+                />
+                {error && (
+                  <div className="alert alert-danger my-4">
+                    <p className="text-center fw-bold fs-5 mb-0">{error}</p>
+                  </div>
                 )}
-              </button>
-              <Link to="/forget-password" className="main-color register fs-5">
-                هل نسيت كلمه السر؟
-              </Link>
+                <div className="mt-5 d-flex justify-content-between align-items-center flex-wrap">
+                  <button
+                    type="submit"
+                    className="btn primary-btn text-white px-2 px-sm-4 py-2 d-flex align-items-center gap-2"
+                    disabled={!formik.isValid || loginLoading}
+                  >
+                    {loginLoading ? (
+                      <PulseLoader color="#fff" size={10} />
+                    ) : (
+                      "تسجيل الدخول"
+                    )}
+                  </button>
+                  <Link
+                    to="/forget-password"
+                    className="main-color register fs-5 mt-3 mt-md-0"
+                  >
+                    هل نسيت كلمه السر؟
+                  </Link>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
+          <div className="col-md-6 order-1 order-md-2">
+            <div className="d-flex justify-content-center align-items-center h-100">
+              <img src={loginImage} alt="login" className="w-100" />
+            </div>
+          </div>
         </div>
       </div>
     </>
