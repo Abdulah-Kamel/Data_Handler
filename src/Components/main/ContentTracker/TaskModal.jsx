@@ -1,0 +1,569 @@
+import React, { useState } from "react";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { PulseLoader } from "react-spinners";
+
+// Create schema for create mode
+const createTaskSchema = Yup.object().shape({
+  url: Yup.string().url("رابط غير صالح").required("الرابط مطلوب"),
+  search_sources: Yup.string().required("مصادر البحث مطلوبة"),
+  count: Yup.number().min(1, "يجب أن يكون العدد أكبر من الصفر").max(100, "الحد الأقصى للنتائج هو 100").required("عدد النتائج مطلوب"),
+  search_time: Yup.string().required("وقت البحث مطلوب"),
+  save_to_excel: Yup.boolean(),
+  // Optional fields for scheduled tasks
+  start_date: Yup.date().when('is_scheduled', {
+    is: true,
+    then: () => Yup.date().required("تاريخ البدء مطلوب")
+  }),
+  end_date: Yup.date().when('is_scheduled', {
+    is: true,
+    then: () => Yup.date().required("تاريخ الانتهاء مطلوب")
+  }),
+  is_scheduled: Yup.boolean(),
+  schedule_days: Yup.number().when('is_scheduled', {
+    is: true,
+    then: () => Yup.number().min(1, "يجب أن يكون عدد الأيام أكبر من الصفر").required("عدد الأيام مطلوب")
+  }),
+  interval_hours: Yup.number().when('is_scheduled', {
+    is: true,
+    then: () => Yup.number().min(1, "يجب أن يكون عدد الساعات أكبر من الصفر").required("عدد الساعات مطلوب")
+  }),
+});
+
+// Simplified schema for edit mode
+const editTaskSchema = Yup.object().shape({
+  url: Yup.string().url("رابط غير صالح").required("الرابط مطلوب"),
+  title: Yup.string().required("العنوان مطلوب"),
+});
+
+const TaskModal = ({
+  show,
+  onHide,
+  mode,
+  task,
+  onSubmit,
+  loading,
+}) => {
+  const [apiErrors, setApiErrors] = useState({});
+
+  const handleSubmit = async (values) => {
+    setApiErrors({});
+    try {
+      await onSubmit(values);
+    } catch (error) {
+      if (error.response?.data) {
+        setApiErrors(error.response.data);
+      } else {
+        setApiErrors({ general: "حدث خطأ غير متوقع" });
+      }
+    }
+  };
+
+  const isCreateMode = mode === "create";
+  const isDeleteMode = mode === "delete";
+  const isEditMode = mode === "edit";
+
+  // Different initialValues for create and edit modes
+  const initialValues = isCreateMode ? {
+    url: "",
+    search_sources: "both",
+    count: 10,
+    search_time: "any",
+    save_to_excel: true,
+    is_scheduled: false,
+    start_date: "",
+    end_date: "",
+    schedule_days: 1,
+    interval_hours: 1,
+  } : {
+    // For edit mode, only include URL and title
+    url: task?.url || "",
+    title: task?.title || "",
+  };
+
+  if (!show) return null;
+
+  return (
+    <>
+      <div className="modal-backdrop fade show"></div>
+      <div className="modal fade show d-block" tabIndex="-1">
+        <div className="modal-dialog modal-dialog-centered modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">
+                {isDeleteMode
+                  ? "حذف المهمة"
+                  : isCreateMode
+                  ? "إضافة مهمة جديدة"
+                  : "تعديل المهمة"}
+              </h5>
+              <button
+                type="button"
+                className="btn-close me-auto ms-0"
+                onClick={onHide}
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              {apiErrors.general && (
+                <div className="alert alert-danger mb-3">
+                  {apiErrors.general}
+                </div>
+              )}
+              
+              {isDeleteMode ? (
+                <div className="text-center">
+                  <p className="mb-4 fs-5">
+                    هل أنت متأكد من حذف المهمة "{task?.title}"؟
+                  </p>
+                  <div className="d-flex justify-content-center gap-3">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={onHide}
+                      disabled={loading}
+                    >
+                      إلغاء
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleSubmit(task)}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <PulseLoader color="#ffffff" size={8} />
+                      ) : (
+                        "تأكيد الحذف"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={isCreateMode ? createTaskSchema : editTaskSchema}
+                  onSubmit={handleSubmit}
+                >
+                  {({ errors, touched, values }) => (
+                    <Form>
+                      <div className="mb-3">
+                        <label htmlFor="url" className="form-label">
+                          رابط المقال الأصلي
+                        </label>
+                        <Field
+                          type="url"
+                          id="url"
+                          name="url"
+                          className={`form-control ${
+                            (touched.url && errors.url) || apiErrors.url
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                        />
+                        {((touched.url && errors.url) || apiErrors.url) && (
+                          <div className="invalid-feedback">
+                            {errors.url || apiErrors.url}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Title field for edit mode only */}
+                      {isEditMode && (
+                        <div className="mb-3">
+                          <label htmlFor="title" className="form-label">
+                            عنوان المقال
+                          </label>
+                          <Field
+                            type="text"
+                            id="title"
+                            name="title"
+                            className={`form-control ${
+                              (touched.title && errors.title) || apiErrors.title
+                                ? "is-invalid"
+                                : ""
+                            }`}
+                          />
+                          {((touched.title && errors.title) || apiErrors.title) && (
+                            <div className="invalid-feedback">
+                              {errors.title || apiErrors.title}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Create mode fields */}
+                      {isCreateMode && (
+                        <>
+                          <div className="alert alert-info mb-4">
+                            <i className="fas fa-info-circle me-2"></i>
+                            أدخل رابط المقال الأصلي وسيتم البحث عن المواقع التي نقلت المحتوى
+                          </div>
+
+                          <div className="mb-3">
+                            <label htmlFor="search_sources" className="form-label">
+                              مصادر البحث
+                            </label>
+                            <Field
+                              as="select"
+                              id="search_sources"
+                              name="search_sources"
+                              className={`form-select ${
+                                (touched.search_sources && errors.search_sources) || apiErrors.search_sources
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
+                            >
+                              <option value="both">كلاهما</option>
+                              <option value="google">Google</option>
+                              <option value="duckduckgo">duckduckgo</option>
+                            </Field>
+                            {((touched.search_sources && errors.search_sources) || apiErrors.search_sources) && (
+                              <div className="invalid-feedback">
+                                {errors.search_sources || apiErrors.search_sources}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mb-3">
+                            <label htmlFor="count" className="form-label">
+                              عدد النتائج
+                            </label>
+                            <Field
+                              type="number"
+                              id="count"
+                              name="count"
+                              min="1"
+                              max="100"
+                              className={`form-control ${
+                                (touched.count && errors.count) || apiErrors.count
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
+                            />
+                            {((touched.count && errors.count) || apiErrors.count) && (
+                              <div className="invalid-feedback">
+                                {errors.count || apiErrors.count}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mb-3">
+                            <label htmlFor="search_time" className="form-label">
+                              وقت البحث
+                            </label>
+                            <Field
+                              as="select"
+                              id="search_time"
+                              name="search_time"
+                              className={`form-select ${
+                                (touched.search_time && errors.search_time) || apiErrors.search_time
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
+                            >
+                              <option value="any">أي وقت</option>
+                              <option value="past_day">اليوم الماضي</option>
+                              <option value="past_week">الأسبوع الماضي</option>
+                              <option value="past_month">الشهر الماضي</option>
+                              <option value="past_year">السنة الماضية</option>
+                            </Field>
+                            {((touched.search_time && errors.search_time) || apiErrors.search_time) && (
+                              <div className="invalid-feedback">
+                                {errors.search_time || apiErrors.search_time}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="mb-4">
+                            <div className="form-check">
+                              <Field
+                                type="checkbox"
+                                id="save_to_excel"
+                                name="save_to_excel"
+                                className="form-check-input"
+                              />
+                              <label className="form-check-label" htmlFor="save_to_excel">
+                                حفظ النتائج إلى ملف Excel
+                              </label>
+                            </div>
+                          </div>
+
+                          <div className="mb-3">
+                            <div className="form-check">
+                              <Field
+                                type="checkbox"
+                                id="is_scheduled"
+                                name="is_scheduled"
+                                className="form-check-input"
+                              />
+                              <label className="form-check-label" htmlFor="is_scheduled">
+                                جدولة المهمة
+                              </label>
+                            </div>
+                          </div>
+
+                          {values.is_scheduled && (
+                            <div className="scheduled-fields border rounded p-3 mb-4">
+                              <h6 className="mb-3">إعدادات الجدولة</h6>
+                              
+                              <div className="row">
+                                <div className="col-md-6 mb-3">
+                                  <label htmlFor="start_date" className="form-label">
+                                    تاريخ البدء
+                                  </label>
+                                  <Field
+                                    type="date"
+                                    id="start_date"
+                                    name="start_date"
+                                    className={`form-control ${
+                                      (touched.start_date && errors.start_date) || apiErrors.start_date
+                                        ? "is-invalid"
+                                        : ""
+                                    }`}
+                                  />
+                                  {((touched.start_date && errors.start_date) || apiErrors.start_date) && (
+                                    <div className="invalid-feedback">
+                                      {errors.start_date || apiErrors.start_date}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="col-md-6 mb-3">
+                                  <label htmlFor="end_date" className="form-label">
+                                    تاريخ الانتهاء
+                                  </label>
+                                  <Field
+                                    type="date"
+                                    id="end_date"
+                                    name="end_date"
+                                    className={`form-control ${
+                                      (touched.end_date && errors.end_date) || apiErrors.end_date
+                                        ? "is-invalid"
+                                        : ""
+                                    }`}
+                                  />
+                                  {((touched.end_date && errors.end_date) || apiErrors.end_date) && (
+                                    <div className="invalid-feedback">
+                                      {errors.end_date || apiErrors.end_date}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="row">
+                                <div className="col-md-6 mb-3">
+                                  <label htmlFor="schedule_days" className="form-label">
+                                    عدد الأيام بين كل بحث
+                                  </label>
+                                  <Field
+                                    type="number"
+                                    id="schedule_days"
+                                    name="schedule_days"
+                                    min="1"
+                                    className={`form-control ${
+                                      (touched.schedule_days && errors.schedule_days) || apiErrors.schedule_days
+                                        ? "is-invalid"
+                                        : ""
+                                    }`}
+                                  />
+                                  {((touched.schedule_days && errors.schedule_days) || apiErrors.schedule_days) && (
+                                    <div className="invalid-feedback">
+                                      {errors.schedule_days || apiErrors.schedule_days}
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="col-md-6 mb-3">
+                                  <label htmlFor="interval_hours" className="form-label">
+                                    عدد الساعات بين كل بحث
+                                  </label>
+                                  <Field
+                                    type="number"
+                                    id="interval_hours"
+                                    name="interval_hours"
+                                    min="1"
+                                    className={`form-control ${
+                                      (touched.interval_hours && errors.interval_hours) || apiErrors.interval_hours
+                                        ? "is-invalid"
+                                        : ""
+                                    }`}
+                                  />
+                                  {((touched.interval_hours && errors.interval_hours) || apiErrors.interval_hours) && (
+                                    <div className="invalid-feedback">
+                                      {errors.interval_hours || apiErrors.interval_hours}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      )}
+
+                      {/* Edit mode - Results section is commented out as requested */}
+                      {/* 
+                      {!isCreateMode && (
+                        <div className="mb-3">
+                          <label className="form-label">النتائج</label>
+                          <FieldArray name="results">
+                            {({ remove, push }) => (
+                              <div>
+                                {values.results.length > 0 &&
+                                  values.results.map((result, index) => (
+                                    <div key={index} className="card mb-3 p-3">
+                                      <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 className="m-0">نتيجة {index + 1}</h6>
+                                        {values.results.length > 1 && (
+                                          <button
+                                            type="button"
+                                            className="btn btn-sm btn-outline-danger"
+                                            onClick={() => remove(index)}
+                                          >
+                                            <i className="fas fa-trash"></i>
+                                          </button>
+                                        )}
+                                      </div>
+                                      
+                                      <div className="mb-2">
+                                        <label htmlFor={`results.${index}.url`} className="form-label">
+                                          رابط الموقع الناقل
+                                        </label>
+                                        <Field
+                                          type="url"
+                                          name={`results.${index}.url`}
+                                          className="form-control"
+                                        />
+                                        <ErrorMessage
+                                          name={`results.${index}.url`}
+                                          component="div"
+                                          className="text-danger"
+                                        />
+                                      </div>
+
+                                      <div className="mb-2">
+                                        <label htmlFor={`results.${index}.same_event`} className="form-label">
+                                          نفس المحتوى
+                                        </label>
+                                        <Field
+                                          as="select"
+                                          name={`results.${index}.same_event`}
+                                          className="form-select"
+                                        >
+                                          <option value="نعم">نعم</option>
+                                          <option value="لا">لا</option>
+                                        </Field>
+                                        <ErrorMessage
+                                          name={`results.${index}.same_event`}
+                                          component="div"
+                                          className="text-danger"
+                                        />
+                                      </div>
+
+                                      <div className="mb-2">
+                                        <label htmlFor={`results.${index}.title`} className="form-label">
+                                          عنوان المقال المنقول
+                                        </label>
+                                        <Field
+                                          type="text"
+                                          name={`results.${index}.title`}
+                                          className="form-control"
+                                        />
+                                        <ErrorMessage
+                                          name={`results.${index}.title`}
+                                          component="div"
+                                          className="text-danger"
+                                        />
+                                      </div>
+
+                                      <div className="mb-2">
+                                        <label htmlFor={`results.${index}.image_url`} className="form-label">
+                                          رابط الصورة
+                                        </label>
+                                        <Field
+                                          type="url"
+                                          name={`results.${index}.image_url`}
+                                          className="form-control"
+                                        />
+                                        <ErrorMessage
+                                          name={`results.${index}.image_url`}
+                                          component="div"
+                                          className="text-danger"
+                                        />
+                                      </div>
+
+                                      <div className="mb-2">
+                                        <label htmlFor={`results.${index}.snippet`} className="form-label">
+                                          مقتطف من المقال
+                                        </label>
+                                        <Field
+                                          as="textarea"
+                                          name={`results.${index}.snippet`}
+                                          className="form-control"
+                                          rows="3"
+                                        />
+                                        <ErrorMessage
+                                          name={`results.${index}.snippet`}
+                                          component="div"
+                                          className="text-danger"
+                                        />
+                                      </div>
+                                    </div>
+                                  ))}
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  onClick={() => push({
+                                    url: "",
+                                    same_event: "نعم",
+                                    title: "",
+                                    image_url: "",
+                                    snippet: ""
+                                  })}
+                                >
+                                  <i className="fas fa-plus me-1"></i>
+                                  إضافة نتيجة
+                                </button>
+                              </div>
+                            )}
+                          </FieldArray>
+                        </div>
+                      )}
+                      */}
+
+                      <div className="d-flex justify-content-end gap-2 mt-4">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={onHide}
+                          disabled={loading}
+                        >
+                          إلغاء
+                        </button>
+                        <button
+                          type="submit"
+                          className={`btn ${
+                            isCreateMode ? "btn-success" : "btn-primary"
+                          }`}
+                          disabled={loading}
+                        >
+                          {loading ? (
+                            <PulseLoader color="#ffffff" size={8} />
+                          ) : isCreateMode ? (
+                            "إضافة"
+                          ) : (
+                            "حفظ التغييرات"
+                          )}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default TaskModal;

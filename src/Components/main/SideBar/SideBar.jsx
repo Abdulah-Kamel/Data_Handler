@@ -37,6 +37,11 @@ const Sidebar = () => {
       label: "إدارة المستخدمين",
       to: "/dashboard/users",
     },
+    {
+      icon: "fa-solid fa-magnifying-glass",
+      label: "تتبع المحتوى",
+      to: "/dashboard/content-tracker",
+    },
   ].filter(Boolean);
 
   const handleLogout = () => {

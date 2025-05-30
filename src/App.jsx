@@ -14,6 +14,8 @@ import FilledTemplet from "./Components/main/FilledTemplet/FilledTemplet";
 import AdminRoute from "./Components/Auth/AdminRoute";
 import Users from "./Components/main/Users/Users";
 import { AuthProvider } from "./Context/AuthContext";
+import ContentTracker from "./Components/main/ContentTracker/ContentTracker";
+import ResultsView from "./Components/main/ContentTracker/ResultsView";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/dashboard/content-tracker" element={<ContentTracker />} />
+            <Route path="/dashboard/content-tracker/results/:taskId" element={<ResultsView />} />
           </Route>
         </Routes>
       </AuthProvider>

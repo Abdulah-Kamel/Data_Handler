@@ -24,6 +24,9 @@ const TopBar = () => {
       } else if (currentPath.startsWith("/dashboard/users")) {
         setPathName("أداره المستخدمين");
       }
+      else if (currentPath.startsWith("/dashboard/content-tracker")) {
+        setPathName("تتبع المحتوى");
+      }
     };
     useEffect(() => {
       const getScreenWidth = () => window.innerWidth;
