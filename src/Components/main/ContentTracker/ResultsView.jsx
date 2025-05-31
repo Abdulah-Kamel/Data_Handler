@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useAuth } from "../../../Context/AuthContext";
 import contentTrackerService from "../../../services/contentTrackerService";
+import ConfirmationModal from "../../common/ConfirmationModal";
 
 const ResultsView = () => {
   const { taskId } = useParams();
@@ -12,6 +13,9 @@ const ResultsView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedResult, setSelectedResult] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchTaskDetails = async () => {
@@ -42,14 +46,25 @@ const ResultsView = () => {
     fetchTaskDetails();
   }, [accessToken, taskId, refreshTrigger]);
 
-  const handleDeleteResult = async (resultId) => {
-    if (window.confirm("هل أنت متأكد من حذف هذه النتيجة؟")) {
-      try {
-        await contentTrackerService.deleteResult(accessToken, taskId, resultId);
-        setRefreshTrigger(prev => prev + 1); // Refresh the data
-      } catch (error) {
-        console.error("Error deleting result:", error);
-      }
+  const handleDeleteResult = (result) => {
+    setSelectedResult(result);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteResult = async () => {
+    if (!selectedResult) return;
+    
+    setDeleting(true);
+    try {
+      await contentTrackerService.deleteResult(accessToken, taskId, selectedResult.id);
+      setRefreshTrigger(prev => prev + 1); // Refresh the data
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting result:", error);
+      setError("حدث خطأ أثناء حذف النتيجة");
+    } finally {
+      setDeleting(false);
+      setSelectedResult(null);
     }
   };
 
@@ -160,8 +175,9 @@ const ResultsView = () => {
                       <i className="fas fa-external-link-alt me-1"></i>
                     </a>
                     <button
-                      onClick={() => handleDeleteResult(result.id)}
+                      onClick={() => handleDeleteResult(result)}
                       className="btn btn-sm btn-outline-danger"
+                      disabled={deleting}
                     >
                       حذف
                       <i className="fas fa-trash me-1"></i>
@@ -177,6 +193,17 @@ const ResultsView = () => {
           لا توجد نتائج لهذه المهمة
         </div>
       )}
+      
+      <ConfirmationModal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteResult}
+        title="تأكيد حذف النتيجة"
+        message={`هل أنت متأكد من حذف نتيجة "${selectedResult?.title || 'هذه'}"؟`}
+        confirmText={deleting ? 'جاري الحذف...' : 'حذف'}
+        loading={deleting}
+        confirmVariant="danger"
+      />
     </div>
   );
 };

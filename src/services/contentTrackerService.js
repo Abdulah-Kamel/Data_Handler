@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const baseUrl = import.meta.env.VITE_API_URL;
+const catchTheThiefBaseUrl = import.meta.env.VITE_CATCH_THE_THIEF_URL;
 
-export const contentTrackerService = {
+const contentTrackerService = {
   getAllTasks: async (token) => {
     try {
-      const response = await axios.get(`${baseUrl}/get_the_thief/tasks-with-results/`, {
+      const response = await axios.get(`${catchTheThiefBaseUrl}/get_the_thief/tasks-with-results/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -22,7 +22,7 @@ export const contentTrackerService = {
   createTask: async (token, taskData) => {
     try {
       const response = await axios.post(
-        `${baseUrl}/get_the_thief/check-articles/`,
+        `${catchTheThiefBaseUrl}/get_the_thief/check-articles/`,
         taskData,
         {
           headers: {
@@ -40,10 +40,9 @@ export const contentTrackerService = {
   },
 
   updateTask: async (token, taskId, taskData) => {
-    console.log(taskData)
     try {
       const response = await axios.patch(
-        `${baseUrl}/get_the_thief/tasks-with-results/${taskId}/`,
+        `${catchTheThiefBaseUrl}/get_the_thief/tasks-with-results/${taskId}/`,
         taskData,
         {
           headers: {
@@ -62,12 +61,15 @@ export const contentTrackerService = {
 
   deleteTask: async (token, taskId) => {
     try {
-      const response = await axios.delete(`${baseUrl}/get_the_thief/tasks-with-results/${taskId}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return { error: null, data: response };
+      await axios.delete(
+        `${catchTheThiefBaseUrl}/get_the_thief/tasks-with-results/${taskId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return { error: null };
     } catch (error) {
       return {
         error: error.response?.data?.detail || "خطأ في حذف المهمة"
@@ -77,18 +79,37 @@ export const contentTrackerService = {
 
   deleteResult: async (token, taskId, resultId) => {
     try {
-      const response = await axios.delete(`${baseUrl}/get_the_thief/tasks-with-results/${taskId}/delete-result/${resultId}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return { error: null, data: response };
+      await axios.delete(
+        `${catchTheThiefBaseUrl}/get_the_thief/tasks-with-results/${taskId}/delete-result/${resultId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return { error: null };
     } catch (error) {
       return {
         error: error.response?.data?.detail || "خطأ في حذف النتيجة"
       };
     }
   },
+
+  getExternalTasks: async (token) => {
+    try {
+      const response = await axios.get('https://catch-the-thief.onrender.com/get_the_thief/search-tasks/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return { data: response.data, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error: error.response?.data?.detail || 'فشل في جلب المهام الخارجية'
+      };
+    }
+  }
 };
 
 export default contentTrackerService;

@@ -3,18 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import contentTrackerService from '../../../services/contentTrackerService';
 import TasksTable from './TasksTable';
-import TaskModal from './TaskModal';
+import ExternalTasksTable from './ExternalTasksTable';
+import TaskModal from './forms/TaskModal';
+import ConfirmationModal from '../../common/ConfirmationModal';
 import { useAuth } from '../../../Context/AuthContext';
 
 const ContentTracker = () => {
   const [tasks, setTasks] = useState([]);
+  const [externalTasks, setExternalTasks] = useState([]);
+  const [showExternalTasks, setShowExternalTasks] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [externalLoading, setExternalLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [modalMode, setModalMode] = useState('create');
   const [selectedTask, setSelectedTask] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const navigate = useNavigate();
   const { accessToken } = useAuth();
 
@@ -40,9 +48,37 @@ const ContentTracker = () => {
     }
   };
 
-  const handleRefresh = () => {
-    setRefreshTrigger(prev => prev + 1);
+  const fetchExternalTasks = async () => {
+    setExternalLoading(true);
+    try {
+      const { data, error } = await contentTrackerService.getExternalTasks(accessToken);
+      if (data) {
+        setExternalTasks(data);
+        setError(null);
+      } else {
+        setError(error);
+      }
+    } catch (err) {
+      setError(err.response?.data?.detail || 'فشل في تحميل التتبع الجارى');
+      console.error('Error fetching external tasks:', err);
+    } finally {
+      setExternalLoading(false);
+    }
   };
+
+  const handleRefresh = () => {
+    if (showExternalTasks) {
+      fetchExternalTasks();
+    } else {
+      setRefreshTrigger(prev => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (showExternalTasks) {
+      fetchExternalTasks();
+    }
+  }, [showExternalTasks]);
 
   const handleShowModal = (mode, task = null) => {
     setModalMode(mode);
@@ -57,9 +93,7 @@ const ContentTracker = () => {
   const handleModalSubmit = async (values) => {
     setModalLoading(true);
     try {
-      if (modalMode === 'delete') {
-        await contentTrackerService.deleteTask(accessToken, selectedTask.id);
-      } else if (modalMode === 'edit') {
+      if (modalMode === 'edit') {
         await contentTrackerService.updateTask(accessToken, selectedTask.id, values);
       } else if (modalMode === 'create') {
         await contentTrackerService.createTask(accessToken, values);
@@ -70,6 +104,28 @@ const ContentTracker = () => {
       console.error("Error in modal submit:", error);
     } finally {
       setModalLoading(false);
+    }
+  };
+
+  const handleDeleteTask = (task) => {
+    setTaskToDelete(task);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteTask = async () => {
+    if (!taskToDelete) return;
+    
+    setDeleteLoading(true);
+    try {
+      await contentTrackerService.deleteTask(accessToken, taskToDelete.id);
+      handleRefresh();
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      setError("حدث خطأ أثناء حذف المهمة");
+    } finally {
+      setDeleteLoading(false);
+      setTaskToDelete(null);
     }
   };
 
@@ -87,13 +143,21 @@ const ContentTracker = () => {
       <meta name="description" content="Data Handler - تتبع المحتوى" />
       <div className="d-flex justify-content-between align-items-center mb-5">
         <h2 className="m-0">تتبع المحتوى</h2>
-        <button
-          className="btn d-flex align-items-center primary-btn-outline"
-          onClick={() => handleShowModal('create')}
-        >
-          إضافة مهمة جديدة
-          <i className="fas fa-plus me-2"></i>
-        </button>
+        <div className="d-flex gap-3">
+          <button
+            className="btn d-flex align-items-center primary-btn-outline"
+            onClick={() => setShowExternalTasks(prev => !prev)}
+          >
+            {showExternalTasks ? 'إخفاء التتبع الجارى' : 'عرض التتبع الجارى'}
+          </button>
+          <button
+            className="btn d-flex align-items-center primary-btn"
+            onClick={() => handleShowModal('create')}
+          >
+            إضافة مهمة جديدة
+            <i className="fas fa-plus me-2"></i>
+          </button>
+        </div>
       </div>
       {error && (
         <div className="alert alert-danger text-center my-4">
@@ -107,7 +171,14 @@ const ContentTracker = () => {
         </div>
       )}
 
-      {tasks.length === 0 && !loading ? (
+      {showExternalTasks ? (
+        <ExternalTasksTable
+          tasks={externalTasks}
+          loading={externalLoading}
+          error={error}
+          onRefresh={fetchExternalTasks}
+        />
+      ) : tasks.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
           لا توجد مهام تتبع حالياً
         </div>
@@ -117,7 +188,8 @@ const ContentTracker = () => {
           loading={loading}
           onUpdate={handleTaskUpdate}
           handleRefresh={handleRefresh}
-          handleShowModal={handleShowModal}
+          onDelete={handleDeleteTask}
+          onEdit={(task) => handleShowModal('edit', task)}
           handleShowResults={handleShowResults}
         />
       )}
@@ -129,7 +201,17 @@ const ContentTracker = () => {
         task={selectedTask}
         onSubmit={handleModalSubmit}
         loading={modalLoading}
-        handleRefresh={handleRefresh}
+      />
+      
+      <ConfirmationModal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        onConfirm={confirmDeleteTask}
+        title="تأكيد حذف المهمة"
+        message={`هل أنت متأكد من حذف المهمة "${taskToDelete?.title || 'هذه'}"؟`}
+        confirmText={deleteLoading ? 'جاري الحذف...' : 'حذف'}
+        loading={deleteLoading}
+        confirmVariant="danger"
       />
     </div>
   );

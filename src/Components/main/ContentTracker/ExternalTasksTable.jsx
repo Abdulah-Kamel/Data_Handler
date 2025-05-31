@@ -1,27 +1,27 @@
-import { width } from "@fortawesome/free-solid-svg-icons/fa0";
-import React from "react";
-import DataTable from "react-data-table-component";
+import React from 'react';
+import DataTable from 'react-data-table-component';
+import { PulseLoader } from 'react-spinners';
 
-const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
+const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
   const columns = [
     {
-      name: "#",
+      name: '#',
       selector: (row, index) => index + 1,
       sortable: true,
-      width: "60px",
+      width: '60px',
     },
     {
-      name: "العنوان",
+      name: 'العنوان',
       selector: (row) => row.title,
       sortable: true,
       cell: (row) => (
-        <div style={{ maxWidth: "300px", whiteSpace: "normal" }}>
+        <div style={{ maxWidth: '300px', whiteSpace: 'normal' }}>
           {row.title}
         </div>
       ),
     },
     {
-      name: "الرابط الأصلي",
+      name: 'الرابط الأصلي',
       selector: (row) => row.url,
       sortable: true,
       cell: (row) => (
@@ -34,48 +34,63 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
           رابط المقال
         </a>
       ),
-      
     },
     {
-      name: "عدد النتائج",
-      selector: (row) => row.results?.length || 0,
+      name: 'تاريخ الإنشاء',
+      selector: (row) => new Date(row.created_at).toLocaleDateString(),
       sortable: true,
-      width: "150px",
+      width: '150px',
     },
     {
-      name: "الإجراءات",
+      name: 'الحالة',
       cell: (row) => (
-        <div className="d-flex gap-2 justify-content-center">
-          <button
-            className="btn btn-outline-primary btn-sm rounded-pill"
-            onClick={() => handleShowResults(row)}
-          >
-            عرض النتائج
-            <i className="fas fa-eye me-1"></i>
-          </button>
-          <button
-            className="btn btn-outline-success btn-sm rounded-pill"
-            onClick={() => onEdit(row)}
-          >
-            تعديل
-            <i className="fas fa-edit me-1"></i>
-          </button>
-          <button
-            className="btn btn-outline-danger btn-sm rounded-pill"
-            onClick={() => onDelete(row)}
-          >
-            حذف
-            <i className="fas fa-trash me-1"></i>
-          </button>
-        </div>
+        <span className={`badge ${row.is_active ? 'bg-success' : 'bg-secondary'}`}>
+          {row.is_active ? 'نشط' : 'غير نشط'}
+        </span>
       ),
-      width: "300px",
-      ignoreRowClick: true,
+      width: '120px',
+    },
+    {
+      name: 'التنزيل',
+      cell: (row) => (
+        <a
+          href={row.download_link || '#'}
+          className={`btn btn-sm ${row.download_link ? 'btn-primary' : 'btn-secondary disabled'}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          <i className="fas fa-download"></i>
+        </a>
+      ),
+      width: '100px',
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '200px' }}>
+        <PulseLoader color="#05755c" size={15} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="alert alert-danger text-center my-4">
+        {error}
+        <button
+          className="btn btn-sm btn-outline-danger me-3"
+          onClick={onRefresh}
+        >
+          إعادة المحاولة
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="position-relative mt-5">
+    <div className="table-responsive">
       <DataTable
         columns={columns}
         data={tasks}
@@ -121,4 +136,4 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
   );
 };
 
-export default TasksTable;
+export default ExternalTasksTable;
