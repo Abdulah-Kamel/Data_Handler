@@ -16,6 +16,7 @@ import Users from "./Components/main/Users/Users";
 import { AuthProvider } from "./Context/AuthContext";
 import ContentTracker from "./Components/main/ContentTracker/ContentTracker";
 import ResultsView from "./Components/main/ContentTracker/ResultsView";
+import ExternalTasksPage from "./Components/main/ContentTracker/ExternalTasksPage";
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
               }
             />
             <Route path="/dashboard/content-tracker" element={<ContentTracker />} />
+            <Route path="/dashboard/content-tracker/running" element={<ExternalTasksPage />} />
             <Route path="/dashboard/content-tracker/results/:taskId" element={<ResultsView />} />
           </Route>
         </Routes>

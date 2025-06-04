@@ -32,7 +32,7 @@ const Sidebar = () => {
       label: "انشاء المستندات",
       to: "/dashboard/FilledTemplet",
     },
-    user?.role === "admin"  && {
+    user?.role === "admin" && {
       icon: "fa-solid fa-user",
       label: "إدارة المستخدمين",
       to: "/dashboard/users",
@@ -41,6 +41,11 @@ const Sidebar = () => {
       icon: "fa-solid fa-magnifying-glass",
       label: "تتبع المحتوى",
       to: "/dashboard/content-tracker",
+    },
+    {
+      icon: "fa-solid fa-magnifying-glass",
+      label: "البحث الجارى",
+      to: "/dashboard/content-tracker/running",
     },
   ].filter(Boolean);
 

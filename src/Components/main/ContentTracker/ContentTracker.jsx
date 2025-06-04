@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PulseLoader } from 'react-spinners';
 import contentTrackerService from '../../../services/contentTrackerService';
-import TasksTable from './TasksTable';
-import ExternalTasksTable from './ExternalTasksTable';
+import TasksTable from "./TasksTable";
 import TaskModal from './forms/TaskModal';
 import ConfirmationModal from '../../common/ConfirmationModal';
 import { useAuth } from '../../../Context/AuthContext';
 
 const ContentTracker = () => {
   const [tasks, setTasks] = useState([]);
-  const [externalTasks, setExternalTasks] = useState([]);
-  const [showExternalTasks, setShowExternalTasks] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [externalLoading, setExternalLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [modalMode, setModalMode] = useState('create');
@@ -48,37 +44,9 @@ const ContentTracker = () => {
     }
   };
 
-  const fetchExternalTasks = async () => {
-    setExternalLoading(true);
-    try {
-      const { data, error } = await contentTrackerService.getExternalTasks(accessToken);
-      if (data) {
-        setExternalTasks(data);
-        setError(null);
-      } else {
-        setError(error);
-      }
-    } catch (err) {
-      setError(err.response?.data?.detail || 'فشل في تحميل التتبع الجارى');
-      console.error('Error fetching external tasks:', err);
-    } finally {
-      setExternalLoading(false);
-    }
-  };
-
   const handleRefresh = () => {
-    if (showExternalTasks) {
-      fetchExternalTasks();
-    } else {
-      setRefreshTrigger(prev => prev + 1);
-    }
+    setRefreshTrigger((prev) => prev + 1);
   };
-
-  useEffect(() => {
-    if (showExternalTasks) {
-      fetchExternalTasks();
-    }
-  }, [showExternalTasks]);
 
   const handleShowModal = (mode, task = null) => {
     setModalMode(mode);
@@ -145,14 +113,8 @@ const ContentTracker = () => {
         <h2 className="m-0">تتبع المحتوى</h2>
         <div className="d-flex gap-3">
           <button
-            className="btn d-flex align-items-center primary-btn-outline"
-            onClick={() => setShowExternalTasks(prev => !prev)}
-          >
-            {showExternalTasks ? 'إخفاء التتبع الجارى' : 'عرض التتبع الجارى'}
-          </button>
-          <button
             className="btn d-flex align-items-center primary-btn"
-            onClick={() => handleShowModal('create')}
+            onClick={() => handleShowModal("create")}
           >
             إضافة مهمة جديدة
             <i className="fas fa-plus me-2"></i>
@@ -171,14 +133,7 @@ const ContentTracker = () => {
         </div>
       )}
 
-      {showExternalTasks ? (
-        <ExternalTasksTable
-          tasks={externalTasks}
-          loading={externalLoading}
-          error={error}
-          onRefresh={fetchExternalTasks}
-        />
-      ) : tasks.length === 0 && !loading ? (
+      {tasks.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
           لا توجد مهام تتبع حالياً
         </div>
@@ -189,11 +144,11 @@ const ContentTracker = () => {
           onUpdate={handleTaskUpdate}
           handleRefresh={handleRefresh}
           onDelete={handleDeleteTask}
-          onEdit={(task) => handleShowModal('edit', task)}
+          onEdit={(task) => handleShowModal("edit", task)}
           handleShowResults={handleShowResults}
         />
       )}
-      
+
       <TaskModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -202,14 +157,16 @@ const ContentTracker = () => {
         onSubmit={handleModalSubmit}
         loading={modalLoading}
       />
-      
+
       <ConfirmationModal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
         onConfirm={confirmDeleteTask}
         title="تأكيد حذف المهمة"
-        message={`هل أنت متأكد من حذف المهمة "${taskToDelete?.title || 'هذه'}"؟`}
-        confirmText={deleteLoading ? 'جاري الحذف...' : 'حذف'}
+        message={`هل أنت متأكد من حذف المهمة "${
+          taskToDelete?.title || "هذه"
+        }"؟`}
+        confirmText={deleteLoading ? "جاري الحذف..." : "حذف"}
         loading={deleteLoading}
         confirmVariant="danger"
       />

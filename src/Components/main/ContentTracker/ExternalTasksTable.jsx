@@ -50,21 +50,6 @@ const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
       ),
       width: '120px',
     },
-    {
-      name: 'التنزيل',
-      cell: (row) => (
-        <a
-          href={row.download_link || '#'}
-          className={`btn btn-sm ${row.download_link ? 'btn-primary' : 'btn-secondary disabled'}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          download
-        >
-          <i className="fas fa-download"></i>
-        </a>
-      ),
-      width: '100px',
-    },
   ];
 
   if (loading) {
