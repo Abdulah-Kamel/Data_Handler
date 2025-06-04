@@ -69,7 +69,7 @@ const Login = () => {
                   formik={formik}
                 />
                 <FormInput
-                  label="الباسورد:"
+                  label="كلمة المرور:"
                   type="password"
                   name="password"
                   id="password"
@@ -96,7 +96,7 @@ const Login = () => {
                     to="/forget-password"
                     className="main-color register fs-5 mt-3 mt-md-0"
                   >
-                    هل نسيت كلمه السر؟
+                    هل نسيت كلمة المرور؟
                   </Link>
                 </div>
               </form>
