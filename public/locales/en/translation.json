@@ -1,0 +1,555 @@
+{
+  "login": {
+    "header": "Login to your account",
+    "page_title": "Login",
+    "username_label": "Username:",
+    "password_label": "Password:",
+    "button": "Login",
+    "forgot_password_link": "Forgot your password?"
+  },
+  "navbar": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "start_now": "Start Now",
+    "language": "Language"
+  },
+  "topbar": {
+    "greeting": {
+      "morning": "Good morning",
+      "evening": "Good evening"
+    },
+    "paths": {
+      "form_creation": "Form Creation",
+      "templates": "Templates",
+      "data_management": "Data Management",
+      "document_creation": "Document Creation",
+      "user_management": "User Management",
+      "content_tracker": "Content Tracker"
+    },
+    "date_label": "Date"
+  },
+  "sidebar": {
+    "title": "Dashboard",
+    "logout": "Logout",
+    "menu": {
+      "data_management": "Data Management",
+      "form_creation": "Form Creation",
+      "document_creation": "Document Creation",
+      "user_management": "User Management",
+      "content_tracker": "Content Tracker",
+      "running_search": "Running Search"
+    }
+  },
+  "bulk_data": {
+    "page_title": "Data Handler - Data Management",
+    "page_description": "Data Handler - Data Management",
+    "main_title": "Data Management",
+    "details_title": "Data Details",
+    "add_new_button": "Add New Data",
+    "retry_button": "Retry",
+    "errors": {
+      "fetch": "An error occurred while fetching the data",
+      "save": "An error occurred while saving the data",
+      "delete_row": "An error occurred while deleting the row",
+      "delete_item": "An error occurred while deleting the record"
+    },
+    "table": {
+      "hash": "#",
+      "data_name": "Data Name",
+      "record_count": "Record Count",
+      "creation_date": "Creation Date",
+      "actions": "Actions",
+      "view_data": "View Data",
+      "upload_excel": "Upload Excel",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "details": {
+      "back_button": "Back",
+      "add_row_button": "Add New Row",
+      "actions_header": "Actions",
+      "edit_button": "Edit",
+      "delete_button": "Delete",
+      "errors": {
+        "save": "An error occurred while saving the data",
+        "delete": "An error occurred while deleting the data",
+        "invalid_email": "Invalid email format"
+      }
+    },
+    "modal": {
+      "edit_title": "Edit Bulk Data",
+      "add_title": "Add New Bulk Data",
+      "data_name_label": "Data Name",
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "saving_button": "Saving...",
+      "validation": {
+        "name_required": "Data name is required",
+        "name_min": "Name must be at least 3 characters",
+        "name_max": "Name must not exceed 50 characters"
+      }
+    }
+  },
+  "delete_confirmation_modal": {
+    "title": "Confirm Deletion",
+    "confirmation_message": "Are you sure you want to delete \"{{itemName}}\"?",
+    "warning_message": "This action cannot be undone.",
+    "cancel_button": "Cancel",
+    "delete_button": "Delete",
+    "deleting_button": "Deleting..."
+  },
+  "excel_upload_modal": {
+    "title": "Upload Excel File",
+    "form_label": "Excel File",
+    "choose_file_button": "Choose file",
+    "selected_file_label": "Selected file:",
+    "info_alert": "The file must be in Excel format (.xlsx, .xls) and contain the required data.",
+    "cancel_button": "Cancel",
+    "upload_button": "Upload File",
+    "uploading_button": "Uploading...",
+    "validation": {
+      "file_required": "File is required",
+      "invalid_format": "Invalid file format. The file must be an Excel file (.xlsx, .xls)"
+    }
+  },
+  "row_delete_modal": {
+    "title": "Confirm Deletion",
+    "confirmation_message": "Are you sure you want to delete this record?",
+    "cancel_button": "Cancel",
+    "delete_button": "Delete"
+  },
+  "row_edit_modal": {
+    "add_title": "Add New Data",
+    "edit_title": "Edit Data"
+  },
+  "row_form": {
+    "placeholder": "Enter {{field}}",
+    "cancel_button": "Cancel",
+    "update_button": "Update",
+    "add_button": "Add"
+  },
+  "categories": {
+    "page_title": "Data Handler - Categories",
+    "page_description": "Manage your categories in Data Handler.",
+    "main_title": "Categories",
+    "search_placeholder": "Search for a category...",
+    "add_new_button": "Add New Category",
+    "retry_button": "Retry",
+    "no_categories": "No categories available at the moment.",
+    "errors": {
+      "fetch": "Failed to fetch categories. Please try again.",
+      "update": "Failed to update the category. Please try again.",
+      "create": "Failed to add the category. Please try again.",
+      "delete": "Failed to delete the category. Please try again."
+    }
+  },
+  "category_modal": {
+    "add_title": "Add New Category",
+    "edit_title": "Edit Category"
+  },
+  "category_form": {
+    "labels": {
+      "name": "Category Name",
+      "description": "Description"
+    },
+    "placeholders": {
+      "name": "Enter category name",
+      "description": "Enter a brief description"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "saving": "Saving...",
+      "update": "Update",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "name_required": "Category name is required",
+      "name_min": "Name must be at least 2 characters",
+      "name_max": "Name must not exceed 50 characters",
+      "desc_min": "Description must be at least 5 characters",
+      "desc_max": "Description must not exceed 200 characters"
+    }
+  },
+  "category_delete_confirmation_modal": {
+    "title": "Confirm Deletion",
+    "confirmation_message": "Are you sure you want to delete the category \"{{name}}\"?",
+    "warning_message_one": "Warning: This category has {{count}} associated template. Deleting it will also delete the template.",
+    "warning_message_other": "Warning: This category has {{count}} associated templates. Deleting it will also delete the templates.",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting..."
+    }
+  },
+  "category_grid": {
+    "templates_count": "Templates",
+    "view_templates_button": "View Templates",
+    "edit_button_title": "Edit",
+    "delete_button_title": "Delete"
+  },
+  "category_table": {
+    "name": "Category Name",
+    "description": "Description",
+    "templates_count": "Templates Count",
+    "creation_date": "Creation Date",
+    "actions": "Actions",
+    "view_templates_button": "View Templates",
+    "edit_button": "Edit",
+    "delete_button": "Delete"
+  },
+  "aria": {
+    "close": "Close"
+  },
+  "templates": {
+    "page_title": "Data Handler - Templates",
+    "page_description": "Manage templates for the selected category.",
+    "main_title": "Templates for: {{categoryName}}",
+    "back_to_categories_button": "Back to Categories",
+    "add_new_button": "Add New Template",
+    "search_placeholder": "Search for a template...",
+    "retry_button": "Retry",
+    "no_templates": "No templates available in this category."
+  },
+  "template_table": {
+    "name": "Template Name",
+    "description": "Description",
+    "files": "Files",
+    "view_template_button": "View Template",
+    "no_file": "No file",
+    "creation_date": "Creation Date",
+    "actions": "Actions",
+    "upload_word_file_title": "Upload Word File",
+    "upload_word_file_button": "Upload Word File",
+    "edit_button": "Edit",
+    "delete_button": "Delete"
+  },
+  "template_modal": {
+    "add_title": "Add New Template",
+    "edit_title": "Edit Template"
+  },
+  "template_form": {
+    "name_label": "Template Name",
+    "name_placeholder": "Enter template name",
+    "description_label": "Description",
+    "description_placeholder": "Enter template description",
+    "cancel_button": "Cancel",
+    "add_button": "Add",
+    "save_button": "Save Changes",
+    "adding_button": "Adding...",
+    "saving_button": "Saving...",
+    "validation": {
+      "name_min": "Template name is too short",
+      "name_max": "Template name is too long",
+      "name_required": "Template name is required",
+      "desc_min": "Description is too short",
+      "desc_max": "Description is too long"
+    }
+  },
+  "template_delete_confirmation_modal": {
+    "title": "Confirm Deletion",
+    "confirmation_message": "Are you sure you want to delete the template \"{{templateName}}\"?",
+    "warning": "This action cannot be undone.",
+    "cancel_button": "Cancel",
+    "confirm_button": "Confirm Deletion",
+    "deleting_button": "Deleting..."
+  },
+  "file_upload_modal": {
+    "title": "Upload File for Template: {{templateName}}",
+    "file_label": "Template File (Word)",
+    "file_hint": "Please select a Word file (.docx)",
+    "cancel_button": "Cancel",
+    "upload_button": "Upload File",
+    "uploading_button": "Uploading...",
+    "validation": {
+      "file_type_error": "Please select a Word (.docx) file only"
+    }
+  },
+  "filled_templet": {
+    "page_title": "Data Handler - Create Documents",
+    "page_description": "Create single or multiple documents from templates.",
+    "header": "Create Documents",
+    "single_document_button": "Single Document",
+    "multiple_documents_button": "Multiple Documents"
+  },
+  "single_filled_templet_form": {
+    "header": "Create Single Document",
+    "category_label": "Select Category",
+    "select_category_placeholder": "Select a category",
+    "template_label": "Select Template",
+    "select_template_placeholder": "Select a template",
+    "file_name_label": "File Name",
+    "file_name_placeholder": "Enter file name",
+    "file_type_label": "File Type",
+    "file_type_both": "Both",
+    "template_data_label": "Template Data",
+    "loading_variables": "Loading variables...",
+    "no_variables_found": "No variables found for this template",
+    "file_index": "File {{index}}",
+    "enter_field_placeholder": "Enter {{field}}",
+    "add_new_form_button": "Add New Form",
+    "cancel_button": "Cancel",
+    "create_files_button": "Create Files",
+    "creating_button": "Creating...",
+    "success": {
+      "files_created": "Files created successfully! You can download them from the links below:",
+      "download_pdf": "Download PDF",
+      "download_word": "Download Word"
+    },
+    "errors": {
+      "fetch_categories": "An error occurred while fetching categories",
+      "no_templates_found": "No templates found for this category",
+      "fetch_templates": "An error occurred while fetching templates",
+      "fetch_variables": "An error occurred while fetching template variables",
+      "create_document": "An error occurred while creating the documents"
+    },
+    "validation": {
+      "category_required": "Please select a category",
+      "template_required": "Please select a template",
+      "file_name_required": "File name is required",
+      "file_type_required": "File type is required",
+      "filled_data_required": "Data is required"
+    }
+  },
+  "multi_fill_templet_form": {
+    "header": "Create Multiple Documents",
+    "category_label": "Select Category",
+    "select_category_placeholder": "Select a category",
+    "or_divider": "OR",
+    "template_label": "Select Template",
+    "select_template_placeholder": "Select a template",
+    "word_file_label": "Upload Word File",
+    "word_file_hint": "If you upload a Word file, the selected template will be ignored.",
+    "bulk_data_label": "Select Data Set",
+    "select_bulk_data_placeholder": "Select a data set",
+    "excel_file_label": "Upload Excel File",
+    "excel_file_hint": "If you upload an Excel file, the selected data set will be ignored.",
+    "file_name_label": "File Name",
+    "file_name_placeholder": "Enter the base name for the generated files",
+    "folder_name_label": "Folder Name",
+    "folder_name_placeholder": "Enter the name for the folder to store files",
+    "file_type_label": "Select File Type",
+    "select_file_type_placeholder": "Select a file type",
+    "file_type_both": "Both",
+    "create_files_button": "Create Files",
+    "creating_button": "Creating...",
+    "errors": {
+      "fetch_categories": "An error occurred while fetching categories.",
+      "fetch_bulk_data": "An error occurred while fetching data sets.",
+      "fetch_templates": "An error occurred while fetching templates for the selected category.",
+      "create_documents": "An error occurred while creating the documents."
+    },
+    "success": {
+      "documents_created": "Documents created successfully!",
+      "download_files_button": "Download Files (ZIP)",
+      "download_summary_button": "Download Summary (Excel)"
+    },
+    "validation": {
+      "template_or_word_required": "Either a template or a Word file is required.",
+      "word_file_format": "Invalid file format. Please upload a .doc or .docx file.",
+      "bulk_data_or_excel_required": "Either a data set or an Excel file is required.",
+      "excel_file_format": "Invalid file format. Please upload an .xls or .xlsx file.",
+      "file_name_required": "File name is required.",
+      "folder_name_required": "Folder name is required.",
+      "file_type_required": "File type is required."
+    }
+  },
+  "users": {
+    "page_title": "Data Handler - User Management",
+    "page_description": "Manage users in the Data Handler.",
+    "main_title": "User Management",
+    "add_new_button": "Add New User",
+    "retry_button": "Retry",
+    "no_users": "No users available at the moment.",
+    "errors": {
+      "fetch": "Failed to fetch users. Please try again."
+    },
+    "table": {
+      "hash": "#",
+      "name": "Name",
+      "email": "Email",
+      "user_type": "User Type",
+      "admin": "Admin",
+      "user": "User",
+      "organization": "Organization",
+      "actions": "Actions",
+      "edit_button": "Edit",
+      "delete_button": "Delete"
+    },
+    "modal": {
+      "title_delete": "Delete User",
+      "title_create": "Add New User",
+      "title_edit": "Edit User",
+      "close_button_aria": "Close",
+      "errors": {
+        "general": "An unexpected error occurred"
+      },
+      "delete_confirmation": "Are you sure you want to delete the user \"{{username}}\"?",
+      "labels": {
+        "username": "Name",
+        "email": "Email",
+        "organization": "Organization",
+        "password_create": "Password",
+        "password_edit": "Password (leave blank to keep current)"
+      },
+      "buttons": {
+        "add": "Add",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "confirm_delete": "Confirm Deletion"
+      },
+      "validation": {
+        "username_required": "Username is required",
+        "username_invalid": "Username must contain only letters, numbers, and @/./+/-/_ characters",
+        "email_invalid": "Invalid email address",
+        "email_required": "Email is required",
+        "organization_required": "Organization is required",
+        "password_required": "Password is required"
+      }
+    }
+  },
+  "content_tracker": {
+    "page_title": "Data Handler - Content Tracker",
+    "page_description": "Data Handler - Content Tracker",
+    "main_title": "Content Tracker",
+    "add_new_task_button": "Add New Task",
+    "retry_button": "Retry",
+    "no_tasks_message": "No tracking tasks currently available",
+    "errors": {
+      "delete_task": "An error occurred while deleting the task"
+    },
+    "delete_modal": {
+      "title": "Confirm Task Deletion",
+      "message": "Are you sure you want to delete the task \"{{title}}\"?",
+      "this_task": "this task",
+      "deleting_button": "Deleting...",
+      "delete_button": "Delete"
+    },
+    "tasks_table": {
+      "title": "Title",
+      "original_link": "Original Link",
+      "article_link_button": "Article Link",
+      "results_count": "Results Count",
+      "actions": "Actions",
+      "show_results_button": "Show Results",
+      "edit_button": "Edit",
+      "delete_button": "Delete"
+    },
+    "external_tasks_page": {
+      "page_title": "Data Handler - Ongoing Tracking",
+      "page_description": "Data Handler - Ongoing Tracking",
+      "main_title": "Ongoing Tracking",
+      "refresh_button": "Refresh",
+      "retry_button": "Retry",
+      "errors": {
+        "fetch_failed": "Failed to load ongoing tracking"
+      }
+    },
+    "external_tasks_table": {
+      "title": "Title",
+      "original_link": "Original Link",
+      "article_link_button": "Article Link",
+      "creation_date": "Creation Date",
+      "status": "Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "retry_button": "Retry"
+    },
+    "task_modal": {
+      "create_title": "Add New Task",
+      "edit_title": "Edit Task",
+      "errors": {
+        "unexpected": "An unexpected error occurred"
+      },
+      "validation": {
+        "url_invalid": "Invalid URL",
+        "url_required": "URL is required",
+        "search_sources_required": "Search sources are required",
+        "count_min": "Count must be greater than zero",
+        "count_max": "Maximum results is 100",
+        "count_required": "Number of results is required",
+        "search_time_required": "Search time is required",
+        "start_date_required": "Start date is required",
+        "end_date_required": "End date is required",
+        "schedule_days_min": "Number of days must be greater than zero",
+        "schedule_days_required": "Number of days is required",
+        "interval_hours_min": "Number of hours must be greater than zero",
+        "interval_hours_required": "Number of hours is required",
+        "title_required": "Title is required"
+      }
+    },
+    "task_form": {
+      "cancel_button": "Cancel",
+      "add_button": "Add",
+      "save_changes_button": "Save Changes"
+    },
+    "form_sections": {
+      "search_options": {
+        "both": "Both"
+      },
+      "time_options": {
+        "any": "Any time",
+        "past_day": "Past day",
+        "past_week": "Past week",
+        "past_month": "Past month",
+        "past_year": "Past year"
+      },
+      "common": {
+        "original_article_url": "Original Article URL"
+      },
+      "create": {
+        "info_alert": "Enter the original article link and we will search for sites that have copied the content.",
+        "search_sources": "Search Sources",
+        "results_count": "Number of Results",
+        "search_time": "Search Time",
+        "save_to_excel": "Save results to an Excel file"
+      },
+      "schedule": {
+        "settings_title": "Scheduling Settings",
+        "start_date": "Start Date",
+        "end_date": "End Date",
+        "days_between_searches": "Days between each search",
+        "hours_between_searches": "Hours between each search"
+      },
+      "schedule_toggle": {
+        "label": "Schedule Task"
+      },
+      "edit": {
+        "article_title": "Article Title"
+      }
+    },
+    "results_view": {
+      "task_not_found_error": "Task not found",
+      "fetch_error": "An error occurred while fetching task data",
+      "delete_error": "An error occurred while deleting the result",
+      "retry_button": "Retry",
+      "task_not_found": "Task not found",
+      "back_to_list_button": "Back to List",
+      "search_results_title": "Search Results:",
+      "original_article_card_title": "Original Article",
+      "original_article_title_label": "Title:",
+      "original_article_url_label": "Original URL:",
+      "link_button": "Link",
+      "copied_content_sites_title": "Sites that copied the content",
+      "image_not_available": "Image not available",
+      "same_content_badge": "Same Content",
+      "different_content_badge": "Different Content",
+      "visit_site_button": "Visit Site",
+      "delete_button": "Delete",
+      "no_results_message": "No results for this task.",
+      "confirm_delete_title": "Confirm Deletion",
+      "confirm_delete_message": "Are you sure you want to delete the result \"{{title}}\"?",
+      "this_result": "this result",
+      "deleting_button": "Deleting...",
+      "cancel_button": "Cancel"
+    },
+    "confirmation_modal": {
+      "default_title": "Confirm Action",
+      "default_message": "Are you sure you want to proceed?",
+      "default_confirm_text": "Confirm",
+      "default_cancel_text": "Cancel"
+    }
+  }
+}

@@ -1,13 +1,17 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const DeleteConfirmationModal = ({
   show,
-  category,
-  onClose,
+  onHide,
   onConfirm,
+  category,
   isSubmitting,
-  error
+  error,
 }) => {
+  const { t } = useTranslation();
+  const templatesCount = category?.templates?.length || 0;
+
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}
@@ -20,28 +24,29 @@ const DeleteConfirmationModal = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="deleteModalLabel">
-              تأكيد الحذف
+              {t("category_delete_confirmation_modal.title")}
             </h5>
             <button
               type="button"
               className="btn-close me-auto ms-0 fs-5"
-              onClick={onClose}
-              aria-label="Close"
+              onClick={onHide}
+              aria-label={t("aria.close")}
             ></button>
           </div>
           <div className="modal-body">
-            {error && (
-              <div className="alert alert-danger mb-3">
-                {error}
-              </div>
-            )}
-            
-            <p>هل أنت متأكد من حذف فئة "{category?.name}"؟</p>
-            {category?.templates?.length > 0 && (
+            {error && <div className="alert alert-danger mb-3">{error}</div>}
+
+            <p>
+              {t("category_delete_confirmation_modal.confirmation_message", {
+                name: category?.name,
+              })}
+            </p>
+            {templatesCount > 0 && (
               <div className="alert alert-warning">
                 <i className="fas fa-exclamation-triangle me-2"></i>
-                تحتوي هذه الفئة على {category.templates.length} قالب. سيتم حذف
-                جميع القوالب المرتبطة بها.
+                {t("category_delete_confirmation_modal.warning_message", {
+                  count: templatesCount,
+                })}
               </div>
             )}
           </div>
@@ -49,9 +54,9 @@ const DeleteConfirmationModal = ({
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={onClose}
+              onClick={onHide}
             >
-              إلغاء
+              {t("category_delete_confirmation_modal.buttons.cancel")}
             </button>
             <button
               type="button"
@@ -66,10 +71,10 @@ const DeleteConfirmationModal = ({
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  جاري الحذف...
+                  {t("category_delete_confirmation_modal.buttons.deleting")}
                 </>
               ) : (
-                "تأكيد الحذف"
+                t("category_delete_confirmation_modal.buttons.confirm")
               )}
             </button>
           </div>

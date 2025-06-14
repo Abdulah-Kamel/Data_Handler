@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 import FilledtemplateService from "../../../services/FilledtemplateService";
 import BulkDataService from "../../../services/BulkDataService";
 import categoryService from "../../../services/categoryService";
@@ -8,47 +9,49 @@ import { PulseLoader } from "react-spinners";
 
 const validFileExtensions = ["xlsx", "xls"];
 
-const MultiFillTemplateSchema = Yup.object().shape({
-  template_id: Yup.string().test(
-    "conditional-requirement",
-    "يرجى اختيار قالب أو رفع ملف Word",
-    function (value) {
-      return value || this.parent.word_file;
-    }
-  ),
-  word_file: Yup.mixed().test(
-    "fileFormat",
-    "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Word (.docx, .doc)",
-    function (value) {
-      if (!value) return true;
-      return ["docx", "doc"].includes(
-        value.name.split(".").pop().toLowerCase()
-      );
-    }
-  ),
-  bulk_data_id: Yup.string().test(
-    "conditional-requirement",
-    "يرجى اختيار مجموعة البيانات أو رفع ملف Excel",
-    function (value) {
-      return this.parent.excel_file || value;
-    }
-  ),
-  excel_file: Yup.mixed().test(
-    "fileFormat",
-    "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Excel (.xlsx, .xls)",
-    function (value) {
-      if (!value) return true;
-      return validFileExtensions.includes(
-        value.name.split(".").pop().toLowerCase()
-      );
-    }
-  ),
-  file_name: Yup.string().required("اسم الملف مطلوب"),
-  folder_name: Yup.string().required("اسم المجلد مطلوب"),
-  file_type: Yup.string().required("نوع الملف مطلوب"),
-});
-
 const MultiFillTempletForm = ({ token }) => {
+  const { t } = useTranslation();
+
+  const MultiFillTemplateSchema = Yup.object().shape({
+    template_id: Yup.string().test(
+      "conditional-requirement",
+      t("multi_fill_templet_form.validation.template_or_word_required"),
+      function (value) {
+        return value || this.parent.word_file;
+      }
+    ),
+    word_file: Yup.mixed().test(
+      "fileFormat",
+      t("multi_fill_templet_form.validation.word_file_format"),
+      function (value) {
+        if (!value) return true;
+        return ["docx", "doc"].includes(
+          value.name.split(".").pop().toLowerCase()
+        );
+      }
+    ),
+    bulk_data_id: Yup.string().test(
+      "conditional-requirement",
+      t("multi_fill_templet_form.validation.bulk_data_or_excel_required"),
+      function (value) {
+        return this.parent.excel_file || value;
+      }
+    ),
+    excel_file: Yup.mixed().test(
+      "fileFormat",
+      t("multi_fill_templet_form.validation.excel_file_format"),
+      function (value) {
+        if (!value) return true;
+        return validFileExtensions.includes(
+          value.name.split(".").pop().toLowerCase()
+        );
+      }
+    ),
+    file_name: Yup.string().required(t("multi_fill_templet_form.validation.file_name_required")),
+    folder_name: Yup.string().required(t("multi_fill_templet_form.validation.folder_name_required")),
+    file_type: Yup.string().required(t("multi_fill_templet_form.validation.file_type_required")),
+  });
+
   const [templates, setTemplates] = useState([]);
   const [categories, setCategories] = useState([]);
   const [bulkDataSets, setBulkDataSets] = useState([]);
@@ -60,6 +63,7 @@ const MultiFillTempletForm = ({ token }) => {
   const [excelFile, setExcelFile] = useState(null);
   const [wordFile, setWordFile] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
@@ -69,14 +73,14 @@ const MultiFillTempletForm = ({ token }) => {
           setCategories(result.data);
         }
       } catch (err) {
-        setFormError("حدث خطأ أثناء جلب الأقسام");
+        setFormError(t("multi_fill_templet_form.errors.fetch_categories"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchCategories();
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     const fetchBulkData = async () => {
@@ -86,12 +90,12 @@ const MultiFillTempletForm = ({ token }) => {
           setBulkDataSets(bulkDataResult.data);
         }
       } catch (err) {
-        setFormError("حدث خطأ أثناء جلب مجموعات البيانات");
+        setFormError(t("multi_fill_templet_form.errors.fetch_bulk_data"));
       }
     };
 
     fetchBulkData();
-  }, [token]);
+  }, [token, t]);
 
   const handleCategoryChange = async (e, setFieldValue) => {
     const categoryId = e.target.value;
@@ -115,7 +119,7 @@ const MultiFillTempletForm = ({ token }) => {
       }
     } catch (err) {
       setFormError({
-        message: "حدث خطأ أثناء جلب القوالب",
+        message: t("multi_fill_templet_form.errors.fetch_templates"),
         details: err.message ? [err.message] : [],
       });
       setTemplates([]);
@@ -132,6 +136,7 @@ const MultiFillTempletForm = ({ token }) => {
       setFieldValue("bulk_data_id", "");
     }
   };
+
   const handleWordFileChange = (event, setFieldValue) => {
     const file = event.target.files[0];
     if (file) {
@@ -180,7 +185,7 @@ const MultiFillTempletForm = ({ token }) => {
       }
     } catch (error) {
       setFormError({
-        message: "حدث خطأ أثناء إنشاء المستندات",
+        message: t("multi_fill_templet_form.errors.create_documents"),
         details: [],
       });
     } finally {
@@ -226,15 +231,12 @@ const MultiFillTempletForm = ({ token }) => {
       )}
       <div className="card mb-4">
         <div className="card-header primary-bg text-white">
-          <h5 className="mb-0">انشاء مستندات متعددة</h5>
+          <h5 className="mb-0">{t("multi_fill_templet_form.header")}</h5>
         </div>
         <div className="card-body d-flex flex-column gap-3">
           {downloadLinks && (
             <div className="alert alert-success mb-4">
-              <h5 className="mb-3">
-                تم إنشاء المستندات بنجاح! يمكنك تحميل الملفات من الروابط
-                التالية:
-              </h5>
+              <h5 className="mb-3">{t("multi_fill_templet_form.success.documents_created")}</h5>
               <div className="d-flex justify-content-center">
                 {downloadLinks && (
                   <>
@@ -244,7 +246,7 @@ const MultiFillTempletForm = ({ token }) => {
                       rel="noopener noreferrer"
                       className="btn primary-btn fs-5"
                     >
-                      تحميل الملفات
+                      {t("multi_fill_templet_form.success.download_files_button")}
                       <i className="fas fa-file-download me-2"></i>
                     </a>
                     <a
@@ -253,7 +255,7 @@ const MultiFillTempletForm = ({ token }) => {
                       rel="noopener noreferrer"
                       className="btn primary-btn-outline fs-5 me-3"
                     >
-                      تحميل ملخص البيانات
+                      {t("multi_fill_templet_form.success.download_summary_button")}
                       <i className="fa-solid fa-file-excel me-2"></i>
                     </a>
                   </>
@@ -293,7 +295,7 @@ const MultiFillTempletForm = ({ token }) => {
                   {/* Category Selection */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="category_id" className="form-label">
-                      اختر القسم
+                      {t("multi_fill_templet_form.category_label")}
                     </label>
                     <Field
                       as="select"
@@ -304,7 +306,7 @@ const MultiFillTempletForm = ({ token }) => {
                       value={selectedCategory}
                       disabled={formSubmitting}
                     >
-                      <option value="">اختر قسم</option>
+                      <option value="">{t("multi_fill_templet_form.select_category_placeholder")}</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
@@ -314,13 +316,13 @@ const MultiFillTempletForm = ({ token }) => {
                   </div>
 
                   <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
-                    او
+                    {t("multi_fill_templet_form.or_divider")}
                   </div>
 
                   {/* Template Selection */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="template_id" className="form-label">
-                      اختر القالب
+                      {t("multi_fill_templet_form.template_label")}
                     </label>
                     <Field
                       as="select"
@@ -344,7 +346,7 @@ const MultiFillTempletForm = ({ token }) => {
                         handleChange(e);
                       }}
                     >
-                      <option value="">اختر قالب</option>
+                      <option value="">{t("multi_fill_templet_form.select_template_placeholder")}</option>
                       {templates.map((template) => (
                         <option key={template.id} value={template.id}>
                           {template.name}
@@ -361,7 +363,7 @@ const MultiFillTempletForm = ({ token }) => {
                   {/* Word File Upload */}
                   <div className="col-md-5 mb-3 mt-3 mt-sm-0">
                     <label htmlFor="word_file" className="form-label">
-                      رفع ملف Word
+                      {t("multi_fill_templet_form.word_file_label")}
                     </label>
                     <input
                       type="file"
@@ -376,7 +378,7 @@ const MultiFillTempletForm = ({ token }) => {
                       disabled={loading || formSubmitting || values.template_id}
                     />
                     <small className="text-muted d-block mt-1">
-                      يرجى رفع ملف Word (.docx, .doc)
+                      {t("multi_fill_templet_form.word_file_hint")}
                     </small>
                     <ErrorMessage
                       name="word_file"
@@ -385,12 +387,12 @@ const MultiFillTempletForm = ({ token }) => {
                     />
                   </div>
                   <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
-                    او
+                    {t("multi_fill_templet_form.or_divider")}
                   </div>
                   {/* Bulk Data Selection */}
                   <div className="col-md-5">
                     <label htmlFor="bulk_data_id" className="form-label">
-                      اختر مجموعة البيانات
+                      {t("multi_fill_templet_form.bulk_data_label")}
                     </label>
                     <Field
                       as="select"
@@ -405,7 +407,7 @@ const MultiFillTempletForm = ({ token }) => {
                       name="bulk_data_id"
                       disabled={loading || formSubmitting || values.excel_file}
                     >
-                      <option value="">اختر مجموعة البيانات</option>
+                      <option value="">{t("multi_fill_templet_form.select_bulk_data_placeholder")}</option>
                       {bulkDataSets.map((bulkData) => (
                         <option key={bulkData.id} value={bulkData.id}>
                           {bulkData.name}
@@ -424,7 +426,7 @@ const MultiFillTempletForm = ({ token }) => {
                   {/* Excel File Upload */}
                   <div className="col-md-5 mt-3 mt-sm-0">
                     <label htmlFor="excel_file" className="form-label">
-                      رفع ملف Excel
+                      {t("multi_fill_templet_form.excel_file_label")}
                     </label>
                     <input
                       type="file"
@@ -441,7 +443,7 @@ const MultiFillTempletForm = ({ token }) => {
                       }
                     />
                     <small className="text-muted d-block mt-1">
-                      يرجى رفع ملف Excel (.xlsx, .xls)
+                      {t("multi_fill_templet_form.excel_file_hint")}
                     </small>
                     <ErrorMessage
                       name="excel_file"
@@ -451,13 +453,13 @@ const MultiFillTempletForm = ({ token }) => {
                   </div>
 
                   <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
-                    او
+                    {t("multi_fill_templet_form.or_divider")}
                   </div>
 
                   {/* File Name */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="file_name" className="form-label">
-                      اسم الملف
+                      {t("multi_fill_templet_form.file_name_label")}
                     </label>
                     <Field
                       type="text"
@@ -468,7 +470,7 @@ const MultiFillTempletForm = ({ token }) => {
                       }`}
                       id="file_name"
                       name="file_name"
-                      placeholder="أدخل اسم الملف"
+                      placeholder={t("multi_fill_templet_form.file_name_placeholder")}
                       disabled={formSubmitting}
                     />
                     <ErrorMessage
@@ -483,7 +485,7 @@ const MultiFillTempletForm = ({ token }) => {
                   {/* Folder Name */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="folder_name" className="form-label">
-                      اسم المجلد
+                      {t("multi_fill_templet_form.folder_name_label")}
                     </label>
                     <Field
                       type="text"
@@ -494,7 +496,7 @@ const MultiFillTempletForm = ({ token }) => {
                       }`}
                       id="folder_name"
                       name="folder_name"
-                      placeholder="أدخل اسم المجلد"
+                      placeholder={t("multi_fill_templet_form.folder_name_placeholder")}
                       disabled={formSubmitting}
                     />
                     <ErrorMessage
@@ -504,12 +506,12 @@ const MultiFillTempletForm = ({ token }) => {
                     />
                   </div>
                   <div className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
-                    او
+                    {t("multi_fill_templet_form.or_divider")}
                   </div>
                   {/* File Type */}
                   <div className="col-md-5 mb-3">
                     <label htmlFor="file_type" className="form-label">
-                      نوع الملف
+                      {t("multi_fill_templet_form.file_type_label")}
                     </label>
                     <Field
                       as="select"
@@ -520,10 +522,10 @@ const MultiFillTempletForm = ({ token }) => {
                       name="file_type"
                       disabled={formSubmitting}
                     >
-                      <option value="">اختر نوع الملف</option>
+                      <option value="">{t("multi_fill_templet_form.select_file_type_placeholder")}</option>
                       <option value="pdf">PDF</option>
                       <option value="word">Word</option>
-                      <option value="both">كلاهما</option>
+                      <option value="both">{t("multi_fill_templet_form.file_type_both")}</option>
                     </Field>
                     <ErrorMessage
                       name="file_type"
@@ -536,7 +538,7 @@ const MultiFillTempletForm = ({ token }) => {
                 
                 {selectedTemplateVars.length > 0 && (
                   <div className="mb-4">
-                    <h6 className="mb-3">متغيرات القالب المتاحة:</h6>
+                    <h6 className="mb-3">{t("multi_fill_templet_form.available_variables_label")}</h6>
                     <div className="card">
                       <div className="card-body">
                         <div className="row">
@@ -562,7 +564,7 @@ const MultiFillTempletForm = ({ token }) => {
                   >
                     {formSubmitting ? (
                       <>
-                        جاري الإنشاء...
+                        {t("multi_fill_templet_form.creating_button")}
                         <span
                           className="spinner-border spinner-border-sm me-2"
                           role="status"
@@ -570,7 +572,7 @@ const MultiFillTempletForm = ({ token }) => {
                         ></span>
                       </>
                     ) : (
-                      "إنشاء ملفات"
+                      t("multi_fill_templet_form.create_files_button")
                     )}
                   </button>
                 </div>

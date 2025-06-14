@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import DataTable from 'react-data-table-component';
 import { PulseLoader } from 'react-spinners';
 
 const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
+  const { t } = useTranslation();
   const columns = [
     {
       name: '#',
@@ -11,7 +13,7 @@ const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
       width: '60px',
     },
     {
-      name: 'العنوان',
+      name: t('content_tracker.external_tasks_table.title'),
       selector: (row) => row.title,
       sortable: true,
       cell: (row) => (
@@ -21,7 +23,7 @@ const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
       ),
     },
     {
-      name: 'الرابط الأصلي',
+      name: t('content_tracker.external_tasks_table.original_link'),
       selector: (row) => row.url,
       sortable: true,
       cell: (row) => (
@@ -31,21 +33,21 @@ const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
           rel="noopener noreferrer"
           className="btn primary-btn"
         >
-          رابط المقال
+          {t('content_tracker.external_tasks_table.article_link_button')}
         </a>
       ),
     },
     {
-      name: 'تاريخ الإنشاء',
+      name: t('content_tracker.external_tasks_table.creation_date'),
       selector: (row) => new Date(row.created_at).toLocaleDateString(),
       sortable: true,
       width: '150px',
     },
     {
-      name: 'الحالة',
+      name: t('content_tracker.external_tasks_table.status'),
       cell: (row) => (
         <span className={`badge ${row.is_active ? 'bg-success' : 'bg-secondary'}`}>
-          {row.is_active ? 'نشط' : 'غير نشط'}
+          {row.is_active ? t('content_tracker.external_tasks_table.active') : t('content_tracker.external_tasks_table.inactive')}
         </span>
       ),
       width: '120px',
@@ -68,7 +70,7 @@ const ExternalTasksTable = ({ tasks, loading, error, onRefresh }) => {
           className="btn btn-sm btn-outline-danger me-3"
           onClick={onRefresh}
         >
-          إعادة المحاولة
+          {t('content_tracker.external_tasks_table.retry_button')}
         </button>
       </div>
     );

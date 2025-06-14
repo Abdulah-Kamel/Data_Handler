@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { createTaskSchema, editTaskSchema, initialValues } from './validationSchemas';
+import { initialValues } from './validationSchemas';
 import TaskForm from './TaskForm';
 
 const TaskModal = ({
@@ -11,6 +13,45 @@ const TaskModal = ({
   onSubmit: onSubmitProp,
   loading,
 }) => {
+  const { t } = useTranslation();
+
+  const createTaskSchema = Yup.object().shape({
+    url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
+    search_sources: Yup.string().required(t('content_tracker.task_modal.validation.search_sources_required')),
+    count: Yup.number()
+      .min(1, t('content_tracker.task_modal.validation.count_min'))
+      .max(100, t('content_tracker.task_modal.validation.count_max'))
+      .required(t('content_tracker.task_modal.validation.count_required')),
+    search_time: Yup.string().required(t('content_tracker.task_modal.validation.search_time_required')),
+    save_to_excel: Yup.boolean(),
+    is_scheduled: Yup.boolean(),
+    start_date: Yup.date().when('is_scheduled', {
+      is: true,
+      then: () => Yup.date().required(t('content_tracker.task_modal.validation.start_date_required'))
+    }),
+    end_date: Yup.date().when('is_scheduled', {
+      is: true,
+      then: () => Yup.date().required(t('content_tracker.task_modal.validation.end_date_required'))
+    }),
+    schedule_days: Yup.number().when('is_scheduled', {
+      is: true,
+      then: () => Yup.number()
+        .min(1, t('content_tracker.task_modal.validation.schedule_days_min'))
+        .required(t('content_tracker.task_modal.validation.schedule_days_required'))
+    }),
+    interval_hours: Yup.number().when('is_scheduled', {
+      is: true,
+      then: () => Yup.number()
+        .min(1, t('content_tracker.task_modal.validation.interval_hours_min'))
+        .required(t('content_tracker.task_modal.validation.interval_hours_required'))
+    })
+  });
+
+  const editTaskSchema = Yup.object().shape({
+    url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
+    title: Yup.string().required(t('content_tracker.task_modal.validation.title_required'))
+  });
+
   const [apiErrors, setApiErrors] = useState({});
   const isCreateMode = mode === 'create';
 
@@ -45,7 +86,7 @@ const TaskModal = ({
       if (error.response?.data) {
         setApiErrors(error.response.data);
       } else {
-        setApiErrors({ general: 'حدث خطأ غير متوقع' });
+        setApiErrors({ general: t('content_tracker.task_modal.errors.unexpected') });
       }
     }
   };
@@ -60,7 +101,7 @@ const TaskModal = ({
           <div className="modal-content">
             <div className="modal-header primary-bg text-white">
               <h5 className="modal-title">
-                {isCreateMode ? 'إضافة مهمة جديدة' : 'تعديل المهمة'}
+                {isCreateMode ? t('content_tracker.task_modal.create_title') : t('content_tracker.task_modal.edit_title')}
               </h5>
               <button
                 type="button"
@@ -71,7 +112,7 @@ const TaskModal = ({
             </div>
             <div className="modal-body">
               <Formik
-                initialValues={task || initialValues(isCreateMode)}
+                initialValues={task || initialValues()}
                 validationSchema={isCreateMode ? createTaskSchema : editTaskSchema}
                 onSubmit={handleSubmit}
                 enableReinitialize

@@ -1,19 +1,25 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ConfirmationModal = ({
   show,
   onHide,
   onConfirm,
-  title = "تأكيد الحذف",
-  message = "هل أنت متأكد من أنك تريد حذف هذا العنصر؟",
-  confirmText = "حذف",
+  title,
+  message,
+  confirmText,
   confirmVariant = "danger",
-  cancelText = "إلغاء",
+  cancelText,
   loading = false,
-  size = "md",
-  centered = true,
 }) => {
+  const { t } = useTranslation();
+
   if (!show) return null;
+
+  const modalTitle = title || t('confirmation_modal.default_title');
+  const modalMessage = message || t('confirmation_modal.default_message');
+  const modalConfirmText = confirmText || t('confirmation_modal.default_confirm_text');
+  const modalCancelText = cancelText || t('confirmation_modal.default_cancel_text');
 
   return (
     <div
@@ -55,7 +61,7 @@ const ConfirmationModal = ({
             className="modal-title"
             style={{ margin: 0, fontSize: "1.25rem" }}
           >
-            {title}
+            {modalTitle}
           </h5>
           <button
             type="button"
@@ -66,7 +72,7 @@ const ConfirmationModal = ({
           </button>
         </div>
         <div className="modal-body" style={{ padding: "1.5rem" }}>
-          <p style={{ margin: 0, textAlign: "center" }}>{message}</p>
+          <p style={{ margin: 0, textAlign: "center" }}>{modalMessage}</p>
         </div>
         <div
           className="modal-footer"
@@ -92,7 +98,7 @@ const ConfirmationModal = ({
               opacity: loading ? 0.65 : 1,
             }}
           >
-            {cancelText}
+            {modalCancelText}
           </button>
           <button
             type="button"
@@ -124,7 +130,7 @@ const ConfirmationModal = ({
                 }}
               ></span>
             ) : null}
-            {confirmText}
+            {modalConfirmText}
           </button>
         </div>
       </div>

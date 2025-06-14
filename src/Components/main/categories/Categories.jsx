@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { PulseLoader } from "react-spinners";
 import categoryService from "../../../services/categoryService";
@@ -8,6 +9,7 @@ import { useAuth } from "../../../Context/AuthContext";
 import SearchInput from "../../common/SearchInput";
 
 const Categories = () => {
+  const { t, i18n } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,7 +34,7 @@ const Categories = () => {
         setCategories(data);
         setError(null);
       } else {
-        setError(error);
+        setError(error || t("categories.errors.fetch"));
       }
       setLoading(false);
     };
@@ -50,7 +52,7 @@ const Categories = () => {
       setCategories(data);
       setError(null);
     } else {
-      setError(error);
+      setError(error || t("categories.errors.fetch"));
     }
     setLoading(false);
   };
@@ -63,7 +65,7 @@ const Categories = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG");
+    return date.toLocaleDateString(i18n.language);
   };
 
   const handleSubmit = async (values, { resetForm, setSubmitting }) => {
@@ -93,8 +95,8 @@ const Categories = () => {
     } catch (err) {
       setFormError(
         isEditing
-          ? "فشل في تعديل الفئة. يرجى المحاولة مرة أخرى."
-          : "فشل في إضافة الفئة. يرجى المحاولة مرة أخرى."
+          ? t("categories.errors.update")
+          : t("categories.errors.create")
       );
     } finally {
       setFormSubmitting(false);
@@ -127,7 +129,7 @@ const Categories = () => {
       setSelectedCategory(null);
       setRefreshTrigger((prev) => prev + 1);
     } catch (err) {
-      setDeleteError("فشل في حذف الفئة. يرجى المحاولة مرة أخرى.");
+      setDeleteError(t("categories.errors.delete"));
     } finally {
       setFormSubmitting(false);
     }
@@ -144,17 +146,17 @@ const Categories = () => {
   }
   return (
     <div className="px-3 mt-5 position-relative">
-      <title>Data Handler - اقسام النماذج</title>
-      <meta name="description" content="Data Handler - اقسام النماذج" />
+      <title>{t("categories.page_title")}</title>
+      <meta name="description" content={t("categories.page_description")} />
 
       <div className="d-flex category-header justify-content-between align-items-center mb-4">
         <div className="d-flex align-items-center gap-3">
-          <h2>الاقسام</h2>
+          <h2>{t("categories.main_title")}</h2>
           <SearchInput
             value={searchTerm}
             onChange={setSearchTerm}
             onSearch={handleSearch}
-            placeholder="ابحث عن قسم..."
+            placeholder={t("categories.search_placeholder")}
           />
         </div>
         <button
@@ -166,7 +168,7 @@ const Categories = () => {
             setShowModal(true);
           }}
         >
-          اضافة قسم جديد
+          {t("categories.add_new_button")}
           <i className="fas fa-plus me-2"></i>
         </button>
       </div>
@@ -178,14 +180,14 @@ const Categories = () => {
             className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
-            إعادة المحاولة
+            {t("categories.retry_button")}
           </button>
         </div>
       )}
 
       {categories.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
-          لا توجد فئات متاحة حالياً
+          {t("categories.no_categories")}
         </div>
       ) : (
         <CategoryGrid
@@ -201,31 +203,33 @@ const Categories = () => {
         />
       )}
 
-      {/* Category Modal */}
       <CategoryModal
         show={showModal}
-        isEditing={isEditing}
-        selectedCategory={selectedCategory}
-        onClose={() => setShowModal(false)}
+        onHide={() => {
+          setShowModal(false);
+          setIsEditing(false);
+          setSelectedCategory(null);
+          setFormError(null);
+        }}
         onSubmit={handleSubmit}
+        category={selectedCategory}
+        isEditing={isEditing}
         formSubmitting={formSubmitting}
         error={formError}
       />
 
-      {/* Delete Confirmation Modal */}
       <DeleteConfirmationModal
         show={showDeleteModal}
-        category={selectedCategory}
-        onClose={() => setShowDeleteModal(false)}
+        onHide={() => {
+          setShowDeleteModal(false);
+          setSelectedCategory(null);
+          setDeleteError(null);
+        }}
         onConfirm={handleDelete}
+        category={selectedCategory}
         isSubmitting={formSubmitting}
         error={deleteError}
       />
-
-      {/* Modal backdrop */}
-      {(showModal || showDeleteModal) && (
-        <div className="modal-backdrop fade show"></div>
-      )}
     </div>
   );
 };

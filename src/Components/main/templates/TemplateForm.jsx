@@ -1,18 +1,28 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const TemplateSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "اسم القالب قصير جدًا")
-    .max(100, "اسم القالب طويل جدًا")
-    .required("اسم القالب مطلوب"),
-  description: Yup.string()
-    .min(5, "الوصف قصير جدًا")
-    .max(200, "الوصف طويل جدًا")
-});
+const TemplateForm = ({
+  isEditing,
+  selectedTemplate,
+  onSubmit,
+  formSubmitting,
+  onCancel,
+  error,
+}) => {
+  const { t } = useTranslation();
 
-const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, onCancel, error }) => {
+  const TemplateSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, t("template_form.validation.name_min"))
+      .max(100, t("template_form.validation.name_max"))
+      .required(t("template_form.validation.name_required")),
+    description: Yup.string()
+      .min(5, t("template_form.validation.desc_min"))
+      .max(200, t("template_form.validation.desc_max")),
+  });
+
   return (
     <Formik
       initialValues={{
@@ -28,7 +38,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
           <div className="modal-body">
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
-                اسم القالب
+                {t("template_form.name_label")}
               </label>
               <Field
                 type="text"
@@ -37,6 +47,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
                 }`}
                 id="name"
                 name="name"
+                placeholder={t("template_form.name_placeholder")}
               />
               <ErrorMessage
                 name="name"
@@ -46,7 +57,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
             </div>
             <div className="mb-3">
               <label htmlFor="description" className="form-label">
-                وصف القالب
+                {t("template_form.description_label")}
               </label>
               <Field
                 as="textarea"
@@ -56,6 +67,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
                 id="description"
                 name="description"
                 rows="3"
+                placeholder={t("template_form.description_placeholder")}
               />
               <ErrorMessage
                 name="description"
@@ -63,8 +75,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
                 className="invalid-feedback"
               />
             </div>
-            
-            {/* Display error message below the inputs */}
+
             {error && (
               <div className="alert alert-danger mt-3">
                 {error}
@@ -77,7 +88,7 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
               className="btn btn-secondary"
               onClick={onCancel}
             >
-              إلغاء
+              {t("template_form.cancel_button")}
             </button>
             <button
               type="submit"
@@ -91,10 +102,14 @@ const TemplateForm = ({ isEditing, selectedTemplate, onSubmit, formSubmitting, o
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  {isEditing ? "جاري التعديل..." : "جاري الإضافة..."}
+                  {isEditing
+                    ? t("template_form.saving_button")
+                    : t("template_form.adding_button")}
                 </>
+              ) : isEditing ? (
+                t("template_form.save_button")
               ) : (
-                isEditing ? "تعديل" : "إضافة"
+                t("template_form.add_button")
               )}
             </button>
           </div>

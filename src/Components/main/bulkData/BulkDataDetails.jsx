@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import { PulseLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
@@ -14,6 +15,7 @@ const BulkDataDetails = ({
   onDeleteRow,
   setSelectedData,
 }) => {
+  const { t } = useTranslation();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -94,7 +96,7 @@ const BulkDataDetails = ({
       setSelectedData(response.data);
     } catch (error) {
       setFormError(
-        error.response?.data?.message || "حدث خطأ أثناء حفظ البيانات"
+        error.response?.data?.message || t("bulk_data.details.errors.save")
       );
     } finally {
       setFormSubmitting(false);
@@ -113,7 +115,7 @@ const BulkDataDetails = ({
       setShowDeleteModal(false);
     } catch (error) {
       setDeleteError(
-        error.response?.data?.message || "حدث خطأ أثناء حذف البيانات"
+        error.response?.data?.message || t("bulk_data.details.errors.delete")
       );
     } finally {
       setFormSubmitting(false);
@@ -144,14 +146,14 @@ const BulkDataDetails = ({
     return [
       ...dynamicColumns,
       {
-        name: "الإجراءات",
+        name: t("bulk_data.details.actions_header"),
         cell: (row) => (
           <div className="d-flex gap-2 justify-content-center">
             <button
               className="btn btn-outline-success btn-sm rounded-pill d-flex align-items-center gap-1"
               onClick={() => handleEditRow(row)}
             >
-              <span>تعديل</span>
+              <span>{t("bulk_data.details.edit_button")}</span>
               <i className="fas fa-edit d-flex align-items-center"></i>
             </button>
 
@@ -159,7 +161,7 @@ const BulkDataDetails = ({
               className="btn btn-outline-danger btn-sm rounded-pill d-flex align-items-center"
               onClick={() => handleDeleteRow(row)}
             >
-              حذف
+              {t("bulk_data.details.delete_button")}
               <i className="fas fa-trash me-1"></i>
             </button>
           </div>
@@ -179,14 +181,14 @@ const BulkDataDetails = ({
             className="btn btn-outline-secondary small-text d-flex align-items-center"
             onClick={onBack}
           >
-            العودة
+            {t("bulk_data.details.back_button")}
             <i className="fas fa-arrow-left me-1"></i>
           </button>
           <button
             className="btn primary-btn-outline small-text d-flex align-items-center"
             onClick={handleAddRow}
           >
-            إضافة سجل جديد
+            {t("bulk_data.details.add_row_button")}
             <i className="fas fa-plus me-1"></i>
           </button>
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import RowForm from "./RowForm";
 
@@ -9,8 +10,9 @@ const RowEditModal = ({
   onSubmit,
   formSubmitting,
   error,
-  allKeys
+  allKeys,
 }) => {
+  const { t } = useTranslation();
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}
@@ -23,7 +25,11 @@ const RowEditModal = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="rowModalLabel">
-              {isEditing ? "تعديل البيانات" : "إضافة بيانات جديدة"}
+              {t(
+                isEditing
+                  ? "row_edit_modal.edit_title"
+                  : "row_edit_modal.add_title"
+              )}
             </h5>
             <button
               type="button"
@@ -32,7 +38,7 @@ const RowEditModal = ({
               aria-label="Close"
             ></button>
           </div>
-          
+
           <RowForm
             isEditing={isEditing}
             selectedRow={selectedRow}

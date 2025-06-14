@@ -1,11 +1,13 @@
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); // 👈 from context
+  const { user, logout } = useAuth(); //
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -19,38 +21,38 @@ const Sidebar = () => {
   const menuItems = [
     {
       icon: "fa-solid fa-users",
-      label: "إدارة البيانات",
+      label: t("sidebar.menu.data_management"),
       to: "/dashboard/bulk-data",
     },
     {
       icon: "fa-solid fa-folder-open",
-      label: "انشاء النماذج",
+      label: t("sidebar.menu.form_creation"),
       to: "/dashboard",
     },
     {
       icon: "fa-solid  fa-file-alt",
-      label: "انشاء المستندات",
+      label: t("sidebar.menu.document_creation"),
       to: "/dashboard/FilledTemplet",
     },
     user?.role === "admin" && {
       icon: "fa-solid fa-user",
-      label: "إدارة المستخدمين",
+      label: t("sidebar.menu.user_management"),
       to: "/dashboard/users",
     },
     {
       icon: "fa-solid fa-magnifying-glass",
-      label: "تتبع المحتوى",
+      label: t("sidebar.menu.content_tracker"),
       to: "/dashboard/content-tracker",
     },
     {
       icon: "fa-solid fa-magnifying-glass",
-      label: "البحث الجارى",
+      label: t("sidebar.menu.running_search"),
       to: "/dashboard/content-tracker/running",
     },
   ].filter(Boolean);
 
   const handleLogout = () => {
-    logout(); // 👈 call context logout
+    logout(); //
     navigate("/login");
   };
 
@@ -63,7 +65,7 @@ const Sidebar = () => {
     >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title fw-bold fs-4" id="offcanvasNavbarLabel">
-          Dashboard
+          {t("sidebar.title")}
         </h5>
         <button
           type="button"
@@ -95,7 +97,7 @@ const Sidebar = () => {
             className="btn btn-outline-danger w-100 d-flex justify-content-center align-items-center"
             onClick={handleLogout}
           >
-            تسجيل خروج
+            {t("sidebar.logout")}
             <i className="fa-solid fa-right-from-bracket fs-4"></i>
           </button>
         </div>

@@ -1,24 +1,36 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { PulseLoader } from "react-spinners";
 
-const createRowSchema = (allKeys) => {
-  const schemaFields = {};
-  
-  allKeys.forEach(key => {
-    if (key.toLowerCase().includes('email')) {
-      schemaFields[key] = Yup.string()
-        .email("بريد إلكتروني غير صالح")
-    } 
-  });
-  
-  return Yup.object().shape(schemaFields);
-};
+const RowForm = ({
+  isEditing,
+  selectedRow,
+  onSubmit,
+  formSubmitting,
+  onCancel,
+  error,
+  allKeys,
+}) => {
+  const { t } = useTranslation();
 
-const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, error, allKeys }) => {
+  const createRowSchema = (allKeys) => {
+    const schemaFields = {};
+
+    allKeys.forEach((key) => {
+      if (key.toLowerCase().includes("email")) {
+        schemaFields[key] = Yup.string().email(
+          t("bulk_data.details.errors.invalid_email")
+        );
+      }
+    });
+
+    return Yup.object().shape(schemaFields);
+  };
+
   const initialValues = {};
-  allKeys.forEach(key => {
+  allKeys.forEach((key) => {
     initialValues[key] = selectedRow?.data?.[key] || "";
   });
 
@@ -34,19 +46,19 @@ const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, e
       {({ isSubmitting, errors, touched }) => (
         <Form>
           <div className="modal-body">
-            {allKeys.map(key => (
+            {allKeys.map((key) => (
               <div className="mb-3" key={key}>
                 <label htmlFor={key} className="form-label">
                   {key}
                 </label>
                 <Field
-                  type={key.toLowerCase().includes('email') ? "email" : "text"}
+                  type={key.toLowerCase().includes("email") ? "email" : "text"}
                   className={`form-control ${
                     errors[key] && touched[key] ? "is-invalid" : ""
                   }`}
                   id={key}
                   name={key}
-                  placeholder={`أدخل ${key}`}
+                  placeholder={t("row_form.placeholder", { field: key })}
                 />
                 <ErrorMessage
                   name={key}
@@ -55,13 +67,8 @@ const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, e
                 />
               </div>
             ))}
-            
-            {/* Display error message below the inputs */}
-            {error && (
-              <div className="alert alert-danger mt-3">
-                {error}
-              </div>
-            )}
+
+            {error && <div className="alert alert-danger mt-3">{error}</div>}
           </div>
           <div className="modal-footer">
             <button
@@ -69,7 +76,7 @@ const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, e
               className="btn btn-secondary"
               onClick={onCancel}
             >
-              إلغاء
+              {t("row_form.cancel_button")}
             </button>
             <button
               type="submit"
@@ -79,7 +86,7 @@ const RowForm = ({ isEditing, selectedRow, onSubmit, formSubmitting, onCancel, e
               {formSubmitting ? (
                 <PulseLoader color="#ffffff" size={8} />
               ) : (
-                isEditing ? "تحديث" : "إضافة"
+                t(isEditing ? "row_form.update_button" : "row_form.add_button")
               )}
             </button>
           </div>

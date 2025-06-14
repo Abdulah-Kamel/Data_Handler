@@ -1,7 +1,16 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { PulseLoader } from "react-spinners";
 
-const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) => {
+const RowDeleteModal = ({
+  show,
+  row,
+  onClose,
+  onConfirm,
+  isSubmitting,
+  error,
+}) => {
+  const { t } = useTranslation();
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}
@@ -14,7 +23,7 @@ const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) 
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="deleteModalLabel">
-              تأكيد الحذف
+              {t("row_delete_modal.title")}
             </h5>
             <button
               type="button"
@@ -25,7 +34,7 @@ const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) 
           </div>
           <div className="modal-body">
             {error && <div className="alert alert-danger">{error}</div>}
-            <p>هل أنت متأكد من حذف هذا السجل؟</p>
+            <p>{t("row_delete_modal.confirmation_message")}</p>
           </div>
           <div className="modal-footer">
             <button
@@ -33,7 +42,7 @@ const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) 
               className="btn btn-secondary"
               onClick={onClose}
             >
-              إلغاء
+              {t("row_delete_modal.cancel_button")}
             </button>
             <button
               type="button"
@@ -44,7 +53,7 @@ const RowDeleteModal = ({ show, row, onClose, onConfirm, isSubmitting, error }) 
               {isSubmitting ? (
                 <PulseLoader color="#05755c" size={8} />
               ) : (
-                "حذف"
+                t("row_delete_modal.delete_button")
               )}
             </button>
           </div>

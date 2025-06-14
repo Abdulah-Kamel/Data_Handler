@@ -1,18 +1,28 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
 
-const CategorySchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "اسم الفئة قصير جدًا")
-    .max(50, "اسم الفئة طويل جدًا")
-    .required("اسم الفئة مطلوب"),
-  description: Yup.string()
-    .min(5, "الوصف قصير جدًا")
-    .max(200, "الوصف طويل جدًا")
-});
+const CategoryForm = ({
+  isEditing,
+  selectedCategory,
+  onSubmit,
+  formSubmitting,
+  onCancel,
+  error,
+}) => {
+  const { t } = useTranslation();
 
-const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, onCancel, error }) => {
+  const CategorySchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, t("category_form.validation.name_min"))
+      .max(50, t("category_form.validation.name_max"))
+      .required(t("category_form.validation.name_required")),
+    description: Yup.string()
+      .min(5, t("category_form.validation.desc_min"))
+      .max(200, t("category_form.validation.desc_max")),
+  });
+
   return (
     <Formik
       initialValues={
@@ -32,7 +42,7 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
           <div className="modal-body">
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
-                اسم الفئة
+                {t("category_form.labels.name")}
               </label>
               <Field
                 type="text"
@@ -41,6 +51,7 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
                 }`}
                 id="name"
                 name="name"
+                placeholder={t("category_form.placeholders.name")}
               />
               <ErrorMessage
                 name="name"
@@ -50,18 +61,17 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
             </div>
             <div className="mb-3">
               <label htmlFor="description" className="form-label">
-                الوصف
+                {t("category_form.labels.description")}
               </label>
               <Field
                 as="textarea"
                 className={`form-control ${
-                  errors.description && touched.description
-                    ? "is-invalid"
-                    : ""
+                  errors.description && touched.description ? "is-invalid" : ""
                 }`}
                 id="description"
                 name="description"
                 rows="3"
+                placeholder={t("category_form.placeholders.description")}
               />
               <ErrorMessage
                 name="description"
@@ -69,13 +79,8 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
                 className="invalid-feedback"
               />
             </div>
-            
-            {/* Display error message below the inputs */}
-            {error && (
-              <div className="alert alert-danger mt-3">
-                {error}
-              </div>
-            )}
+
+            {error && <div className="alert alert-danger mt-3">{error}</div>}
           </div>
           <div className="modal-footer">
             <button
@@ -83,7 +88,7 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
               className="btn btn-secondary"
               onClick={onCancel}
             >
-              إلغاء
+              {t("category_form.buttons.cancel")}
             </button>
             <button
               type="submit"
@@ -97,10 +102,14 @@ const CategoryForm = ({ isEditing, selectedCategory, onSubmit, formSubmitting, o
                     role="status"
                     aria-hidden="true"
                   ></span>
-                  {isEditing ? "جاري التعديل..." : "جاري الإضافة..."}
+                  {isEditing
+                    ? t("category_form.buttons.updating")
+                    : t("category_form.buttons.adding")}
                 </>
+              ) : isEditing ? (
+                t("category_form.buttons.update")
               ) : (
-                isEditing ? "تعديل" : "إضافة"
+                t("category_form.buttons.add")
               )}
             </button>
           </div>

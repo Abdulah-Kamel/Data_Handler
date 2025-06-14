@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
@@ -9,6 +10,7 @@ import { useAuth } from "../../Context/AuthContext";
 import loginImage from "../../assets/login.jpg";
 
 const Login = () => {
+  const { t } = useTranslation();
   const { login, user } = useAuth(); // from context
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -51,25 +53,24 @@ const Login = () => {
 
   return (
     <>
-      <title>تسجيل الدخول</title>
-      <meta name="description" content="تسجيل الدخول" />
+      <title>{t("login.page_title")}</title>
+      <meta name="description" content={t("login.page_title")} />
       <Navbar />
       <div className="container-lg py-5 mt-5">
         <div className="row px-4 align-items-center">
-         
           <div className="col-md-6 order-2 order-md-1">
             <div className="mt-5 py-5">
-              <h2 className="fw-bold text-center">تسجيل الدخول</h2>
+              <h2 className="fw-bold text-center">{t("login.header")}</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">
                 <FormInput
-                  label="اسم المستخدم:"
+                  label={t("login.username_label")}
                   type="text"
                   name="username"
                   id="username"
                   formik={formik}
                 />
                 <FormInput
-                  label="كلمة المرور:"
+                  label={t("login.password_label")}
                   type="password"
                   name="password"
                   id="password"
@@ -89,14 +90,14 @@ const Login = () => {
                     {loginLoading ? (
                       <PulseLoader color="#fff" size={10} />
                     ) : (
-                      "تسجيل الدخول"
+                      t("login.login_button")
                     )}
                   </button>
                   <Link
                     to="/forget-password"
                     className="main-color register fs-5 mt-3 mt-md-0"
                   >
-                    هل نسيت كلمة المرور؟
+                    {t("login.forgot_password_link")}
                   </Link>
                 </div>
               </form>

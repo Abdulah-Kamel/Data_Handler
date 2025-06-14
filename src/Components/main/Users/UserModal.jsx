@@ -1,27 +1,10 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { PulseLoader } from "react-spinners";
 import userService from "../../../services/userService";
 import { useAuth } from "../../../Context/AuthContext";
-
-const userSchema = Yup.object().shape({
-  username: Yup.string()
-    .required("الاسم مطلوب")
-    .matches(
-      /^[\w.@+-]+$/,
-      "اسم المستخدم يجب أن يحتوي على أحرف وأرقام و @/./+/-/_ فقط"
-    ),
-  email: Yup.string()
-    .email("بريد إلكتروني غير صالح")
-    .required("البريد الإلكتروني مطلوب"),
-  organization: Yup.string().required("المؤسسة مطلوبة"),
-  password: Yup.string().when("mode", {
-    is: "create",
-    then: () => Yup.string().required("كلمة المرور مطلوبة"),
-    otherwise: () => Yup.string(),
-  }),
-});
 
 const UserModal = ({
   show,
@@ -30,6 +13,24 @@ const UserModal = ({
   user,
   handleRefresh,
 }) => {
+  const { t } = useTranslation();
+
+  const userSchema = Yup.object().shape({
+    username: Yup.string()
+      .required(t('users.modal.validation.username_required'))
+      .matches(
+        /^[^\s]+$/,
+        t('users.modal.validation.username_invalid')
+      ),
+    email: Yup.string()
+      .email(t('users.modal.validation.email_invalid'))
+      .required(t('users.modal.validation.email_required')),
+    organization: Yup.string().required(t('users.modal.validation.organization_required')),
+    password: mode === 'create'
+      ? Yup.string().required(t('users.modal.validation.password_required'))
+      : Yup.string(),
+  });
+
   const [loading, setLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState({});
   const { accessToken } = useAuth(); 
@@ -73,7 +74,7 @@ const UserModal = ({
       if (error.response?.data) {
         setApiErrors(error.response.data);
       } else {
-        setApiErrors({ general: "An unexpected error occurred" });
+        setApiErrors({ general: t('users.modal.errors.general') });
       }
     } finally {
       setLoading(false);
@@ -100,16 +101,17 @@ const UserModal = ({
             <div className="modal-header">
               <h5 className="modal-title">
                 {isDeleteMode
-                  ? "حذف المستخدم"
+                  ? t('users.modal.title_delete')
                   : isCreateMode
-                  ? "إضافة مستخدم جديد"
-                  : "تعديل المستخدم"}
+                  ? t('users.modal.title_create')
+                  : t('users.modal.title_edit')
+                }
               </h5>
               <button
                 type="button"
                 className="btn-close me-auto ms-0"
                 onClick={onHide}
-                aria-label="Close"
+                aria-label={t('users.modal.close_button_aria')}
               ></button>
             </div>
             <div className="modal-body">
@@ -122,7 +124,7 @@ const UserModal = ({
               {isDeleteMode ? (
                 <div className="text-center">
                   <p className="mb-4 fs-5">
-                    هل أنت متأكد من حذف المستخدم "{user?.username}"؟
+                    {t('users.modal.delete_confirmation', { username: user?.username })}
                   </p>
                   <div className="d-flex justify-content-center gap-3">
                     <button
@@ -130,7 +132,7 @@ const UserModal = ({
                       onClick={onHide}
                       disabled={loading}
                     >
-                      إلغاء
+                      {t('users.modal.buttons.cancel')}
                     </button>
                     <button
                       className="btn btn-danger"
@@ -140,7 +142,7 @@ const UserModal = ({
                       {loading ? (
                         <PulseLoader color="#ffffff" size={8} />
                       ) : (
-                        "تأكيد الحذف"
+                        t('users.modal.buttons.confirm_delete')
                       )}
                     </button>
                   </div>
@@ -155,7 +157,7 @@ const UserModal = ({
                     <Form>
                       <div className="mb-3">
                         <label htmlFor="username" className="form-label">
-                          الاسم
+                          {t('users.modal.labels.username')}
                         </label>
                         <Field
                           type="text"
@@ -176,7 +178,7 @@ const UserModal = ({
 
                       <div className="mb-3">
                         <label htmlFor="email" className="form-label">
-                          البريد الإلكتروني
+                          {t('users.modal.labels.email')}
                         </label>
                         <Field
                           type="email"
@@ -195,10 +197,9 @@ const UserModal = ({
                         )}
                       </div>
 
-                      {/* Similar changes for organization field */}
                       <div className="mb-3">
                         <label htmlFor="organization" className="form-label">
-                          المؤسسة
+                          {t('users.modal.labels.organization')}
                         </label>
                         <Field
                           type="text"
@@ -217,13 +218,13 @@ const UserModal = ({
                         )}
                       </div>
 
-                      {/* Similar changes for password field */}
                       {(isCreateMode || mode === "update") && (
                         <div className="mb-3">
                           <label htmlFor="password" className="form-label">
                             {isCreateMode
-                              ? "كلمة المرور"
-                              : "كلمة المرور (اتركها فارغة إذا لم ترد تغييرها)"}
+                              ? t('users.modal.labels.password_create')
+                              : t('users.modal.labels.password_edit')
+                            }
                           </label>
                           <Field
                             type="password"
@@ -264,7 +265,7 @@ const UserModal = ({
                           onClick={onHide}
                           disabled={loading}
                         >
-                          إلغاء
+                          {t('users.modal.buttons.cancel')}
                         </button>
                         <button
                           type="submit"
@@ -276,9 +277,9 @@ const UserModal = ({
                           {loading ? (
                             <PulseLoader color="#ffffff" size={8} />
                           ) : isCreateMode ? (
-                            "إضافة"
+                            t('users.modal.buttons.add')
                           ) : (
-                            "حفظ التغييرات"
+                            t('users.modal.buttons.save')
                           )}
                         </button>
                       </div>

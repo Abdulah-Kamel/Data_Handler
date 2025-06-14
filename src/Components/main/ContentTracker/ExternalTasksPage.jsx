@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import { PulseLoader } from "react-spinners";
 import contentTrackerService from "../../../services/contentTrackerService";
 import ExternalTasksTable from "./ExternalTasksTable";
 import { useAuth } from "../../../Context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const ExternalTasksPage = () => {
+  const { t } = useTranslation();
   const [externalTasks, setExternalTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { accessToken } = useAuth();
-  const navigate = useNavigate();
 
-  const fetchExternalTasks = async () => {
+  const fetchExternalTasks = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await contentTrackerService.getExternalTasks(
@@ -25,16 +25,16 @@ const ExternalTasksPage = () => {
         setError(error);
       }
     } catch (err) {
-      setError(err.response?.data?.detail || "فشل في تحميل التتبع الجارى");
+      setError(err.response?.data?.detail || t('content_tracker.external_tasks_page.errors.fetch_failed'));
       console.error("Error fetching external tasks:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [accessToken, t]);
 
   useEffect(() => {
     fetchExternalTasks();
-  }, [accessToken]);
+  }, [fetchExternalTasks]);
 
   const handleRefresh = () => {
     fetchExternalTasks();
@@ -53,17 +53,17 @@ const ExternalTasksPage = () => {
 
   return (
     <div className="px-3 mt-5">
-      <title>Data Handler - التتبع الجارى</title>
-      <meta name="description" content="Data Handler - التتبع الجارى" />
+      <title>{t('content_tracker.external_tasks_page.page_title')}</title>
+      <meta name="description" content={t('content_tracker.external_tasks_page.page_description')} />
       <div className="d-flex justify-content-between align-items-center mb-5">
-        <h2 className="m-0">التتبع الجارى</h2>
+        <h2 className="m-0">{t('content_tracker.external_tasks_page.main_title')}</h2>
         <div className="d-flex gap-3">
           <button
             className="btn d-flex align-items-center primary-btn-outline"
             onClick={handleRefresh}
             disabled={loading}
           >
-            تحديث
+            {t('content_tracker.external_tasks_page.refresh_button')}
             <i className="fas fa-sync-alt me-2"></i>
           </button>
         </div>
@@ -76,7 +76,7 @@ const ExternalTasksPage = () => {
             className="btn btn-sm btn-outline-danger me-3"
             onClick={handleRefresh}
           >
-            إعادة المحاولة
+            {t('content_tracker.external_tasks_page.retry_button')}
           </button>
         </div>
       )}

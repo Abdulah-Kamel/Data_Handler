@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PulseLoader } from "react-spinners";
 import { useTemplates } from "./hooks/useTemplates";
 import { useTemplateActions } from "./hooks/useTemplateActions";
@@ -11,6 +12,7 @@ import SearchInput from "../../common/SearchInput";
 
 const Templates = () => {
   const { categoryId } = useParams();
+  const { t, i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
 
   const {
@@ -47,7 +49,7 @@ const Templates = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("ar-EG");
+    return date.toLocaleDateString(i18n.language);
   };
 
   if (loading && templates.length === 0) {
@@ -63,22 +65,23 @@ const Templates = () => {
 
   return (
     <div className="px-3">
-      <title>Emailer Templates</title>
-      <meta name="description" content="Emailer Templates" />
+      <title>{t("templates.page_title")}</title>
+      <meta name="description" content={t("templates.page_description")} />
       <div className="d-flex flex-column flex-lg-row justify-content-between align-items-start  gap-3 mb-4 mt-5 pt-5">
         <div className="d-flex  gap-3 order-2 order-lg-1">
           <div className="d-flex flex-column justify-content-center ">
-            <h2 className="fs-3">نماذج قسم : {category?.name}</h2>
+            <h2 className="fs-3">
+              {t("templates.main_title", { categoryName: category?.name })}
+            </h2>
             <p className="text-muted fs-5">{category?.description}</p>
           </div>
-        
         </div>
         <div className="d-flex flex-row gap-2 justify-content-end category-actions order-1 order-lg-2 mb-4 mb-md-0">
           <Link
             to="/dashboard"
             className="btn btn-outline-secondary small-text flex-grow-1 flex-md-grow-0 d-flex align-items-center"
           >
-            العودة للاقسام
+            {t("templates.back_to_categories_button")}
             <i className="fas fa-arrow-left me-2"></i>
           </Link>
           <button
@@ -89,19 +92,18 @@ const Templates = () => {
               setShowModal(true);
             }}
           >
-            إضافة نموذج جديد
+            {t("templates.add_new_button")}
             <i className="fas fa-plus me-2"></i>
           </button>
         </div>
-        
       </div>
       <SearchInput
-            value={searchTerm}
-            onChange={setSearchTerm}
-            onSearch={() => handleSearch(searchTerm)}
-            placeholder="ابحث عن نموذج..."
-            className="category-search-input "
-          />
+        value={searchTerm}
+        onChange={setSearchTerm}
+        onSearch={() => handleSearch(searchTerm)}
+        placeholder={t("templates.search_placeholder")}
+        className="category-search-input "
+      />
       {error && (
         <div className="alert alert-danger text-center mb-4">
           {error}
@@ -109,14 +111,14 @@ const Templates = () => {
             className="btn btn-sm btn-outline-danger ms-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
-            إعادة المحاولة
+            {t("templates.retry_button")}
           </button>
         </div>
       )}
 
       {templates.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
-          لا توجد قوالب متاحة في هذه الفئة
+          {t("templates.no_templates")}
         </div>
       ) : (
         <TemplateTable

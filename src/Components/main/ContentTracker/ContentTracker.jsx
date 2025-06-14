@@ -6,8 +6,10 @@ import TasksTable from "./TasksTable";
 import TaskModal from './forms/TaskModal';
 import ConfirmationModal from '../../common/ConfirmationModal';
 import { useAuth } from '../../../Context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const ContentTracker = () => {
+  const { t } = useTranslation();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -90,7 +92,7 @@ const ContentTracker = () => {
       setShowDeleteModal(false);
     } catch (error) {
       console.error("Error deleting task:", error);
-      setError("حدث خطأ أثناء حذف المهمة");
+      setError(t('content_tracker.errors.delete_task'));
     } finally {
       setDeleteLoading(false);
       setTaskToDelete(null);
@@ -107,16 +109,16 @@ const ContentTracker = () => {
 
   return (
     <div className="px-3 mt-5">
-      <title>Data Handler - تتبع المحتوى</title>
-      <meta name="description" content="Data Handler - تتبع المحتوى" />
+      <title>{t('content_tracker.page_title')}</title>
+      <meta name="description" content={t('content_tracker.page_description')} />
       <div className="d-flex justify-content-between align-items-center mb-5">
-        <h2 className="m-0">تتبع المحتوى</h2>
+        <h2 className="m-0">{t('content_tracker.main_title')}</h2>
         <div className="d-flex gap-3">
           <button
             className="btn d-flex align-items-center primary-btn"
             onClick={() => handleShowModal("create")}
           >
-            إضافة مهمة جديدة
+            {t('content_tracker.add_new_task_button')}
             <i className="fas fa-plus me-2"></i>
           </button>
         </div>
@@ -128,14 +130,14 @@ const ContentTracker = () => {
             className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
-            إعادة المحاولة
+            {t('content_tracker.retry_button')}
           </button>
         </div>
       )}
 
       {tasks.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
-          لا توجد مهام تتبع حالياً
+          {t('content_tracker.no_tasks_message')}
         </div>
       ) : (
         <TasksTable
@@ -162,11 +164,9 @@ const ContentTracker = () => {
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
         onConfirm={confirmDeleteTask}
-        title="تأكيد حذف المهمة"
-        message={`هل أنت متأكد من حذف المهمة "${
-          taskToDelete?.title || "هذه"
-        }"؟`}
-        confirmText={deleteLoading ? "جاري الحذف..." : "حذف"}
+        title={t('content_tracker.delete_modal.title')}
+        message={t('content_tracker.delete_modal.message', { title: taskToDelete?.title || t('content_tracker.delete_modal.this_task') })}
+        confirmText={deleteLoading ? t('content_tracker.delete_modal.deleting_button') : t('content_tracker.delete_modal.delete_button')}
         loading={deleteLoading}
         confirmVariant="danger"
       />

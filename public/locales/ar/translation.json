@@ -1,0 +1,562 @@
+{
+  "login": {
+    "header": "تسجيل الدخول إلى حسابك",
+    "page_title": "تسجيل الدخول",
+    "username_label": "اسم المستخدم:",
+    "password_label": "كلمة المرور:",
+    "login_button": "تسجيل الدخول",
+    "forgot_password_link": "هل نسيت كلمة المرور؟"
+  },
+  "navbar": {
+    "home": "الرئيسية",
+    "services": "الخدمات",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "start_now": "ابدأ الآن",
+    "language": "اللغة"
+  },
+  "topbar": {
+    "greeting": {
+      "morning": "صباح الخير",
+      "evening": "مساء الخير"
+    },
+    "paths": {
+      "form_creation": "انشاء النماذج",
+      "templates": "القوالب",
+      "data_management": "اداره البيانات",
+      "document_creation": "انشاء المستندات",
+      "user_management": "أداره المستخدمين",
+      "content_tracker": "تتبع المحتوى"
+    },
+    "date_label": "التاريخ"
+  },
+  "sidebar": {
+    "title": "لوحة التحكم",
+    "logout": "تسجيل الخروج",
+    "menu": {
+      "data_management": "إدارة البيانات",
+      "form_creation": "انشاء النماذج",
+      "document_creation": "انشاء المستندات",
+      "user_management": "إدارة المستخدمين",
+      "content_tracker": "تتبع المحتوى",
+      "running_search": "البحث الجارى"
+    }
+  },
+  "bulk_data": {
+    "page_title": "معالج البيانات - إدارة البيانات",
+    "page_description": "معالج البيانات - إدارة البيانات",
+    "main_title": "إدارة البيانات",
+    "details_title": "تفاصيل البيانات",
+    "add_new_button": "إضافة بيانات جديدة",
+    "retry_button": "إعادة المحاولة",
+    "errors": {
+      "fetch": "حدث خطأ أثناء جلب البيانات",
+      "save": "حدث خطأ أثناء حفظ البيانات",
+      "delete_row": "حدث خطأ أثناء حذف السجل",
+      "delete_item": "حدث خطأ أثناء حذف السجل"
+    },
+    "table": {
+      "hash": "#",
+      "data_name": "اسم البيانات",
+      "record_count": "عدد السجلات",
+      "creation_date": "تاريخ الإنشاء",
+      "actions": "الإجراءات",
+      "view_data": "عرض البيانات",
+      "upload_excel": "رفع Excel",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "details": {
+      "back_button": "العودة",
+      "add_row_button": "إضافة سجل جديد",
+      "actions_header": "الإجراءات",
+      "edit_button": "تعديل",
+      "delete_button": "حذف",
+      "errors": {
+        "save": "حدث خطأ أثناء حفظ البيانات",
+        "delete": "حدث خطأ أثناء حذف البيانات",
+        "invalid_email": "صيغة البريد الإلكتروني غير صالحة"
+      }
+    },
+    "modal": {
+      "edit_title": "تعديل البيانات المجمعة",
+      "add_title": "إضافة بيانات مجمعة جديدة",
+      "data_name_label": "اسم البيانات",
+      "cancel_button": "إلغاء",
+      "save_button": "حفظ",
+      "saving_button": "جاري الحفظ...",
+      "validation": {
+        "name_required": "اسم البيانات مطلوب",
+        "name_min": "يجب أن يكون الاسم 3 أحرف على الأقل",
+        "name_max": "يجب أن لا يتجاوز الاسم 50 حرفًا"
+      }
+    },
+    "columns": {
+      "name": "الاسم"
+    }
+  },
+  "delete_confirmation_modal": {
+    "title": "تأكيد الحذف",
+    "confirmation_message": "هل أنت متأكد من حذف \"{{itemName}}\"؟",
+    "warning_message": "لا يمكن التراجع عن هذا الإجراء.",
+    "cancel_button": "إلغاء",
+    "delete_button": "حذف",
+    "deleting_button": "جاري الحذف..."
+  },
+  "excel_upload_modal": {
+    "title": "رفع ملف Excel",
+    "form_label": "ملف Excel",
+    "choose_file_button": "اختر ملف",
+    "selected_file_label": "الملف المختار:",
+    "info_alert": "يجب أن يكون الملف بصيغة Excel (.xlsx, .xls) ويحتوي على البيانات المطلوبة.",
+    "cancel_button": "إلغاء",
+    "upload_button": "رفع الملف",
+    "uploading_button": "جاري الرفع...",
+    "validation": {
+      "file_required": "الملف مطلوب",
+      "invalid_format": "صيغة الملف غير صالحة. يجب أن يكون الملف بصيغة Excel (.xlsx, .xls)"
+    }
+  },
+  "row_delete_modal": {
+    "title": "تأكيد الحذف",
+    "confirmation_message": "هل أنت متأكد من حذف هذا السجل؟",
+    "cancel_button": "إلغاء",
+    "delete_button": "حذف"
+  },
+  "row_edit_modal": {
+    "add_title": "إضافة بيانات جديدة",
+    "edit_title": "تعديل البيانات"
+  },
+  "row_form": {
+    "placeholder": "أدخل {{field}}",
+    "cancel_button": "إلغاء",
+    "update_button": "تحديث",
+    "add_button": "إضافة"
+  },
+  "categories": {
+    "page_title": "Data Handler - اقسام النماذج",
+    "page_description": "إدارة الأقسام في معالج البيانات.",
+    "main_title": "الأقسام",
+    "search_placeholder": "ابحث عن قسم...",
+    "add_new_button": "اضافة قسم جديد",
+    "retry_button": "إعادة المحاولة",
+    "no_categories": "لا توجد فئات متاحة حالياً.",
+    "errors": {
+      "fetch": "فشل في جلب الأقسام. يرجى المحاولة مرة أخرى.",
+      "update": "فشل في تعديل الفئة. يرجى المحاولة مرة أخرى.",
+      "create": "فشل في إضافة الفئة. يرجى المحاولة مرة أخرى.",
+      "delete": "فشل في حذف الفئة. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "category_modal": {
+    "add_title": "إضافة فئة جديدة",
+    "edit_title": "تعديل الفئة"
+  },
+  "category_form": {
+    "labels": {
+      "name": "اسم الفئة",
+      "description": "الوصف"
+    },
+    "placeholders": {
+      "name": "أدخل اسم الفئة",
+      "description": "أدخل وصف الفئة"
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "update": "تعديل",
+      "add": "إضافة",
+      "updating": "جاري التعديل...",
+      "adding": "جاري الإضافة..."
+    },
+    "validation": {
+      "name_min": "اسم الفئة قصير جدًا",
+      "name_max": "اسم الفئة طويل جدًا",
+      "name_required": "اسم الفئة مطلوب",
+      "desc_min": "الوصف قصير جدًا",
+      "desc_max": "الوصف طويل جدًا"
+    }
+  },
+  "category_delete_confirmation_modal": {
+    "title": "تأكيد الحذف",
+    "confirmation_message": "هل أنت متأكد من حذف فئة \"{{name}}\"?",
+    "warning_message_zero": "هذه الفئة لا تحتوي على قوالب.",
+    "warning_message_one": "تحتوي هذه الفئة على قالب واحد. سيتم حذفه.",
+    "warning_message_two": "تحتوي هذه الفئة على قالبين. سيتم حذفهما.",
+    "warning_message_few": "تحتوي هذه الفئة على {{count}} قوالب. سيتم حذف جميع القوالب المرتبطة بها.",
+    "warning_message_many": "تحتوي هذه الفئة على {{count}} قالبًا. سيتم حذف جميع القوالب المرتبطة بها.",
+    "warning_message_other": "تحتوي هذه الفئة على {{count}} قالب. سيتم حذف جميع القوالب المرتبطة بها.",
+    "buttons": {
+      "cancel": "إلغاء",
+      "confirm": "تأكيد الحذف",
+      "deleting": "جاري الحذف..."
+    }
+  },
+  "category_grid": {
+    "templates_count": "عدد النماذج",
+    "view_templates_button": "عرض النماذج",
+    "edit_button_title": "تعديل",
+    "delete_button_title": "حذف"
+  },
+  "category_table": {
+    "name": "اسم القسم",
+    "description": "الموضوع",
+    "templates_count": "عدد النماذج فى القسم",
+    "creation_date": "تاريخ الإنشاء",
+    "actions": "الإجراءات",
+    "view_templates_button": "عرض النماذج",
+    "edit_button": "تعديل",
+    "delete_button": "حذف"
+  },
+  "aria": {
+    "close": "إغلاق"
+  },
+  "templates": {
+    "page_title": "معالج البيانات - النماذج",
+    "page_description": "إدارة النماذج للفئة المحددة.",
+    "main_title": "نماذج قسم: {{categoryName}}",
+    "back_to_categories_button": "العودة للأقسام",
+    "add_new_button": "إضافة نموذج جديد",
+    "search_placeholder": "ابحث عن نموذج...",
+    "retry_button": "إعادة المحاولة",
+    "no_templates": "لا توجد نماذج متاحة في هذه الفئة."
+  },
+  "template_table": {
+    "name": "اسم النموذج",
+    "description": "الموضوع",
+    "files": "الملفات",
+    "view_template_button": "عرض النموذج",
+    "no_file": "لا يوجد ملف",
+    "creation_date": "تاريخ الإنشاء",
+    "actions": "الإجراءات",
+    "upload_word_file_title": "رفع ملف وورد",
+    "upload_word_file_button": "رفع ملف وورد",
+    "edit_button": "تعديل",
+    "delete_button": "حذف"
+  },
+  "template_modal": {
+    "add_title": "إضافة قالب جديد",
+    "edit_title": "تعديل القالب"
+  },
+  "template_form": {
+    "name_label": "اسم القالب",
+    "name_placeholder": "أدخل اسم القالب",
+    "description_label": "وصف القالب",
+    "description_placeholder": "أدخل وصف القالب",
+    "cancel_button": "إلغاء",
+    "add_button": "إضافة",
+    "save_button": "حفظ التغييرات",
+    "adding_button": "جاري الإضافة...",
+    "saving_button": "جاري الحفظ...",
+    "validation": {
+      "name_min": "اسم القالب قصير جدًا",
+      "name_max": "اسم القالب طويل جدًا",
+      "name_required": "اسم القالب مطلوب",
+      "desc_min": "الوصف قصير جدًا",
+      "desc_max": "الوصف طويل جدًا"
+    }
+  },
+  "template_delete_confirmation_modal": {
+    "title": "تأكيد الحذف",
+    "confirmation_message": "هل أنت متأكد من حذف القالب \"{{templateName}}\"؟",
+    "warning": "لا يمكن التراجع عن هذا الإجراء.",
+    "cancel_button": "إلغاء",
+    "confirm_button": "تأكيد الحذف",
+    "deleting_button": "جاري الحذف..."
+  },
+  "file_upload_modal": {
+    "title": "رفع ملف للقالب: {{templateName}}",
+    "file_label": "ملف القالب (Word)",
+    "file_hint": "يرجى اختيار ملف بصيغة Word (.docx)",
+    "cancel_button": "إلغاء",
+    "upload_button": "رفع الملف",
+    "uploading_button": "جاري الرفع...",
+    "validation": {
+      "file_type_error": "يرجى اختيار ملف Word (.docx) فقط"
+    }
+  },
+  "filled_templet": {
+    "page_title": "معالج البيانات - إنشاء المستندات",
+    "page_description": "إنشاء مستندات فردية أو متعددة من القوالب.",
+    "header": "إنشاء المستندات",
+    "single_document_button": "مستند فردي",
+    "multiple_documents_button": "مستندات متعددة"
+  },
+  "single_filled_templet_form": {
+    "header": "إنشاء مستند فردي",
+    "category_label": "اختر القسم",
+    "select_category_placeholder": "اختر قسم",
+    "template_label": "اختر القالب",
+    "select_template_placeholder": "اختر قالب",
+    "file_name_label": "اسم الملف",
+    "file_name_placeholder": "أدخل اسم الملف",
+    "file_type_label": "نوع الملف",
+    "file_type_both": "كلاهما",
+    "template_data_label": "بيانات القالب",
+    "loading_variables": "جاري تحميل المتغيرات...",
+    "no_variables_found": "لا توجد متغيرات لهذا القالب",
+    "file_index": "ملف {{index}}",
+    "enter_field_placeholder": "أدخل {{field}}",
+    "add_new_form_button": "إضافة نموذج جديد",
+    "cancel_button": "إلغاء",
+    "create_files_button": "انشاء ملفات",
+    "creating_button": "جاري الانشاء...",
+    "success": {
+      "files_created": "تم إنشاء الملفات بنجاح! يمكنك تحميل الملفات من الروابط التالية:",
+      "download_pdf": "تحميل ملف PDF",
+      "download_word": "تحميل ملف Word"
+    },
+    "errors": {
+      "fetch_categories": "حدث خطأ أثناء جلب الأقسام",
+      "no_templates_found": "لم يتم العثور على قوالب لهذا القسم",
+      "fetch_templates": "حدث خطأ أثناء جلب القوالب",
+      "fetch_variables": "حدث خطأ أثناء جلب متغيرات القالب",
+      "create_document": "حدث خطأ أثناء إنشاء المستندات"
+    },
+    "validation": {
+      "category_required": "يرجى اختيار قسم",
+      "template_required": "يرجى اختيار قالب",
+      "file_name_required": "اسم الملف مطلوب",
+      "file_type_required": "نوع الملف مطلوب",
+      "filled_data_required": "البيانات مطلوبة"
+    }
+  },
+  "multi_fill_templet_form": {
+    "header": "إنشاء مستندات متعددة",
+    "category_label": "اختر الفئة",
+    "select_category_placeholder": "اختر فئة",
+    "or_divider": "أو",
+    "template_label": "اختر القالب",
+    "select_template_placeholder": "اختر قالبًا",
+    "word_file_label": "رفع ملف وورد",
+    "word_file_hint": "إذا قمت برفع ملف وورد، سيتم تجاهل القالب المختار.",
+    "bulk_data_label": "اختر مجموعة البيانات",
+    "select_bulk_data_placeholder": "اختر مجموعة بيانات",
+    "excel_file_label": "رفع ملف إكسل",
+    "excel_file_hint": "إذا قمت برفع ملف إكسل، سيتم تجاهل مجموعة البيانات المختارة.",
+    "file_name_label": "اسم الملف",
+    "file_name_placeholder": "أدخل الاسم الأساسي للملفات المنشأة",
+    "folder_name_label": "اسم المجلد",
+    "folder_name_placeholder": "أدخل اسم المجلد لتخزين الملفات",
+    "file_type_label": "اختر نوع الملف",
+    "select_file_type_placeholder": "اختر نوع الملف",
+    "file_type_both": "كلاهما",
+    "create_files_button": "إنشاء الملفات",
+    "creating_button": "جاري الإنشاء...",
+    "errors": {
+      "fetch_categories": "حدث خطأ أثناء جلب الفئات.",
+      "fetch_bulk_data": "حدث خطأ أثناء جلب مجموعات البيانات.",
+      "fetch_templates": "حدث خطأ أثناء جلب القوالب للفئة المختارة.",
+      "create_documents": "حدث خطأ أثناء إنشاء المستندات."
+    },
+    "success": {
+      "documents_created": "تم إنشاء المستندات بنجاح!",
+      "download_files_button": "تنزيل الملفات (ZIP)",
+      "download_summary_button": "تنزيل الملخص (Excel)"
+    },
+    "validation": {
+      "template_or_word_required": "مطلوب إما قالب أو ملف وورد.",
+      "word_file_format": "تنسيق ملف غير صالح. يرجى رفع ملف .doc أو .docx.",
+      "bulk_data_or_excel_required": "مطلوب إما مجموعة بيانات أو ملف إكسل.",
+      "excel_file_format": "تنسيق ملف غير صالح. يرجى رفع ملف .xls أو .xlsx.",
+      "file_name_required": "اسم الملف مطلوب.",
+      "folder_name_required": "اسم المجلد مطلوب.",
+      "file_type_required": "نوع الملف مطلوب."
+    }
+  },
+  "users": {
+    "page_title": "معالج البيانات - إدارة المستخدمين",
+    "page_description": "إدارة المستخدمين في معالج البيانات.",
+    "main_title": "إدارة المستخدمين",
+    "add_new_button": "إضافة مستخدم جديد",
+    "retry_button": "إعادة المحاولة",
+    "no_users": "لا يوجد مستخدمين حالياً.",
+    "errors": {
+      "fetch": "فشل في جلب المستخدمين. يرجى المحاولة مرة أخرى."
+    },
+    "table": {
+      "hash": "#",
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "user_type": "نوع المستخدم",
+      "admin": "مسؤول",
+      "user": "مستخدم",
+      "organization": "المنظمة",
+      "actions": "الإجراءات",
+      "edit_button": "تعديل",
+      "delete_button": "حذف"
+    },
+    "modal": {
+      "title_delete": "حذف المستخدم",
+      "title_create": "إضافة مستخدم جديد",
+      "title_edit": "تعديل المستخدم",
+      "close_button_aria": "إغلاق",
+      "errors": {
+        "general": "حدث خطأ غير متوقع"
+      },
+      "delete_confirmation": "هل أنت متأكد من حذف المستخدم \"{{username}}\"؟",
+      "labels": {
+        "username": "الاسم",
+        "email": "البريد الإلكتروني",
+        "organization": "المؤسسة",
+        "password_create": "كلمة المرور",
+        "password_edit": "كلمة المرور (اتركها فارغة لعدم التغيير)"
+      },
+      "buttons": {
+        "add": "إضافة",
+        "save": "حفظ التغييرات",
+        "cancel": "إلغاء",
+        "confirm_delete": "تأكيد الحذف"
+      },
+      "validation": {
+        "username_required": "اسم المستخدم مطلوب",
+        "username_invalid": "يجب أن يحتوي اسم المستخدم على أحرف وأرقام و @/./+/-/_ فقط",
+        "email_invalid": "بريد إلكتروني غير صالح",
+        "email_required": "البريد الإلكتروني مطلوب",
+        "organization_required": "المؤسسة مطلوبة",
+        "password_required": "كلمة المرور مطلوبة"
+      }
+    }
+  },
+  "content_tracker": {
+    "page_title": "معالج البيانات - متتبع المحتوى",
+    "page_description": "معالج البيانات - متتبع المحتوى",
+    "main_title": "متتبع المحتوى",
+    "add_new_task_button": "إضافة مهمة جديدة",
+    "retry_button": "إعادة المحاولة",
+    "no_tasks_message": "لا توجد مهام تتبع حالياً",
+    "errors": {
+      "delete_task": "حدث خطأ أثناء حذف المهمة"
+    },
+    "delete_modal": {
+      "title": "تأكيد حذف المهمة",
+      "message": "هل أنت متأكد من حذف المهمة \"{{title}}\"؟",
+      "this_task": "هذه المهمة",
+      "deleting_button": "جاري الحذف...",
+      "delete_button": "حذف"
+    },
+    "tasks_table": {
+      "title": "العنوان",
+      "original_link": "الرابط الأصلي",
+      "article_link_button": "رابط المقال",
+      "results_count": "عدد النتائج",
+      "actions": "الإجراءات",
+      "show_results_button": "عرض النتائج",
+      "edit_button": "تعديل",
+      "delete_button": "حذف"
+    },
+    "external_tasks_page": {
+      "page_title": "معالج البيانات - التتبع الجاري",
+      "page_description": "معالج البيانات - التتبع الجاري",
+      "main_title": "التتبع الجاري",
+      "refresh_button": "تحديث",
+      "retry_button": "إعادة المحاولة",
+      "errors": {
+        "fetch_failed": "فشل في تحميل التتبع الجاري"
+      }
+    },
+    "external_tasks_table": {
+      "title": "العنوان",
+      "original_link": "الرابط الأصلي",
+      "article_link_button": "رابط المقال",
+      "creation_date": "تاريخ الإنشاء",
+      "status": "الحالة",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "retry_button": "إعادة المحاولة"
+    },
+    "task_modal": {
+      "create_title": "إضافة مهمة جديدة",
+      "edit_title": "تعديل المهمة",
+      "errors": {
+        "unexpected": "حدث خطأ غير متوقع"
+      },
+      "validation": {
+        "url_invalid": "رابط غير صالح",
+        "url_required": "الرابط مطلوب",
+        "search_sources_required": "مصادر البحث مطلوبة",
+        "count_min": "يجب أن يكون العدد أكبر من الصفر",
+        "count_max": "الحد الأقصى للنتائج هو 100",
+        "count_required": "عدد النتائج مطلوب",
+        "search_time_required": "وقت البحث مطلوب",
+        "start_date_required": "تاريخ البدء مطلوب",
+        "end_date_required": "تاريخ الانتهاء مطلوب",
+        "schedule_days_min": "يجب أن يكون عدد الأيام أكبر من الصفر",
+        "schedule_days_required": "عدد الأيام مطلوب",
+        "interval_hours_min": "يجب أن يكون عدد الساعات أكبر من الصفر",
+        "interval_hours_required": "عدد الساعات مطلوب",
+        "title_required": "العنوان مطلوب"
+      }
+    },
+    "task_form": {
+      "cancel_button": "إلغاء",
+      "add_button": "إضافة",
+      "save_changes_button": "حفظ التغييرات"
+    },
+    "form_sections": {
+      "search_options": {
+        "both": "كلاهما"
+      },
+      "time_options": {
+        "any": "أي وقت",
+        "past_day": "اليوم الماضي",
+        "past_week": "الأسبوع الماضي",
+        "past_month": "الشهر الماضي",
+        "past_year": "السنة الماضية"
+      },
+      "common": {
+        "original_article_url": "رابط المقال الأصلي"
+      },
+      "create": {
+        "info_alert": "أدخل رابط المقال الأصلي وسيتم البحث عن المواقع التي نقلت المحتوى",
+        "search_sources": "مصادر البحث",
+        "results_count": "عدد النتائج",
+        "search_time": "وقت البحث",
+        "save_to_excel": "حفظ النتائج إلى ملف Excel"
+      },
+      "schedule": {
+        "settings_title": "إعدادات الجدولة",
+        "start_date": "تاريخ البدء",
+        "end_date": "تاريخ الانتهاء",
+        "days_between_searches": "عدد الأيام بين كل بحث",
+        "hours_between_searches": "عدد الساعات بين كل بحث"
+      },
+      "schedule_toggle": {
+        "label": "جدولة المهمة"
+      },
+      "edit": {
+        "article_title": "عنوان المقال"
+      }
+    },
+    "results_view": {
+      "task_not_found_error": "لم يتم العثور على المهمة",
+      "fetch_error": "حدث خطأ في جلب بيانات المهمة",
+      "delete_error": "حدث خطأ أثناء حذف النتيجة",
+      "retry_button": "إعادة المحاولة",
+      "task_not_found": "لم يتم العثور على المهمة",
+      "back_to_list_button": "العودة إلى القائمة",
+      "search_results_title": "نتائج البحث:",
+      "original_article_card_title": "المقال الأصلي",
+      "original_article_title_label": "العنوان:",
+      "original_article_url_label": "الرابط الأصلي:",
+      "link_button": "الرابط",
+      "copied_content_sites_title": "المواقع التي نقلت المحتوى",
+      "image_not_available": "صورة غير متوفرة",
+      "same_content_badge": "نفس المحتوى",
+      "different_content_badge": "محتوى مختلف",
+      "visit_site_button": "زيارة الموقع",
+      "delete_button": "حذف",
+      "no_results_message": "لا توجد نتائج لهذه المهمة",
+      "confirm_delete_title": "تأكيد حذف النتيجة",
+      "confirm_delete_message": "هل أنت متأكد من حذف نتيجة \"{{title}}\"؟",
+      "this_result": "هذه النتيجة",
+      "deleting_button": "جاري الحذف...",
+      "cancel_button": "إلغاء"
+    },
+    "confirmation_modal": {
+      "default_title": "تأكيد الإجراء",
+      "default_message": "هل أنت متأكد من أنك تريد المتابعة؟",
+      "default_confirm_text": "تأكيد",
+      "default_cancel_text": "إلغاء"
+    }
+  }
+}

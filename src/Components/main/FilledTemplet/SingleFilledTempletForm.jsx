@@ -4,16 +4,19 @@ import * as Yup from "yup";
 import FilledtemplateService from "../../../services/FilledtemplateService";
 import categoryService from "../../../services/categoryService";
 import { PulseLoader } from "react-spinners";
-
-const FilledTemplateSchema = Yup.object().shape({
-  category_id: Yup.string().required("يرجى اختيار قسم"),
-  template_id: Yup.string().required("يرجى اختيار قالب"),
-  file_name: Yup.string().required("اسم الملف مطلوب"),
-  file_type: Yup.string().required("نوع الملف مطلوب"),
-  filled_data: Yup.object().required("البيانات مطلوبة"),
-});
+import { useTranslation } from "react-i18next";
 
 const SingleFilledTempletForm = ({ token, onCancel }) => {
+  const { t } = useTranslation();
+
+  const FilledTemplateSchema = Yup.object().shape({
+    category_id: Yup.string().required(t("single_filled_templet_form.validation.category_required")),
+    template_id: Yup.string().required(t("single_filled_templet_form.validation.template_required")),
+    file_name: Yup.string().required(t("single_filled_templet_form.validation.file_name_required")),
+    file_type: Yup.string().required(t("single_filled_templet_form.validation.file_type_required")),
+    filled_data: Yup.object().required(t("single_filled_templet_form.validation.filled_data_required")),
+  });
+
   const [categories, setCategories] = useState([]);
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,15 +37,15 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         if (result.data) {
           setCategories(result.data);
         }
-      } catch (err) {
-        setFormError("حدث خطأ أثناء جلب الأقسام");
+      } catch {
+        setFormError(t("single_filled_templet_form.errors.fetch_categories"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchCategories();
-  }, [token]);
+  }, [token, t]);
 
   const handleCategoryChange = async (e, setFieldValue) => {
     const categoryId = e.target.value;
@@ -64,13 +67,13 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         setTemplates(result?.data?.templates);
       } else {
         setFormError({
-          message: "لم يتم العثور على قوالب لهذا القسم",
+          message: t("single_filled_templet_form.errors.no_templates_found"),
           details: [],
         });
       }
     } catch (err) {
       setFormError({
-        message: "حدث خطأ أثناء جلب القوالب",
+        message: t("single_filled_templet_form.errors.fetch_templates"),
         details: err.message ? [err.message] : [],
       });
     } finally {
@@ -86,15 +89,15 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         if (result.data) {
           setTemplates(result.data);
         }
-      } catch (err) {
-        setFormError("حدث خطأ أثناء جلب القوالب");
+      } catch {
+        setFormError(t("single_filled_templet_form.errors.fetch_templates"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchTemplates();
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     if (!selectedTemplate) {
@@ -115,8 +118,8 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
         } else {
           setTemplateFields([]);
         }
-      } catch (err) {
-        setFormError("حدث خطأ أثناء جلب متغيرات القالب");
+      } catch {
+        setFormError(t("single_filled_templet_form.errors.fetch_variables"));
         setTemplateFields([]);
       } finally {
         setLoadingVariables(false);
@@ -124,7 +127,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
     };
 
     fetchTemplateVariables();
-  }, [selectedTemplate, token]);
+  }, [selectedTemplate, token, t]);
 
   const handleTemplateChange = (e, setFieldValue) => {
     const templateId = e.target.value;
@@ -202,9 +205,9 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
           details: response?.error?.details,
         });
       }
-    } catch (error) {
+    } catch {
       setFormError({
-        message: "حدث خطأ أثناء إنشاء المستندات",
+        message: t("single_filled_templet_form.errors.create_document"),
         details: [],
       });
     } finally {
@@ -224,17 +227,15 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
       )}
       <div className="card mb-4">
         <div className="card-header primary-bg text-white">
-          <h5 className="mb-0">انشاء مستند فردى</h5>
+          <h5 className="mb-0">{t("single_filled_templet_form.header")}</h5>
         </div>
         <div className="card-body">
           {formSuccess && downloadLinks && (
             <div className="alert alert-success mb-4">
-              <h5 className="mb-3">
-                تم إنشاء الملفات بنجاح! يمكنك تحميل الملفات من الروابط التالية:
-              </h5>
+              <h5 className="mb-3">{t("single_filled_templet_form.success.files_created")}</h5>
               {downloadLinks.results.map((result, idx) => (
                 <div key={idx} className="mb-4">
-                  <h6 className="mb-2">ملف {result.index}</h6>
+                  <h6 className="mb-2">{t("single_filled_templet_form.success.file_index", { index: result.index })}</h6>
                   <div className="d-flex justify-content-center flex-wrap gap-2">
                     {result.links.pdf && (
                       <a
@@ -243,7 +244,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                         rel="noopener noreferrer"
                         className="btn btn-outline-success"
                       >
-                        تحميل ملف PDF
+                        {t("single_filled_templet_form.success.download_pdf")}
                         <i className="fas fa-file-pdf me-2"></i>
                       </a>
                     )}
@@ -254,17 +255,11 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                         rel="noopener noreferrer"
                         className="btn btn-outline-primary"
                       >
-                        تحميل ملف Word
+                        {t("single_filled_templet_form.success.download_word")}
                         <i className="fas fa-file-word me-2"></i>
                       </a>
                     )}
                   </div>
-                  {/* <div className="mt-2 text-muted small">
-                    <strong>البيانات:</strong>{" "}
-                    {Object.entries(result.data)
-                      .map(([key, value]) => `${key}: ${value}`)
-                      .join(", ")}
-                  </div> */}
                 </div>
               ))}
             </div>
@@ -300,7 +295,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   {/* Category Selection */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="category_id" className="form-label">
-                      اختر القسم
+                      {t("single_filled_templet_form.category_label")}
                     </label>
                     <select
                       className={`form-select ${
@@ -314,7 +309,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       value={values.category_id}
                       disabled={formSubmitting}
                     >
-                      <option value="">اختر قسم</option>
+                      <option value="">{t("single_filled_templet_form.select_category_placeholder")}</option>
                       {categories.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
@@ -331,7 +326,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   {/* Template Selection */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="template_id" className="form-label">
-                      اختر القالب
+                      {t("single_filled_templet_form.template_label")}
                     </label>
                     <select
                       className={`form-select ${
@@ -345,7 +340,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       value={values.template_id}
                       disabled={formSubmitting || !values.category_id}
                     >
-                      <option value="">اختر قالب</option>
+                      <option value="">{t("single_filled_templet_form.select_template_placeholder")}</option>
                       {templates.map((template) => (
                         <option key={template.id} value={template.id}>
                           {template.name}
@@ -361,7 +356,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   {/* File Name */}
                   <div className="col-md-6 mb-3">
                     <label htmlFor="file_name" className="form-label">
-                      اسم الملف
+                      {t("single_filled_templet_form.file_name_label")}
                     </label>
                     <Field
                       type="text"
@@ -372,7 +367,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       }`}
                       id="file_name"
                       name="file_name"
-                      placeholder="أدخل اسم الملف"
+                      placeholder={t("single_filled_templet_form.file_name_placeholder")}
                       disabled={formSubmitting}
                     />
                     <ErrorMessage
@@ -384,7 +379,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   {/* File Type */}
                   <div className="col-md-6">
                     <label htmlFor="file_type" className="form-label">
-                      نوع الملف
+                      {t("single_filled_templet_form.file_type_label")}
                     </label>
                     <Field
                       as="select"
@@ -399,7 +394,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                     >
                       <option value="pdf">PDF</option>
                       <option value="word">Word</option>
-                      <option value="both">كلاهما</option>
+                      <option value="both">{t("single_filled_templet_form.file_type_both")}</option>
                     </Field>
                     <ErrorMessage
                       name="file_type"
@@ -413,14 +408,14 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                 {selectedTemplate && (
                   <div>
                     <label className="form-label fs-5 fw-bold mt-3">
-                      بيانات القالب
+                      {t("single_filled_templet_form.template_data_label")}
                     </label>
                     <div className="card border-0">
                       <div className="card-body">
                         {loadingVariables ? (
                           <div className="text-center py-3">
                             <PulseLoader color="#05755c" size={10} />
-                            <p className="mt-2">جاري تحميل المتغيرات...</p>
+                            <p className="mt-2">{t("single_filled_templet_form.loading_variables")}</p>
                           </div>
                         ) : templateFields.length > 0 ? (
                           <>
@@ -445,7 +440,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                                   </button>
                                 )}
                                 <h6 className="mb-3 fs-5 fw-bold text-center">
-                                  ملف {entryIndex + 1}
+                                  {t("single_filled_templet_form.file_index", { index: entryIndex + 1 })}
                                 </h6>
                                 <div className="row mt-3">
                                   {templateFields.map((field) => (
@@ -464,7 +459,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                                         className="form-control"
                                         id={`filled_data.${field}_${entryIndex}`}
                                         name={`filled_data.${field}_${entryIndex}`}
-                                        placeholder={`أدخل ${field}`}
+                                        placeholder={t("single_filled_templet_form.enter_field_placeholder", { field })}
                                         disabled={formSubmitting}
                                       />
                                     </div>
@@ -475,7 +470,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                           </>
                         ) : (
                           <div className="alert alert-info mb-0">
-                            لا توجد متغيرات لهذا القالب
+                            {t("single_filled_templet_form.no_variables_found")}
                           </div>
                         )}
                       </div>
@@ -490,7 +485,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                     onClick={addNewForm}
                     disabled={formSubmitting}
                   >
-                    إضافة نموذج جديد
+                    {t("single_filled_templet_form.add_new_form_button")}
                     <i className="fas fa-plus me-2"></i>
                   </button>
                   {onCancel && (
@@ -500,7 +495,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                       onClick={onCancel}
                       disabled={formSubmitting}
                     >
-                      إلغاء
+                      {t("single_filled_templet_form.cancel_button")}
                     </button>
                   )}
                   <button
@@ -510,7 +505,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                   >
                     {formSubmitting ? (
                       <>
-                        جاري الانشاء...
+                        {t("single_filled_templet_form.creating_button")}
                         <span
                           className="spinner-border spinner-border-sm me-2"
                           role="status"
@@ -518,7 +513,7 @@ const SingleFilledTempletForm = ({ token, onCancel }) => {
                         ></span>
                       </>
                     ) : (
-                      "انشاء ملفات"
+                      t("single_filled_templet_form.create_files_button")
                     )}
                   </button>
                 </div>

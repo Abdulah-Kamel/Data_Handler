@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { PulseLoader } from "react-spinners";
 import { useAuth } from "../../../Context/AuthContext";
 import contentTrackerService from "../../../services/contentTrackerService";
 import ConfirmationModal from "../../common/ConfirmationModal";
 
 const ResultsView = () => {
+  const { t } = useTranslation();
   const { taskId } = useParams();
-  const navigate = useNavigate();
   const { accessToken } = useAuth();
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,22 +22,22 @@ const ResultsView = () => {
     const fetchTaskDetails = async () => {
       setLoading(true);
       try {
-        const { data, error } = await contentTrackerService.getAllTasks(accessToken);
+        const { data, error: apiError } = await contentTrackerService.getAllTasks(accessToken);
         if (data) {
           const foundTask = data.find(t => t.id === taskId);
           if (foundTask) {
             setTask(foundTask);
             setError(null);
           } else {
-            setError("لم يتم العثور على المهمة");
+            setError(t('content_tracker.results_view.task_not_found_error'));
             setTask(null);
           }
         } else {
-          setError(error || "حدث خطأ في جلب بيانات المهمة");
+          setError(apiError || t('content_tracker.results_view.fetch_error'));
           setTask(null);
         }
       } catch (err) {
-        setError("حدث خطأ في جلب بيانات المهمة");
+        setError(t('content_tracker.results_view.fetch_error'));
         setTask(null);
       } finally {
         setLoading(false);
@@ -44,7 +45,7 @@ const ResultsView = () => {
     };
 
     fetchTaskDetails();
-  }, [accessToken, taskId, refreshTrigger]);
+  }, [accessToken, taskId, refreshTrigger, t]);
 
   const handleDeleteResult = (result) => {
     setSelectedResult(result);
@@ -57,11 +58,11 @@ const ResultsView = () => {
     setDeleting(true);
     try {
       await contentTrackerService.deleteResult(accessToken, taskId, selectedResult.id);
-      setRefreshTrigger(prev => prev + 1); // Refresh the data
+      setRefreshTrigger(prev => prev + 1);
       setShowDeleteModal(false);
     } catch (error) {
       console.error("Error deleting result:", error);
-      setError("حدث خطأ أثناء حذف النتيجة");
+      setError(t('content_tracker.results_view.delete_error'));
     } finally {
       setDeleting(false);
       setSelectedResult(null);
@@ -85,7 +86,7 @@ const ResultsView = () => {
             className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger(prev => prev + 1)}
           >
-            إعادة المحاولة
+            {t('content_tracker.results_view.retry_button')}
           </button>
         </div>
       </div>
@@ -96,9 +97,9 @@ const ResultsView = () => {
     return (
       <div className="px-3 mt-5">
         <div className="alert alert-warning text-center my-4">
-          لم يتم العثور على المهمة
+          {t('content_tracker.results_view.task_not_found')}
           <Link to="/dashboard/content-tracker" className="btn btn-sm btn-outline-primary ms-3">
-            العودة إلى القائمة
+            {t('content_tracker.results_view.back_to_list_button')}
           </Link>
         </div>
       </div>
@@ -108,12 +109,12 @@ const ResultsView = () => {
   return (
     <div className="px-3 mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="m-0">نتائج البحث: </h2>
+        <h2 className="m-0">{t('content_tracker.results_view.search_results_title')}</h2>
         <Link 
           to="/dashboard/content-tracker" 
           className="btn btn-outline-secondary d-flex align-items-center"
         >
-          العودة للقائمة
+          {t('content_tracker.results_view.back_to_list_button')}
           <i className="fas fa-arrow-left me-2"></i>
         </Link>
       </div>
@@ -121,14 +122,14 @@ const ResultsView = () => {
 
       <div className="card mb-4">
         <div className="card-body">
-          <h5 className="card-title">المقال الأصلي</h5>
+          <h5 className="card-title">{t('content_tracker.results_view.original_article_card_title')}</h5>
           <div className="mb-3">
-            <strong>العنوان:</strong> {task.title}
+            <strong>{t('content_tracker.results_view.original_article_title_label')}</strong> {task.title}
           </div>
           <div>
-            <strong>الرابط الأصلي:</strong>
+            <strong>{t('content_tracker.results_view.original_article_url_label')}</strong>
             <a href={task.url} target="_blank" rel="noopener noreferrer" className="me-3 text-break btn primary-btn btn-sm">
-              الرابط 
+              {t('content_tracker.results_view.link_button')}
               <i className="fas fa-external-link-alt me-1"></i>
             </a>
           </div>
@@ -136,7 +137,7 @@ const ResultsView = () => {
       </div>
 
       <div className="mb-4">
-        <h3>المواقع التي نقلت المحتوى <span className="badge primary-bg">{task.results?.length || 0}</span></h3>
+        <h3>{t('content_tracker.results_view.copied_content_sites_title')} <span className="badge primary-bg">{task.results?.length || 0}</span></h3>
       </div>
       
       {task.results && task.results.length > 0 ? (
@@ -152,13 +153,13 @@ const ResultsView = () => {
                     style={{ maxHeight: "400px", objectFit: "cover" }}
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "https://via.placeholder.com/300x200?text=صورة+غير+متوفرة";
+                      e.target.src = `https://via.placeholder.com/300x200?text=${t('content_tracker.results_view.image_not_available')}`;
                     }}
                   />
                   <div 
                     className={`position-absolute top-0 end-0 m-2 badge ${result.same_event === 'نعم' ? 'bg-success' : 'bg-warning'}`}
                   >
-                    {result.same_event === 'نعم' ? 'نفس المحتوى' : 'محتوى مختلف'}
+                    {result.same_event === 'نعم' ? t('content_tracker.results_view.same_content_badge') : t('content_tracker.results_view.different_content_badge')}
                   </div>
                 </div>
                 <div className="card-body d-flex flex-column">
@@ -171,7 +172,7 @@ const ResultsView = () => {
                       rel="noopener noreferrer" 
                       className="btn btn-sm btn-outline-primary"
                     >
-                      زيارة الموقع
+                      {t('content_tracker.results_view.visit_site_button')}
                       <i className="fas fa-external-link-alt me-1"></i>
                     </a>
                     <button
@@ -179,7 +180,7 @@ const ResultsView = () => {
                       className="btn btn-sm btn-outline-danger"
                       disabled={deleting}
                     >
-                      حذف
+                      {t('content_tracker.results_view.delete_button')}
                       <i className="fas fa-trash me-1"></i>
                     </button>
                   </div>
@@ -190,7 +191,7 @@ const ResultsView = () => {
         </div>
       ) : (
         <div className="alert alert-info text-center">
-          لا توجد نتائج لهذه المهمة
+          {t('content_tracker.results_view.no_results_message')}
         </div>
       )}
       
@@ -198,9 +199,10 @@ const ResultsView = () => {
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
         onConfirm={confirmDeleteResult}
-        title="تأكيد حذف النتيجة"
-        message={`هل أنت متأكد من حذف نتيجة "${selectedResult?.title || 'هذه'}"؟`}
-        confirmText={deleting ? 'جاري الحذف...' : 'حذف'}
+        title={t('content_tracker.results_view.confirm_delete_title')}
+        message={t('content_tracker.results_view.confirm_delete_message', { title: selectedResult?.title || t('content_tracker.results_view.this_result') })}
+        confirmText={deleting ? t('content_tracker.results_view.deleting_button') : t('content_tracker.results_view.delete_button')}
+        cancelText={t('content_tracker.results_view.cancel_button')}
         loading={deleting}
         confirmVariant="danger"
       />

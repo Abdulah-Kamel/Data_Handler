@@ -1,8 +1,10 @@
-import { width } from "@fortawesome/free-solid-svg-icons/fa0";
+
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import DataTable from "react-data-table-component";
 
 const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
+  const { t } = useTranslation();
   const columns = [
     {
       name: "#",
@@ -11,7 +13,7 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
       width: "60px",
     },
     {
-      name: "العنوان",
+      name: t('content_tracker.tasks_table.title'),
       selector: (row) => row.title,
       sortable: true,
       cell: (row) => (
@@ -21,7 +23,7 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
       ),
     },
     {
-      name: "الرابط الأصلي",
+      name: t('content_tracker.tasks_table.original_link'),
       selector: (row) => row.url,
       sortable: true,
       cell: (row) => (
@@ -31,40 +33,40 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
           rel="noopener noreferrer"
           className="btn primary-btn"
         >
-          رابط المقال
+          {t('content_tracker.tasks_table.article_link_button')}
         </a>
       ),
       
     },
     {
-      name: "عدد النتائج",
+      name: t('content_tracker.tasks_table.results_count'),
       selector: (row) => row.results?.length || 0,
       sortable: true,
       width: "150px",
     },
     {
-      name: "الإجراءات",
+      name: t('content_tracker.tasks_table.actions'),
       cell: (row) => (
         <div className="d-flex gap-2 justify-content-center">
           <button
             className="btn btn-outline-primary btn-sm rounded-pill"
             onClick={() => handleShowResults(row)}
           >
-            عرض النتائج
+            {t('content_tracker.tasks_table.show_results_button')}
             <i className="fas fa-eye me-1"></i>
           </button>
           <button
             className="btn btn-outline-success btn-sm rounded-pill"
             onClick={() => onEdit(row)}
           >
-            تعديل
+            {t('content_tracker.tasks_table.edit_button')}
             <i className="fas fa-edit me-1"></i>
           </button>
           <button
             className="btn btn-outline-danger btn-sm rounded-pill"
             onClick={() => onDelete(row)}
           >
-            حذف
+            {t('content_tracker.tasks_table.delete_button')}
             <i className="fas fa-trash me-1"></i>
           </button>
         </div>

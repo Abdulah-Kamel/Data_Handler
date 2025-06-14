@@ -1,9 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, useFormikContext } from 'formik';
 import { PulseLoader } from 'react-spinners';
 import { CommonFields, CreateTaskFields, ScheduleFields, ScheduleToggle, EditTaskFields } from './FormSections';
 
 const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
+  const { t } = useTranslation();
   const { values } = useFormikContext();
   
   return (
@@ -33,7 +35,7 @@ const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
           onClick={onHide}
           disabled={loading}
         >
-          إلغاء
+          {t('content_tracker.task_form.cancel_button')}
         </button>
         <button
           type="submit"
@@ -43,9 +45,9 @@ const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
           {loading ? (
             <PulseLoader color="#ffffff" size={8} />
           ) : isCreateMode ? (
-            'إضافة'
+            t('content_tracker.task_form.add_button')
           ) : (
-            'حفظ التغييرات'
+            t('content_tracker.task_form.save_changes_button')
           )}
         </button>
       </div>

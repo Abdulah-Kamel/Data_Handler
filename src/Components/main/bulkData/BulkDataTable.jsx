@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
@@ -12,62 +13,65 @@ const BulkDataTable = ({
   onViewDetails,
   onUploadExcel,
 }) => {
+  const { t } = useTranslation();
   const columns = [
     {
-      name: "#",
+      name: t("bulk_data.table.hash"),
       selector: (row, index) => index + 1,
       sortable: true,
     },
     {
-      name: "اسم البيانات",
+      name: t("bulk_data.table.data_name"),
       selector: (row) => row.name,
       sortable: true,
       width: "180px",
     },
     {
-      name: "عدد السجلات",
+      name: t("bulk_data.table.record_count"),
       selector: (row) => row.rows.length,
       sortable: true,
       width: "150px",
-      cell: (row) => <span className="badge primary-bg">{row.rows.length}</span>,
+      cell: (row) => (
+        <span className="badge primary-bg">{row.rows.length}</span>
+      ),
     },
     {
-      name: "تاريخ الإنشاء",
+      name: t("bulk_data.table.creation_date"),
       selector: (row) => row.created_at,
       sortable: true,
       width: "180px",
       cell: (row) => formatDate(row.created_at),
     },
     {
-      name: "الإجراءات",
+      name: t("bulk_data.table.actions"),
       cell: (row) => (
         <div className="d-flex gap-2 justify-content-center">
           <button
             className="btn btn-outline-primary btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onViewDetails(row)}
           >
-            عرض البيانات
+            {t("bulk_data.table.view_data")}
             <i className="fas fa-eye me-1"></i>
           </button>
           <button
             className="btn btn-outline-info btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onUploadExcel(row)}
           >
-            رفع Excel
+            {t("bulk_data.table.upload_excel")}
             <i className="fas fa-file-excel me-1"></i>
           </button>
           <button
             className="btn btn-outline-success btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onEdit(row)}
           >
-            تعديل
+            {t("bulk_data.table.edit")}
             <i className="fas fa-edit me-1"></i>
           </button>
           <button
             className="btn btn-outline-danger btn-sm rounded-pill d-flex align-items-center"
             onClick={() => onDelete(row)}
           >
-            حذف
+            {t("bulk_data.table.delete")}
             <i className="fas fa-trash me-1"></i>
           </button>
         </div>

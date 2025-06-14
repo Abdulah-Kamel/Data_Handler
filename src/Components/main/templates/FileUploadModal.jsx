@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const FileUploadModal = ({
   show,
@@ -6,8 +7,9 @@ const FileUploadModal = ({
   onClose,
   onUpload,
   isUploading,
-  error
+  error,
 }) => {
+  const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [fileError, setFileError] = useState("");
@@ -16,19 +18,20 @@ const FileUploadModal = ({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFileError("");
-    
+
     if (file) {
-      // Check if file is a Word document
-      const isWordFile = file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      
+      const isWordFile =
+        file.type ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
       if (!isWordFile) {
-        setFileError("يرجى اختيار ملف Word (.docx) فقط");
+        setFileError(t("file_upload_modal.validation.file_type_error"));
         setSelectedFile(null);
         setFileName("");
         fileInputRef.current.value = "";
         return;
       }
-      
+
       setSelectedFile(file);
       setFileName(file.name);
     }
@@ -44,6 +47,7 @@ const FileUploadModal = ({
   const resetForm = () => {
     setSelectedFile(null);
     setFileName("");
+    setFileError("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -61,29 +65,31 @@ const FileUploadModal = ({
       tabIndex="-1"
       aria-labelledby="fileUploadModalLabel"
       aria-hidden={!show}
+      aria-modal="true"
+      role="dialog"
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="fileUploadModalLabel">
-              رفع ملف للقالب: {template?.name}
+              {t("file_upload_modal.title", { templateName: template?.name })}
             </h5>
             <button
               type="button"
               className="btn-close me-auto ms-0 fs-5"
               onClick={handleClose}
-              aria-label="Close"
+              aria-label={t("aria.close")}
             ></button>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="modal-body">
               <div className="mb-3">
                 <label htmlFor="word_file" className="form-label">
-                  ملف القالب (Word)
+                  {t("file_upload_modal.file_label")}
                 </label>
                 <input
                   type="file"
-                  className={`form-control ${fileError ? 'is-invalid' : ''}`}
+                  className={`form-control ${fileError ? "is-invalid" : ""}`}
                   id="word_file"
                   name="word_file"
                   ref={fileInputRef}
@@ -92,27 +98,22 @@ const FileUploadModal = ({
                   required
                 />
                 <small className="form-text text-muted">
-                  يرجى اختيار ملف بصيغة Word (.docx)
+                  {t("file_upload_modal.file_hint")}
                 </small>
                 {fileError && (
-                  <div className="invalid-feedback">
-                    {fileError}
-                  </div>
+                  <div className="invalid-feedback">{fileError}</div>
                 )}
               </div>
-              
+
               {fileName && (
                 <div className="alert alert-info">
                   <i className="fas fa-file-word me-2"></i>
                   {fileName}
                 </div>
               )}
-              
-              {/* Display error message if any */}
+
               {error && (
-                <div className="alert alert-danger mt-3">
-                  {error}
-                </div>
+                <div className="alert alert-danger mt-3">{error}</div>
               )}
             </div>
             <div className="modal-footer">
@@ -121,7 +122,7 @@ const FileUploadModal = ({
                 className="btn btn-secondary"
                 onClick={handleClose}
               >
-                إلغاء
+                {t("file_upload_modal.cancel_button")}
               </button>
               <button
                 type="submit"
@@ -135,10 +136,10 @@ const FileUploadModal = ({
                       role="status"
                       aria-hidden="true"
                     ></span>
-                    جاري الرفع...
+                    {t("file_upload_modal.uploading_button")}
                   </>
                 ) : (
-                  "رفع الملف"
+                  t("file_upload_modal.upload_button")
                 )}
               </button>
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { PulseLoader } from 'react-spinners';
 import userService from '../../../services/userService';
 import UsersTable from './UsersTable';
@@ -6,6 +7,7 @@ import UserModal from './UserModal';
 import { useAuth } from '../../../Context/AuthContext';
 
 const Users = () => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -73,33 +75,33 @@ const Users = () => {
 
   return (
     <div className="px-3 mt-5">
-      <title>Data Handler - أداره المستخدمين</title>
-      <meta name="description" content="Data Handler - أداره المستخدمين" />
+      <title>{t('users.page_title')}</title>
+      <meta name="description" content={t('users.page_description')} />
       <div className="d-flex justify-content-between align-items-center mb-5">
-        <h2 className="m-0">إدارة المستخدمين</h2>
+        <h2 className="m-0">{t('users.main_title')}</h2>
         <button
           className="btn d-flex align-items-center primary-btn-outline"
           onClick={() => handleShowModal('create')}
         >
-          إضافة مستخدم جديد
+          {t('users.add_new_button')}
           <i className="fas fa-plus me-2"></i>
         </button>
       </div>
       {error && (
         <div className="alert alert-danger text-center my-4">
-          {error}
+          {t('users.errors.fetch')}
           <button
             className="btn btn-sm btn-outline-danger me-3"
             onClick={() => setRefreshTrigger((prev) => prev + 1)}
           >
-            إعادة المحاولة
+            {t('users.retry_button')}
           </button>
         </div>
       )}
 
       {users.length === 0 && !loading ? (
         <div className="alert alert-info text-center">
-          لا يوجد مستخدمين حالياً
+          {t('users.no_users')}
         </div>
       ) : (
         <UsersTable

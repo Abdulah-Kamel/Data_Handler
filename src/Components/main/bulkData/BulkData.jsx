@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState, useEffect } from "react";
 import BulkDataTable from "./BulkDataTable";
 import BulkDataDetails from "./BulkDataDetails";
@@ -8,6 +9,7 @@ import ExcelUploadModal from "./ExcelUploadModal";
 import { useAuth } from "../../../Context/AuthContext";
 
 const BulkData = () => {
+  const { t } = useTranslation();
   const [bulkData, setBulkData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
@@ -17,7 +19,7 @@ const BulkData = () => {
   const [modalData, setModalData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
-  const { accessToken } = useAuth(); 
+  const { accessToken } = useAuth();
 
   const fetchBulkData = async () => {
     setLoading(true);
@@ -26,7 +28,7 @@ const BulkData = () => {
       const response = await BulkDataService.getAllBulkData(accessToken);
       setBulkData(response.data);
     } catch (error) {
-      setError("حدث خطأ أثناء جلب البيانات");
+      setError(t("bulk_data.errors.fetch"));
     } finally {
       setLoading(false);
     }
@@ -64,9 +66,9 @@ const BulkData = () => {
     setError("");
     try {
       if (isEditing) {
-        await BulkDataService.updateBulkData(modalData.id, values,accessToken);
+        await BulkDataService.updateBulkData(modalData.id, values, accessToken);
       } else {
-        await BulkDataService.createBulkData(values,accessToken);
+        await BulkDataService.createBulkData(values, accessToken);
       }
       fetchBulkData();
       setShowModal(false);
@@ -74,7 +76,7 @@ const BulkData = () => {
       if (error.response && error.response.data) {
         setErrors(error.response.data);
       } else {
-        setError("حدث خطأ أثناء حفظ البيانات");
+        setError(t("bulk_data.errors.save"));
       }
     } finally {
       setSubmitting(false);
@@ -85,12 +87,15 @@ const BulkData = () => {
     setLoading(true);
     setError("");
     try {
-      await BulkDataService.deleteRow(selectedData, rowId,accessToken);
+      await BulkDataService.deleteRow(selectedData, rowId, accessToken);
 
-      const response = await BulkDataService.getBulkDataById(selectedData,accessToken);
+      const response = await BulkDataService.getBulkDataById(
+        selectedData,
+        accessToken
+      );
       setSelectedData(response.data);
     } catch (error) {
-      setError("حدث خطأ أثناء حذف السجل");
+      setError(t("bulk_data.errors.delete_row"));
     } finally {
       setLoading(false);
     }
@@ -118,12 +123,12 @@ const BulkData = () => {
     setDeleting(true);
     setError("");
     try {
-      await BulkDataService.deleteBulkData(itemToDelete.id,accessToken);
+      await BulkDataService.deleteBulkData(itemToDelete.id, accessToken);
       fetchBulkData();
 
       setShowDeleteModal(false);
     } catch (error) {
-      setError(`حدث خطأ أثناء حذف "السجل"}`);
+      setError(t("bulk_data.errors.delete_item"));
     } finally {
       setDeleting(false);
     }
@@ -144,12 +149,19 @@ const BulkData = () => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      await BulkDataService.uploadExcelToBulkData(excelUploadId, formData,accessToken);
+      await BulkDataService.uploadExcelToBulkData(
+        excelUploadId,
+        formData,
+        accessToken
+      );
       setShowExcelModal(false);
       resetForm();
 
       if (viewingDetails && selectedData && selectedData.id === excelUploadId) {
-        const response = await BulkDataService.getBulkDataById(excelUploadId,accessToken);
+        const response = await BulkDataService.getBulkDataById(
+          excelUploadId,
+          accessToken
+        );
         setSelectedData(response.data);
       } else {
         await fetchBulkData();
@@ -163,12 +175,14 @@ const BulkData = () => {
 
   return (
     <>
-   <title>Data Handler - اداره البيانات</title>
-   <meta name="description" content="Data Handler - اداره البيانات" />
+      <title>{t("bulk_data.page_title")}</title>
+      <meta name="description" content={t("bulk_data.page_description")} />
       <div className="container-fluid py-4">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="card-title m-0">
-            {viewingDetails ? "تفاصيل البيانات" : "اداره البيانات"}
+            {viewingDetails
+              ? t("bulk_data.details_title")
+              : t("bulk_data.main_title")}
           </h2>
 
           {!viewingDetails && (
@@ -176,7 +190,7 @@ const BulkData = () => {
               className="btn primary-btn-outline small-text d-flex align-items-center"
               onClick={handleAddNew}
             >
-              إضافة بيانات جديدة
+              {t("bulk_data.add_new_button")}
               <i className="fas fa-plus me-1"></i>
             </button>
           )}
@@ -192,7 +206,7 @@ const BulkData = () => {
                 setRefreshTrigger((prev) => prev + 1);
               }}
             >
-              إعادة المحاولة
+              {t("bulk_data.retry_button")}
             </button>
           </div>
         )}

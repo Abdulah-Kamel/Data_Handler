@@ -1,15 +1,18 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import CategoryForm from "./CategoryForm";
 
 const CategoryModal = ({
   show,
-  isEditing,
-  selectedCategory,
-  onClose,
+  onHide,
   onSubmit,
+  category,
+  isEditing,
   formSubmitting,
-  error
+  error,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div
       className={`modal fade ${show ? "show" : ""}`}
@@ -22,22 +25,24 @@ const CategoryModal = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="categoryModalLabel">
-              {isEditing ? "تعديل الفئة" : "إضافة فئة جديدة"}
+              {isEditing
+                ? t("category_modal.edit_title")
+                : t("category_modal.add_title")}
             </h5>
             <button
               type="button"
               className="btn-close me-auto ms-0 fs-5"
-              onClick={onClose}
-              aria-label="Close"
+              onClick={onHide}
+              aria-label={t("aria.close")}
             ></button>
           </div>
-          
+
           <CategoryForm
             isEditing={isEditing}
-            selectedCategory={selectedCategory}
+            selectedCategory={category}
             onSubmit={onSubmit}
             formSubmitting={formSubmitting}
-            onCancel={onClose}
+            onCancel={onHide}
             error={error}
           />
         </div>

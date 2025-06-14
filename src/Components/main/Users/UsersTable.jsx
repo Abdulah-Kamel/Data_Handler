@@ -1,58 +1,60 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { PulseLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import UserModal from "./UserModal";
 
 const UsersTable = ({ users, loading,handleShowModal }) => {
+  const { t } = useTranslation();
   const columns = [
     {
-      name: "#",
+      name: t('users.table.hash'),
       selector: (row, index) => index + 1,
       sortable: true,
       width: '60px',
     },
     {
-      name: "الاسم",
+      name: t('users.table.name'),
       selector: (row) => row.username,
       sortable: true,
     },
     {
-      name: "البريد الإلكتروني",
+      name: t('users.table.email'),
       selector: (row) => row.email,
       sortable: true,
     },
     {
-      name: "نوع المستخدم",
+      name: t('users.table.user_type'),
       selector: (row) => row.is_admin,
       sortable: true,
       cell: (row) => (
         <span className={`badge ${row.is_admin ? 'bg-primary' : 'bg-info'}`}>
-          {row.is_admin ? 'مسؤول' : 'مستخدم'}
+          {row.is_admin ? t('users.table.admin') : t('users.table.user')}
         </span>
       ),
     },
     {
-        name:"organization",
+        name: t('users.table.organization'),
         selector: (row) => row.organization,
         sortable: true,
         width: "200px"
     },
     {
-      name: "الإجراءات",
+      name: t('users.table.actions'),
       cell: (row) => (
         <div className="d-flex gap-2 justify-content-center">
           <button
             className="btn btn-outline-success btn-sm rounded-pill"
             onClick={() => handleShowModal('update', row)}
           >
-            تعديل
+            {t('users.table.edit_button')}
             <i className="fas fa-edit me-1"></i>
           </button>
           <button
             className="btn btn-outline-danger btn-sm rounded-pill"
             onClick={() => handleShowModal('delete', row)}
           >
-            حذف
+            {t('users.table.delete_button')}
             <i className="fas fa-trash me-1"></i>
           </button>
         </div>
@@ -71,6 +73,8 @@ const UsersTable = ({ users, loading,handleShowModal }) => {
       <DataTable
         columns={columns}
         data={users}
+        progressPending={loading}
+        progressComponent={<PulseLoader color="#05755c" size={15} />}
         pagination
         paginationPerPage={10}
         paginationRowsPerPageOptions={[10, 20, 30]}
