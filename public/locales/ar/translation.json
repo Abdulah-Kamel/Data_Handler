@@ -558,5 +558,30 @@
       "default_confirm_text": "تأكيد",
       "default_cancel_text": "إلغاء"
     }
+  },
+  "forget_password": {
+    "page_title": "إعادة ضبط كلمة المرور",
+    "header": "إعادة ضبط كلمة المرور",
+    "email_label": "البريد الإلكتروني",
+    "submit_button": "إرسال",
+    "invalid_email": "عنوان البريد الإلكتروني غير صالح",
+    "email_required": "البريد الإلكتروني مطلوب"
+  },
+  "reset_code": {
+    "page_title": "رمز إعادة التعيين",
+    "default_message": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني",
+    "login_link": "تسجيل الدخول"
+  },
+  "reset_password": {
+    "page_title": "إعادة تعيين كلمة المرور",
+    "header": "إعادة تعيين كلمة المرور",
+    "new_password_label": "كلمة المرور الجديدة:",
+    "submit_button": "تأكيد",
+    "password_required": "كلمة المرور مطلوبة",
+    "success_message": "تم تغيير كلمة المرور بنجاح"
+  },
+  "common": {
+    "search_placeholder": "ابحث...",
+    "search_aria_label": "بحث"
   }
 }

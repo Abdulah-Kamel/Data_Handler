@@ -1,18 +1,15 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
-import { authService } from "../../services/authService.js";
-import { useResetCodeForm } from "../../hooks/useResetCodeForm.js";
-import FormInput from "../common/FormInput.jsx";
 import Navbar from "../NavBar/NavBar";
 
 const ResetCode = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const location = useLocation();
   const message =
-    location.state?.message ||
-    "تم إرسال رابط إعادة التعيين إلى بريدك الإلكترونى";
+    location.state?.message || t("reset_code.default_message");
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 500);
@@ -29,10 +26,10 @@ const ResetCode = () => {
 
   return (
     <>
-      <title>Reset Code</title>
-      <meta name="description" content="Reset Code page" />
+      <title>{t("reset_code.page_title")}</title>
+      <meta name="description" content={t("reset_code.page_title")} />
       <Navbar />
-      <div className="form-container my-5 py-5">
+      <div className="form-container my-5 py-5" dir={i18n.dir()}>
         <div className="mt-5 py-5">
           <div className="alert alert-warning my-4 d-flex align-items-center justify-content-center">
             <p className="text-center fw-bold fs-5 mb-0">
@@ -43,7 +40,7 @@ const ResetCode = () => {
               className="fs-5 me-3 main-color fw-bold"
             >
               <span className="text-decoration-underline">
-                تسجيل الدخول
+                {t("reset_code.login_link")}
               </span>
             </Link>
           </div>

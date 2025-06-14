@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
@@ -7,6 +8,7 @@ import FormInput from "../common/FormInput";
 import Navbar from "../../Components/NavBar/NavBar";
 
 const ForgetPassword = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,7 +30,7 @@ const ForgetPassword = () => {
     }
   };
 
-  const formik = useForgotPasswordForm(handleForgotPassword);
+  const formik = useForgotPasswordForm(handleForgotPassword, t);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 500);
@@ -45,15 +47,15 @@ const ForgetPassword = () => {
 
   return (
     <>
-      <title>اعادة ظبط كلمه المرور</title>
-      <meta name="description" content="اعادة ظبط كلمه المرور" />
+      <title>{t('forget_password.page_title')}</title>
+      <meta name="description" content={t('forget_password.page_title')} />
       <Navbar />
-      <section className="form-container my-5 py-5">
+      <section className="form-container my-5 py-5" dir={i18n.dir()}>
         <section className="mt-5 py-5">
-          <h2 className="fw-bold text-center">اعادة ظبط كلمه المرور</h2>
+          <h2 className="fw-bold text-center">{t('forget_password.header')}</h2>
           <form onSubmit={formik.handleSubmit} className="mt-4">
             <FormInput
-              label="البريد الالكتروني"
+              label={t('forget_password.email_label')}
               type="email"
               name="email"
               id="email"
@@ -68,12 +70,12 @@ const ForgetPassword = () => {
               <button
                 type="submit"
                 className="btn primary-btn text-white ms-auto px-3 py-2"
-                disabled={!formik.isValid}
+                disabled={!formik.isValid || submitLoading}
               >
                 {submitLoading ? (
                   <i className="fas fa-spinner fa-spin"></i>
                 ) : (
-                  "ارسال"
+                  t('forget_password.submit_button')
                 )}
               </button>
             </section>

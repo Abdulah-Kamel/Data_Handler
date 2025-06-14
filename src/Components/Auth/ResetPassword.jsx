@@ -2,12 +2,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { PulseLoader } from "react-spinners";
 import NavBar from "../NavBar/NavBar";
 import { authService } from "../../services/authService";
+import FormInput from "../common/FormInput";
 
 const ResetPassword = () => {
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,17 +28,21 @@ const ResetPassword = () => {
       };
       let data = await authService.resetPassword(resetData);
       if (data.status === 200) {
-        navigate('/reset-code', { state: { message: 'تم تغيير كلمة المرور بنجاح' } });
+        navigate('/reset-code', { state: { message: t('reset_password.success_message') } });
       } else {
         setError(data.error || 'Failed to reset password. Please try again.');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setSubmitLoading(false);
     }
   }
   
+  const validationSchema = Yup.object({
+    password: Yup.string().required(t('reset_password.password_required')),
+  });
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -44,20 +50,19 @@ const ResetPassword = () => {
     onSubmit: (values) => {
       resetPassword(values);
     },
-    validationSchema: Yup.object({
-      password: Yup.string()
-        .required("الباسورد مطلوب"),
-    }),
+    validationSchema: validationSchema,
   });
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 500);
   }, []);
+
   return (
     <>
-      <title>Reset Password</title>
-      <meta name="description" content="Reset Password page" />
+      <title>{t('reset_password.page_title')}</title>
+      <meta name="description" content={t('reset_password.page_title')} />
       {loading ? (
         <section className="position-absolute top-0 start-0 end-0 bottom-0 bg-main-light d-flex justify-content-center align-items-center w-100 vh-100">
           <PulseLoader color="#05755c" size={30} />
@@ -65,29 +70,17 @@ const ResetPassword = () => {
       ) : (
         <>
           <NavBar />
-          <section className="form-container my-5 py-5">
+          <section className="form-container my-5 py-5" dir={i18n.dir()}>
             <section className="mt-5 py-5">
-              <h2 className="text-center fw-bold">استعادة الباسورد</h2>
+              <h2 className="text-center fw-bold">{t('reset_password.header')}</h2>
               <form onSubmit={formik.handleSubmit} className="mt-4">
-                <section className="mt-3">
-                  <label htmlFor="password" className="fs-4 fw-bold">
-                    الباسورد الجديد:
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    className="form-control mt-2"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.password.trim()}
-                  />
-                  {formik.touched.password && formik.errors.password ? (
-                    <section className="alert alert-danger mt-2">
-                      {formik.errors.password}
-                    </section>
-                  ) : null}
-                </section>
+                <FormInput
+                  label={t('reset_password.new_password_label')}
+                  type="password"
+                  name="password"
+                  id="password"
+                  formik={formik}
+                />
                 {error ? (
                   <section className="alert alert-danger my-4">
                     <p className="text-center fw-bold fs-5 mb-0">{error}</p>
@@ -97,12 +90,12 @@ const ResetPassword = () => {
                   <button
                     type="submit"
                     className={`btn primary-btn text-white ms-auto px-3 py-2`}
-                    disabled={!formik.isValid}
+                    disabled={!formik.isValid || submitLoading}
                   >
                     {submitLoading ? (
                       <i className="fas fa-spinner fa-spin"></i>
                     ) : (
-                      "تأكيد"
+                      t('reset_password.submit_button')
                     )}
                   </button>
                 </section>

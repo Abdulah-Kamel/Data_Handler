@@ -98,7 +98,7 @@ const TopBar = () => {
         </div>
         <div className="dropdown">
           <button
-            className="btn btn-outline-primary dropdown-toggle"
+            className="btn primary-btn-outline dropdown-toggle"
             type="button"
             id="languageDropdown"
             data-bs-toggle="dropdown"

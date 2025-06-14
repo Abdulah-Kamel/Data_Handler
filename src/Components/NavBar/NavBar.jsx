@@ -60,7 +60,7 @@ const NavBar = () => {
             <div className="d-flex align-items-center gap-3">
               <div className="dropdown">
                 <button
-                  className="btn btn-outline-primary dropdown-toggle"
+                  className="btn primary-btn-outline dropdown-toggle"
                   type="button"
                   id="languageDropdown"
                   data-bs-toggle="dropdown"
@@ -93,7 +93,7 @@ const NavBar = () => {
                 </ul>
               </div>
               <a
-                className="btn btn-outline-success px-4 fs-5 navBar-btn"
+                className="btn primary-btn px-4 fs-5 navBar-btn"
                 type="submit"
                 href="/login"
               >

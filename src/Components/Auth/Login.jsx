@@ -5,12 +5,11 @@ import { PulseLoader } from "react-spinners";
 import Navbar from "../NavBar/NavBar";
 import { useLoginForm } from "../../hooks/useLoginForm";
 import FormInput from "../common/FormInput";
-import { authService } from "../../services/authService";
 import { useAuth } from "../../Context/AuthContext";
 import loginImage from "../../assets/login.jpg";
 
 const Login = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { login, user } = useAuth(); // from context
   const [loading, setLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
@@ -56,7 +55,7 @@ const Login = () => {
       <title>{t("login.page_title")}</title>
       <meta name="description" content={t("login.page_title")} />
       <Navbar />
-      <div className="container-lg py-5 mt-5">
+      <div className="container-lg py-5 mt-5" dir={i18n.dir()}>
         <div className="row px-4 align-items-center">
           <div className="col-md-6 order-2 order-md-1">
             <div className="mt-5 py-5">

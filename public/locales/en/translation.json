@@ -551,5 +551,30 @@
       "default_confirm_text": "Confirm",
       "default_cancel_text": "Cancel"
     }
+  },
+  "forget_password": {
+    "page_title": "Reset Password",
+    "header": "Reset Password",
+    "email_label": "Email",
+    "submit_button": "Send",
+    "invalid_email": "Invalid email address",
+    "email_required": "Email is required"
+  },
+  "reset_code": {
+    "page_title": "Reset Code",
+    "default_message": "A reset link has been sent to your email.",
+    "login_link": "Login"
+  },
+  "reset_password": {
+    "page_title": "Reset Password",
+    "header": "Reset Password",
+    "new_password_label": "New Password:",
+    "submit_button": "Confirm",
+    "password_required": "Password is required",
+    "success_message": "Password changed successfully"
+  },
+  "common": {
+    "search_placeholder": "Search...",
+    "search_aria_label": "Search"
   }
 }

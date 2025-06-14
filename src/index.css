@@ -268,18 +268,20 @@ input[name="file_type"]:checked {
 
 .search-icon-btn {
   position: absolute;
-  left: 5px;
   top: 50%;
-  margin-top: 4px;
   transform: translateY(-50%);
-  color: #6c757d;
-  padding: 5px 10px;
-  border: none;
+  inset-inline-end: 15px;
   background: none;
+  border: none;
   cursor: pointer;
+  padding: 0;
+}
+
+.search-icon-btn i {
+  color: #6c757d;
   transition: color 0.2s ease;
 }
 
-.search-icon-btn:hover {
+.search-icon-btn:hover i {
   color: #05755c;
 }
