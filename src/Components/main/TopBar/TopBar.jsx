@@ -30,8 +30,12 @@ const TopBar = () => {
       setPathName(t("topbar.paths.document_creation"));
     } else if (currentPath.startsWith("/dashboard/users")) {
       setPathName(t("topbar.paths.user_management"));
+    } else if (currentPath.startsWith("/dashboard/content-tracker/running")) {
+      setPathName(t("topbar.paths.running_search"));
     } else if (currentPath.startsWith("/dashboard/content-tracker")) {
       setPathName(t("topbar.paths.content_tracker"));
+    } else if (currentPath.startsWith("/dashboard/excluded-domains")) {
+      setPathName(t("topbar.paths.excluded_domains"));
     }
   };
   useEffect(() => {

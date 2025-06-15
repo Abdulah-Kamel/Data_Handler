@@ -221,10 +221,9 @@ const UserModal = ({
                       {(isCreateMode || mode === "update") && (
                         <div className="mb-3">
                           <label htmlFor="password" className="form-label">
-                            {isCreateMode
-                              ? t('users.modal.labels.password_create')
-                              : t('users.modal.labels.password_edit')
-                            }
+                            {mode === 'update'
+                            ? t('users.modal.labels.password_edit')
+                            : t('users.modal.labels.password_create')}
                           </label>
                           <Field
                             type="password"

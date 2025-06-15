@@ -17,6 +17,9 @@ const ResultsView = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedResult, setSelectedResult] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [downloadLink, setDownloadLink] = useState(null);
+  const [generatingLink, setGeneratingLink] = useState(false);
+  const [generationError, setGenerationError] = useState(null);
 
   useEffect(() => {
     const fetchTaskDetails = async () => {
@@ -69,6 +72,23 @@ const ResultsView = () => {
     }
   };
 
+  const handleGenerateLink = async () => {
+    setGeneratingLink(true);
+    setGenerationError(null);
+    try {
+      const { data, error } = await contentTrackerService.getDownloadLink(accessToken, taskId);
+      if (data && data.download_link) {
+        setDownloadLink(data.download_link);
+      } else {
+        setGenerationError(error || t('content_tracker.results_view.generate_link_error'));
+      }
+    } catch (err) {
+      setGenerationError(t('content_tracker.results_view.generate_link_error'));
+    } finally {
+      setGeneratingLink(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
@@ -110,14 +130,50 @@ const ResultsView = () => {
     <div className="px-3 mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="m-0">{t('content_tracker.results_view.search_results_title')}</h2>
-        <Link 
-          to="/dashboard/content-tracker" 
-          className="btn btn-outline-secondary d-flex align-items-center"
-        >
-          {t('content_tracker.results_view.back_to_list_button')}
-          <i className="fas fa-arrow-left me-2"></i>
-        </Link>
+        <div className="d-flex align-items-center gap-2">
+          {!downloadLink ? (
+            <button
+              className="btn primary-btn"
+              onClick={handleGenerateLink}
+              disabled={generatingLink}
+            >
+              {generatingLink ? (
+                <>
+                  {t('content_tracker.results_view.generating_file_button')}
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                </>
+              ) : (
+                <>
+                  {t('content_tracker.results_view.create_file_button')}
+                  <i className="fas fa-file-alt ms-2"></i>
+                </>
+              )}
+            </button>
+          ) : (
+            <a
+              href={downloadLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-success d-flex align-items-center"
+            >
+              {t('content_tracker.results_view.download_file_button')}
+              <i className="fas fa-download ms-2"></i>
+            </a>
+          )}
+          <Link 
+            to="/dashboard/content-tracker" 
+            className="btn btn-outline-secondary d-flex align-items-center"
+          >
+            {t('content_tracker.results_view.back_to_list_button')}
+            <i className="fas fa-arrow-left me-2"></i>
+          </Link>
+        </div>
       </div>
+      {generationError && (
+        <div className="alert alert-danger text-center my-2">
+          {generationError}
+        </div>
+      )}
       <h2 className="m-0 mb-3">{task.title}</h2>
 
       <div className="card mb-4">

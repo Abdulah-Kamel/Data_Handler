@@ -7,7 +7,7 @@ const Sidebar = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth(); //
+  const { user, logout } = useAuth();
   const currentPath = location.pathname;
   const [activeMenu, setActiveMenu] = useState("");
 
@@ -48,6 +48,11 @@ const Sidebar = () => {
       icon: "fa-solid fa-magnifying-glass",
       label: t("sidebar.menu.running_search"),
       to: "/dashboard/content-tracker/running",
+    },
+    {
+      icon: "fa-solid fa-ban",
+      label: t("sidebar.menu.excluded_domains"),
+      to: "/dashboard/excluded-domains",
     },
   ].filter(Boolean);
 

@@ -95,6 +95,25 @@ const contentTrackerService = {
     }
   },
 
+  getDownloadLink: async (token, taskId) => {
+    try {
+      const response = await axios.get(
+        `${catchTheThiefBaseUrl}/get_the_thief/search-tasks/${taskId}/download-link/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return { data: response.data, error: null };
+    } catch (error) {
+      return {
+        data: null,
+        error: error.response?.data?.detail || "Error generating download link",
+      };
+    }
+  },
+
   getExternalTasks: async (token) => {
     try {
       const response = await axios.get('https://catch-the-thief.onrender.com/get_the_thief/search-tasks/', {

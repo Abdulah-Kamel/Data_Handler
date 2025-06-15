@@ -26,7 +26,9 @@
       "data_management": "اداره البيانات",
       "document_creation": "انشاء المستندات",
       "user_management": "أداره المستخدمين",
-      "content_tracker": "تتبع المحتوى"
+      "content_tracker": "تتبع المحتوى",
+      "excluded_domains": "الدومينات المستبعده",
+      "running_search": "البحث الجارى"
     },
     "date_label": "التاريخ"
   },
@@ -39,7 +41,8 @@
       "document_creation": "انشاء المستندات",
       "user_management": "إدارة المستخدمين",
       "content_tracker": "تتبع المحتوى",
-      "running_search": "البحث الجارى"
+      "running_search": "البحث الجارى",
+      "excluded_domains": "دومينات المستبعدة"
     }
   },
   "bulk_data": {
@@ -550,7 +553,10 @@
       "confirm_delete_message": "هل أنت متأكد من حذف نتيجة \"{{title}}\"؟",
       "this_result": "هذه النتيجة",
       "deleting_button": "جاري الحذف...",
-      "cancel_button": "إلغاء"
+      "cancel_button": "إلغاء",
+      "generating_file_button": "جاري إنشاء الملف...",
+      "create_file_button": "إنشاء ملف",
+      "download_file_button": "تحميل الملف"
     },
     "confirmation_modal": {
       "default_title": "تأكيد الإجراء",
@@ -583,5 +589,28 @@
   "common": {
     "search_placeholder": "ابحث...",
     "search_aria_label": "بحث"
+  },
+  "excluded_domains": {
+    "loading": "جار التحميل...",
+    "deleting_button": "جار الحذف...",
+    "title": "الدومينات المستبعدة",
+    "add_button": "إضافة نطاق جديد",
+    "fetch_error": "حدث خطأ أثناء جلب الدومينات المستبعدة.",
+    "retry_button": "إعادة المحاولة",
+    "domain_name": "اسم الدومين",
+    "actions": "الإجراءات",
+    "delete_button": "حذف",
+    "add_modal_title": "إضافة دومين مستبعد جديد",
+    "add_modal_domain_label": "اسم الدومين",
+    "add_modal_cancel_button": "إلغاء",
+    "add_modal_save_button": "حفظ",
+    "add_modal_error_message": "حدث خطأ أثناء إضافة الدومين.",
+    "add_modal_success_message": "تمت إضافة الدومين بنجاح.",
+    "delete_modal_title": "تأكيد الحذف",
+    "delete_modal_message": "هل أنت متأكد أنك تريد حذف الدومين \"{{domain}}\"?",
+    "delete_modal_cancel_button": "إلغاء",
+    "delete_modal_confirm_button": "تأكيد الحذف",
+    "delete_modal_error_message": "حدث خطأ أثناء حذف الدومين.",
+    "delete_modal_success_message": "تم حذف الدومين بنجاح."
   }
 }

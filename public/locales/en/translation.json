@@ -26,7 +26,9 @@
       "data_management": "Data Management",
       "document_creation": "Document Creation",
       "user_management": "User Management",
-      "content_tracker": "Content Tracker"
+      "content_tracker": "Content Tracker",
+      "excluded_domains": "Excluded Domains",
+      "running_search": "Running Search"
     },
     "date_label": "Date"
   },
@@ -39,7 +41,8 @@
       "document_creation": "Document Creation",
       "user_management": "User Management",
       "content_tracker": "Content Tracker",
-      "running_search": "Running Search"
+      "running_search": "Running Search",
+      "excluded_domains": "Excluded Domains"
     }
   },
   "bulk_data": {
@@ -543,7 +546,10 @@
       "confirm_delete_message": "Are you sure you want to delete the result \"{{title}}\"?",
       "this_result": "this result",
       "deleting_button": "Deleting...",
-      "cancel_button": "Cancel"
+      "cancel_button": "Cancel",
+      "generating_file_button": "Generating file...",
+      "create_file_button": "Create file",
+      "download_file_button": "Download file"
     },
     "confirmation_modal": {
       "default_title": "Confirm Action",
@@ -576,5 +582,26 @@
   "common": {
     "search_placeholder": "Search...",
     "search_aria_label": "Search"
+  },
+  "excluded_domains": {
+    "title": "Excluded Domains",
+    "add_button": "Add New Domain",
+    "fetch_error": "An error occurred while fetching excluded domains.",
+    "retry_button": "Retry",
+    "domain_name": "Domain Name",
+    "actions": "Actions",
+    "delete_button": "Delete",
+    "add_modal_title": "Add New Excluded Domain",
+    "add_modal_domain_label": "Domain Name",
+    "add_modal_cancel_button": "Cancel",
+    "add_modal_save_button": "Save",
+    "add_modal_error_message": "An error occurred while adding the domain.",
+    "add_modal_success_message": "Domain added successfully.",
+    "delete_modal_title": "Confirm Deletion",
+    "delete_modal_message": "Are you sure you want to delete the domain \"{{domain}}\"?",
+    "delete_modal_cancel_button": "Cancel",
+    "delete_modal_confirm_button": "Confirm Deletion",
+    "delete_modal_error_message": "An error occurred while deleting the domain.",
+    "delete_modal_success_message": "Domain deleted successfully."
   }
 }
