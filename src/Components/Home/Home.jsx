@@ -5,12 +5,14 @@ import About from "./Sections/About";
 import Services from "./Sections/Services";
 import Contact from "./Sections/Contact";
 import Footer from "./Sections/Footer";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+  const { t } = useTranslation();
   return (
     <>
-      <title>Home</title>
-      <meta name="description" content="Home page" />
+      <title>{t("home.page_title")}</title>
+      <meta name="description" content={t("home.page_description")} />
       <NavBar />
       <Hero />
       <About />

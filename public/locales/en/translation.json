@@ -4,8 +4,13 @@
     "page_title": "Login",
     "username_label": "Username:",
     "password_label": "Password:",
+    "login_button": "Login",
     "button": "Login",
-    "forgot_password_link": "Forgot your password?"
+    "forgot_password_link": "Forgot your password?",
+    "validation": {
+      "username_required": "Username is required",
+      "password_required": "Password is required"
+    }
   },
   "navbar": {
     "home": "Home",
@@ -603,5 +608,44 @@
     "delete_modal_confirm_button": "Confirm Deletion",
     "delete_modal_error_message": "An error occurred while deleting the domain.",
     "delete_modal_success_message": "Domain deleted successfully."
+  },
+  "home": {
+    "page_title": "Data Handler - Home",
+    "page_description": "An integrated system for managing templates and documents efficiently."
+  },
+  "hero_section": {
+    "title": "Integrated System for Managing",
+    "subtitle": "Templates and Documents",
+    "description": "An advanced platform for creating and managing templates and filling data with high efficiency.",
+    "button": "Explore Services"
+  },
+  "about_section": {
+    "title": "About Us",
+    "description_p1": "Data Handler, a leading digital communications service based in London, offers businesses the ability to send SMS messages using custom sender IDs, enhancing professionalism and trust. The service supports both individual and bulk messaging, allowing for targeted notifications or large-scale campaigns. Integration via APIs with tools like CRMs and e-commerce platforms enables automation and personalization of communications. Key features include:",
+    "feature1": "Flexible Messaging: Supports targeted and bulk messages.",
+    "feature2": "API Integration: Connects with internal systems for automation.",
+    "feature3": "Message Archive: Tracks deliveries, analyzes campaigns, and ensures performance optimization.",
+    "conclusion": "This innovative solution enables businesses to communicate securely, effectively, and professionally."
+  },
+  "services_section": {
+    "title": "Our Services",
+    "service1_title": "Template Creation",
+    "service1_description": "Create and customize document templates with ease and efficiency.",
+    "service2_title": "Data Management",
+    "service2_description": "Organize and manage data to automatically fill templates.",
+    "service3_title": "Document Export",
+    "service3_description": "Easily export documents in multiple formats (Word and PDF)."
+  },
+  "contact_section": {
+    "title": "CONTACT US",
+    "name_placeholder": "Full Name",
+    "phone_placeholder": "Phone Number",
+    "email_placeholder": "Email Address",
+    "company_placeholder": "Company Name",
+    "message_placeholder": "Message",
+    "send_button": "Send"
+  },
+  "footer": {
+    "copyright": "© All rights reserved"
   }
 }

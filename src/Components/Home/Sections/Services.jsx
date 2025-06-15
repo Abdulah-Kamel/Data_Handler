@@ -1,24 +1,34 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const Services = () => {
+  const { t } = useTranslation();
   return (
     <section className="bg-light py-5">
       <div className="container text-center py-5">
-        <h4 className="text-success fs-2 fw-bold mb-4">خدماتنا</h4>
+        <h4 className="text-success fs-2 fw-bold mb-4">
+          {t("services_section.title")}
+        </h4>
         <div className="row mt-3 gy-5 justify-content-center align-items-center">
           <div className="col-lg-4">
             <div className="p-3 border rounded shadow">
               <i className="fa-solid fa-file-word fa-3x main-color"></i>
-              <h6 className="text-success h3 fw-bold my-3">إنشاء القوالب</h6>
-              <p className="fs-5">إنشاء وتخصيص قوالب المستندات بسهولة وكفاءة</p>
+              <h6 className="text-success h3 fw-bold my-3">
+                {t("services_section.service1_title")}
+              </h6>
+              <p className="fs-5">
+                {t("services_section.service1_description")}
+              </p>
             </div>
           </div>
           <div className="col-lg-4">
             <div className="p-3 border rounded shadow">
               <i className="fa-solid fa-database fa-3x main-color"></i>
-              <h6 className="text-success h3 fw-bold my-3">إدارة البيانات</h6>
+              <h6 className="text-success h3 fw-bold my-3">
+                {t("services_section.service2_title")}
+              </h6>
               <p className="fs-5">
-                تنظيم وإدارة البيانات لملء القوالب بشكل تلقائي
+                {t("services_section.service2_description")}
               </p>
             </div>
           </div>
@@ -26,10 +36,10 @@ const Services = () => {
             <div className="p-3 border rounded shadow">
               <i className="fa-solid fa-file-export fa-3x main-color"></i>
               <h6 className="text-success h3 fw-bold my-3">
-                تصدير المستندات
+                {t("services_section.service3_title")}
               </h6>
               <p className="fs-5">
-                تصدير المستندات بصيغ متعددة (Word و PDF) بسهولة
+                {t("services_section.service3_description")}
               </p>
             </div>
           </div>
