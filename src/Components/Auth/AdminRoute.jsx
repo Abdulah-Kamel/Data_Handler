@@ -4,7 +4,6 @@ import { useAuth } from "../../Context/AuthContext";
 
 const AdminRoute = ({ children }) => {
   const { user } = useAuth();
-  
 
   if (!user) {
     // Not logged in
