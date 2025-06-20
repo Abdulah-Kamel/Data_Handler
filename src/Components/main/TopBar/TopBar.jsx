@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 
@@ -8,36 +8,43 @@ const TopBar = () => {
   const { user } = useAuth();
 
   const username = user.username || "user-admin";
-  const location = useLocation();
-  const currentPath = location.pathname;
+  const {pathname} = useLocation();
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [pathName, setPathName] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
-  const getPathName = () => {
-    if (currentPath === "/dashboard") {
-      setPathName(t("topbar.paths.form_creation"));
-    } else if (currentPath.startsWith("/dashboard/templates/")) {
-      setPathName(t("topbar.paths.templates"));
-    } else if (currentPath.startsWith("/dashboard/bulk-data")) {
-      setPathName(t("topbar.paths.data_management"));
-    } else if (currentPath.startsWith("/dashboard/FilledTemplet")) {
-      setPathName(t("topbar.paths.document_creation"));
-    } else if (currentPath.startsWith("/dashboard/users")) {
-      setPathName(t("topbar.paths.user_management"));
-    } else if (currentPath.startsWith("/dashboard/content-tracker/running")) {
-      setPathName(t("topbar.paths.running_search"));
-    } else if (currentPath.startsWith("/dashboard/content-tracker")) {
-      setPathName(t("topbar.paths.content_tracker"));
-    } else if (currentPath.startsWith("/dashboard/excluded-domains")) {
-      setPathName(t("topbar.paths.excluded_domains"));
+  // no more useState for pathName
+  const pathName = useMemo(() => {
+    if (pathname === "/dashboard") {
+      return t("topbar.paths.form_creation");
     }
-  };
+    if (pathname.startsWith("/dashboard/templates/")) {
+      return t("topbar.paths.templates");
+    }
+    if (pathname.startsWith("/dashboard/bulk-data")) {
+      return t("topbar.paths.data_management");
+    }
+    if (pathname.startsWith("/dashboard/FilledTemplet")) {
+      return t("topbar.paths.document_creation");
+    }
+    if (pathname.startsWith("/dashboard/users")) {
+      return t("topbar.paths.user_management");
+    }
+    if (pathname.startsWith("/dashboard/content-tracker/running")) {
+      return t("topbar.paths.running_search");
+    }
+    if (pathname.startsWith("/dashboard/content-tracker")) {
+      return t("topbar.paths.content_tracker");
+    }
+    if (pathname.startsWith("/dashboard/excluded-domains")) {
+      return t("topbar.paths.excluded_domains");
+    }
+    return "";
+  }, [pathname, t]);
   useEffect(() => {
     document.documentElement.lang = i18n.language;
     document.documentElement.dir = i18n.dir(i18n.language);
@@ -45,9 +52,8 @@ const TopBar = () => {
     if (getScreenWidth() < 600) {
       setIsMobile(true);
     }
-    getPathName();
     setCurrentTime(new Date());
-  }, [currentPath, i18n, i18n.language]);
+  }, [i18n, i18n.language]);
 
   const formattedDate = currentTime.toLocaleDateString("ar-EG", {
     year: "numeric",

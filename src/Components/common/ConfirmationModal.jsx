@@ -19,7 +19,8 @@ const ConfirmationModal = ({
   const modalTitle = title || t('confirmation_modal.default_title');
   const modalMessage = message || t('confirmation_modal.default_message');
   const modalConfirmText = confirmText || t('confirmation_modal.default_confirm_text');
-  const modalCancelText = cancelText || t('confirmation_modal.default_cancel_text');
+  const modalCancelText =
+    cancelText || t("delete_confirmation_modal.cancel_button");
 
   return (
     <div
