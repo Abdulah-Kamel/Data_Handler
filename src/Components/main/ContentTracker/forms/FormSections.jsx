@@ -80,43 +80,28 @@ export const ScheduleFields = ({ apiErrors }) => {
   const { t } = useTranslation();
   return (
     <div className="scheduled-fields border rounded p-3 mb-4">
-      <h6 className="mb-3">{t('content_tracker.form_sections.schedule.settings_title')}</h6>
-      
-      <div className="row">
-        <div className="col-md-6">
-          <FormField
-            name="start_date"
-            label={t('content_tracker.form_sections.schedule.start_date')}
-            type="date"
-            apiErrors={apiErrors}
-          />
-        </div>
-        
-        <div className="col-md-6">
-          <FormField
-            name="end_date"
-            label={t('content_tracker.form_sections.schedule.end_date')}
-            type="date"
-            apiErrors={apiErrors}
-          />
-        </div>
-      </div>
-
+      <h6 className="mb-3">
+        {t("content_tracker.form_sections.schedule.settings_title")}
+      </h6>
       <div className="row">
         <div className="col-md-6">
           <FormField
             name="schedule_days"
-            label={t('content_tracker.form_sections.schedule.days_between_searches')}
+            label={t(
+              "content_tracker.form_sections.schedule.days_between_searches"
+            )}
             type="number"
             min="1"
             apiErrors={apiErrors}
           />
         </div>
-        
+
         <div className="col-md-6">
           <FormField
             name="interval_hours"
-            label={t('content_tracker.form_sections.schedule.hours_between_searches')}
+            label={t(
+              "content_tracker.form_sections.schedule.hours_between_searches"
+            )}
             type="number"
             min="1"
             apiErrors={apiErrors}

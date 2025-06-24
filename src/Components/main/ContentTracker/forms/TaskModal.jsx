@@ -25,14 +25,6 @@ const TaskModal = ({
     search_time: Yup.string().required(t('content_tracker.task_modal.validation.search_time_required')),
     save_to_excel: Yup.boolean(),
     is_scheduled: Yup.boolean(),
-    start_date: Yup.date().when('is_scheduled', {
-      is: true,
-      then: () => Yup.date().required(t('content_tracker.task_modal.validation.start_date_required'))
-    }),
-    end_date: Yup.date().when('is_scheduled', {
-      is: true,
-      then: () => Yup.date().required(t('content_tracker.task_modal.validation.end_date_required'))
-    }),
     schedule_days: Yup.number().when('is_scheduled', {
       is: true,
       then: () => Yup.number()
@@ -65,7 +57,7 @@ const TaskModal = ({
       }
       
       // In create mode, handle schedule fields based on is_scheduled
-      const { is_scheduled, start_date, end_date, schedule_days, interval_hours, ...rest } = values;
+      const { is_scheduled, schedule_days, interval_hours, ...rest } = values;
       
       // Prepare base submission data
       const submissionData = { ...rest };
@@ -74,8 +66,6 @@ const TaskModal = ({
       if (is_scheduled) {
         Object.assign(submissionData, {
           is_scheduled: true,
-          start_date,
-          end_date,
           schedule_days,
           interval_hours
         });
