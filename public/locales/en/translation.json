@@ -513,6 +513,7 @@
       },
       "create": {
         "info_alert": "Enter the original article link and we will search for sites that have copied the content.",
+        "keywords_info_alert": "Enter keywords separated by a comma (,).",
         "search_sources": "Search Sources",
         "results_count": "Number of Results",
         "search_time": "Search Time",
