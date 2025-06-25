@@ -17,36 +17,7 @@ const getSearchTimeOptions = (t) => [
   { value: 'past_year', label: t('content_tracker.form_sections.time_options.past_year') }
 ];
 
-const SearchTypeSelection = () => {
-  const { t } = useTranslation();
-  const { values } = useFormikContext();
 
-  return (
-    <div className="mb-3">
-      <label className="form-label">{t('content_tracker.form_sections.search_type.label')}</label>
-      <div className="d-flex gap-3">
-        <div className="form-check">
-          <FormField
-            name="search_type"
-            type="radio"
-            value="url"
-            id="search_type_url"
-            label={t('content_tracker.form_sections.search_type.url')}
-          />
-        </div>
-        <div className="form-check">
-          <FormField
-            name="search_type"
-            type="radio"
-            value="keywords"
-            id="search_type_keywords"
-            label={t('content_tracker.form_sections.search_type.keywords')}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const CommonFields = ({ apiErrors }) => {
   const { t } = useTranslation();
@@ -54,26 +25,20 @@ export const CommonFields = ({ apiErrors }) => {
 
   return (
     <>
-      <SearchTypeSelection />
-      {values.search_type === 'url' ? (
-        <FormField
-          name="url"
-          label={t('content_tracker.form_sections.common.original_article_url')}
-          type="url"
-          apiErrors={apiErrors}
-        />
-      ) : (
-        <FormField
-          name="optional_keywords"
-          label={t('content_tracker.form_sections.common.optional_keywords')}
-          type="textarea"
-          apiErrors={apiErrors}
-        />
-      )}
       <FormField
-        name="precise_search"
-        label={t('content_tracker.form_sections.common.precise_search')}
-        type="checkbox"
+        name="url"
+        label={t("content_tracker.form_sections.common.original_article_url")}
+        type="url"
+        apiErrors={apiErrors}
+      />
+      <div className="alert alert-info mb-4">
+        <i className="fas fa-info-circle me-2"></i>
+        {t("content_tracker.form_sections.create.info_alert")}
+      </div>
+      <FormField
+        name="optional_keywords"
+        label={t("content_tracker.form_sections.common.optional_keywords")}
+        type="textarea"
         apiErrors={apiErrors}
       />
     </>
@@ -87,14 +52,9 @@ export const CreateTaskFields = ({ apiErrors }) => {
 
   return (
     <>
-      <div className="alert alert-info mb-4">
-        <i className="fas fa-info-circle me-2"></i>
-        {t('content_tracker.form_sections.create.info_alert')}
-      </div>
-
       <FormField
         name="search_sources"
-        label={t('content_tracker.form_sections.create.search_sources')}
+        label={t("content_tracker.form_sections.create.search_sources")}
         type="select"
         selectOptions={commonSearchOptions}
         apiErrors={apiErrors}
@@ -102,7 +62,7 @@ export const CreateTaskFields = ({ apiErrors }) => {
 
       <FormField
         name="count"
-        label={t('content_tracker.form_sections.create.results_count')}
+        label={t("content_tracker.form_sections.create.results_count")}
         type="number"
         min="1"
         max="100"
@@ -111,15 +71,22 @@ export const CreateTaskFields = ({ apiErrors }) => {
 
       <FormField
         name="search_time"
-        label={t('content_tracker.form_sections.create.search_time')}
+        label={t("content_tracker.form_sections.create.search_time")}
         type="select"
         selectOptions={searchTimeOptions}
         apiErrors={apiErrors}
       />
 
       <FormField
+        name="precise_search"
+        label={t("content_tracker.form_sections.common.precise_search")}
+        type="checkbox"
+        apiErrors={apiErrors}
+      />
+
+      <FormField
         name="save_to_excel"
-        label={t('content_tracker.form_sections.create.save_to_excel')}
+        label={t("content_tracker.form_sections.create.save_to_excel")}
         type="checkbox"
         className="mb-4"
         apiErrors={apiErrors}

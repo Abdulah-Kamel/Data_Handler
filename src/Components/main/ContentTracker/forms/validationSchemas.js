@@ -8,7 +8,6 @@ export const initialValues = () => ({
   schedule_days: 1,
   interval_hours: 1,
   title: "",
-  search_type: 'url',
   optional_keywords: '',
   precise_search: false,
 });

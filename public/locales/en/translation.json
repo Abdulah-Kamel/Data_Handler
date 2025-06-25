@@ -505,11 +505,7 @@
         "past_month": "Past month",
         "past_year": "Past year"
       },
-      "search_type": {
-        "label": "Search Type",
-        "url": "URL",
-        "keywords": "Keywords"
-      },
+
       "common": {
         "original_article_url": "Original Article URL",
         "optional_keywords": "Optional Keywords",

@@ -16,17 +16,8 @@ const TaskModal = ({
   const { t } = useTranslation();
 
   const createTaskSchema = Yup.object().shape({
-    search_type: Yup.string().required(),
-    url: Yup.string().when('search_type', {
-      is: 'url',
-      then: () => Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
-      otherwise: () => Yup.string().notRequired(),
-    }),
-    optional_keywords: Yup.string().when('search_type', {
-        is: 'keywords',
-        then: () => Yup.string().required(t('content_tracker.task_modal.validation.keywords_required')),
-        otherwise: () => Yup.string().notRequired(),
-    }),
+    url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
+    optional_keywords: Yup.string(),
     precise_search: Yup.boolean(),
     search_sources: Yup.string().required(t('content_tracker.task_modal.validation.search_sources_required')),
     count: Yup.number()
@@ -68,35 +59,29 @@ const TaskModal = ({
       }
       
       // In create mode, handle schedule fields and search type
-      const { 
-        is_scheduled, 
-        schedule_days, 
-        interval_hours, 
-        search_type, 
-        url, 
-        optional_keywords, 
-        ...rest 
-      } = values;
-      
-      // Prepare base submission data
-      const submissionData = { ...rest };
+      const data = { ...values };
 
-      if (search_type === 'url') {
-        submissionData.url = url;
+      // Handle optional keywords
+      if (data.optional_keywords) {
+        const keywords = data.optional_keywords.split(',').filter(kw => kw.trim() !== '');
+        if (keywords.length > 0) {
+          data.optional_keywords = keywords;
+        } else {
+          delete data.optional_keywords;
+        }
       } else {
-        submissionData.optional_keywords = optional_keywords.split('\n').filter(kw => kw.trim() !== '');
+        delete data.optional_keywords;
       }
-      
-      // Only include schedule-related fields if task is scheduled
-      if (is_scheduled) {
-        Object.assign(submissionData, {
-          is_scheduled: true,
-          schedule_days,
-          interval_hours
-        });
+
+      if (!data.is_scheduled) {
+        delete data.schedule_days;
+        delete data.interval_hours;
       }
-      
-      await onSubmitProp(submissionData);
+
+      delete data.search_type;
+      delete data.title;
+
+      await onSubmitProp(data);
     } catch (error) {
       if (error.response?.data) {
         setApiErrors(error.response.data);

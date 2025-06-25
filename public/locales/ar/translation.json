@@ -501,17 +501,6 @@
       "save_changes_button": "حفظ التغييرات"
     },
     "form_sections": {
-      "search_type": {
-        "label": "نوع البحث",
-        "url": "الرابط",
-        "keywords": "كلمات مفتاحية"
-      },
-      "optional_keywords": {
-        "label": "كلمات مفتاحية اختيارية"
-      },
-      "precise_search": {
-        "label": "بحث دقيق"
-      },
       "search_options": {
         "both": "كلاهما"
       },
@@ -523,7 +512,9 @@
         "past_year": "السنة الماضية"
       },
       "common": {
-        "original_article_url": "رابط المقال الأصلي"
+        "original_article_url": "رابط المقال الأصلي",
+        "optional_keywords": "الكلمات المفتاحية",
+        "precise_search": "بحث دقيق"
       },
       "create": {
         "info_alert": "أدخل رابط المقال الأصلي وسيتم البحث عن المواقع التي نقلت المحتوى",
