@@ -17,7 +17,7 @@ const TaskModal = ({
 
   const createTaskSchema = Yup.object().shape({
     url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
-    optional_keywords: Yup.string(),
+    optional_keywords: Yup.array(),
     precise_search: Yup.boolean(),
     search_sources: Yup.string().required(t('content_tracker.task_modal.validation.search_sources_required')),
     count: Yup.number()
@@ -62,13 +62,8 @@ const TaskModal = ({
       const data = { ...values };
 
       // Handle optional keywords
-      if (data.optional_keywords) {
-        const keywords = data.optional_keywords.split(',').filter(kw => kw.trim() !== '');
-        if (keywords.length > 0) {
-          data.optional_keywords = keywords;
-        } else {
-          delete data.optional_keywords;
-        }
+      if (data.optional_keywords && data.optional_keywords.length > 0) {
+        data.optional_keywords = data.optional_keywords.map(tag => tag.text);
       } else {
         delete data.optional_keywords;
       }

@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import FormField from './FormField';
+import TagInput from './TagInput';
 
 const getCommonSearchOptions = (t) => [
   { value: 'both', label: t('content_tracker.form_sections.search_options.both') },
@@ -35,16 +36,11 @@ export const CommonFields = ({ apiErrors }) => {
         <i className="fas fa-info-circle me-2"></i>
         {t("content_tracker.form_sections.create.info_alert")}
       </div>
-      <FormField
+      <TagInput
         name="optional_keywords"
         label={t("content_tracker.form_sections.common.optional_keywords")}
-        type="textarea"
         apiErrors={apiErrors}
       />
-      <div className="alert alert-info mb-4">
-        <i className="fas fa-info-circle me-2"></i>
-        {t("content_tracker.form_sections.create.keywords_info_alert")}
-      </div>
     </>
   );
 };

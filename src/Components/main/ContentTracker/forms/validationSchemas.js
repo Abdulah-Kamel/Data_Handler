@@ -8,7 +8,7 @@ export const initialValues = () => ({
   schedule_days: 1,
   interval_hours: 1,
   title: "",
-  optional_keywords: '',
+  optional_keywords: [],
   precise_search: false,
 });
 
