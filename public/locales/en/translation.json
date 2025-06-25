@@ -514,6 +514,7 @@
       "create": {
         "info_alert": "Enter the original article link and we will search for sites that have copied the content.",
         "keywords_placeholder": "Add new keyword",
+        "clear_all_button": "Clear All",
         "search_sources": "Search Sources",
         "results_count": "Number of Results",
         "search_time": "Search Time",

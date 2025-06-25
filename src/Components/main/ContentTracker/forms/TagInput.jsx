@@ -30,27 +30,43 @@ const TagInput = ({ label, ...props }) => {
     helpers.setValue(newTags);
   };
 
+  const handleClearAll = () => {
+    helpers.setValue([]);
+  };
+
   return (
     <div className="mb-3">
       <label htmlFor={props.id || props.name} className="form-label">{label}</label>
-      <ReactTags
-        tags={field.value || []}
-        handleDelete={handleDelete}
-        handleAddition={handleAddition}
-        handleDrag={handleDrag}
-        delimiters={Delimiters}
-        inputFieldPosition="bottom"
-        autocomplete
-        placeholder={t('content_tracker.form_sections.create.keywords_placeholder')}
-        classNames={{
-          tags: 'tag-container',
-          tagInput: 'tag-input-field',
-          tagInputField: 'form-control',
-          selected: 'selected-tags',
-          tag: 'badge primary-bg text-white p-2 fw-bold fs-6 me-1 mt-1',
-          remove: 'btn-close text-white ms-1',
-        }}
-      />
+      <div className="tag-input-wrapper">
+        <div className="tags-input-container">
+          <ReactTags
+            tags={field.value || []}
+            handleDelete={handleDelete}
+            handleAddition={handleAddition}
+            handleDrag={handleDrag}
+            delimiters={Delimiters}
+            inputFieldPosition="top"
+            autocomplete
+            placeholder={t('content_tracker.form_sections.create.keywords_placeholder')}
+            classNames={{
+              tags: 'tags-section',
+              tagInput: 'tag-input-field',
+              tagInputField: 'form-control',
+              selected: 'tag-container',
+              tag: 'badge primary-bg text-white p-2 fw-bold fs-6 me-1 mt-1',
+              remove: 'btn-close text-white ms-1',
+            }}
+          />
+        </div>
+        <button
+          type="button"
+          className="btn btn-outline-danger clear-all-btn"
+          onClick={handleClearAll}
+          disabled={!field.value || field.value.length === 0}
+        >
+          {t('content_tracker.form_sections.create.clear_all_button')}
+        </button>
+      </div>
       {meta.touched && meta.error ? (
         <div className="invalid-feedback d-block">{meta.error}</div>
       ) : null}

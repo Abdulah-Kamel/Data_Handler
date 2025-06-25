@@ -519,6 +519,7 @@
       "create": {
         "info_alert": "أدخل رابط المقال الأصلي وسيتم البحث عن المواقع التي نقلت المحتوى",
         "keywords_placeholder": "أضف كلمة مفتاحية جديدة",
+        "clear_all_button": "مسح الكل",
         "search_sources": "مصادر البحث",
         "results_count": "عدد النتائج",
         "search_time": "وقت البحث",
