@@ -491,7 +491,8 @@
         "schedule_days_required": "عدد الأيام مطلوب",
         "interval_hours_min": "يجب أن يكون عدد الساعات أكبر من الصفر",
         "interval_hours_required": "عدد الساعات مطلوب",
-        "title_required": "العنوان مطلوب"
+        "title_required": "العنوان مطلوب",
+        "keywords_required": "الكلمات المفتاحية مطلوبة"
       }
     },
     "task_form": {
@@ -500,6 +501,17 @@
       "save_changes_button": "حفظ التغييرات"
     },
     "form_sections": {
+      "search_type": {
+        "label": "نوع البحث",
+        "url": "الرابط",
+        "keywords": "كلمات مفتاحية"
+      },
+      "optional_keywords": {
+        "label": "كلمات مفتاحية اختيارية"
+      },
+      "precise_search": {
+        "label": "بحث دقيق"
+      },
       "search_options": {
         "both": "كلاهما"
       },

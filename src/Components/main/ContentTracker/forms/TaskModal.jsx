@@ -16,7 +16,18 @@ const TaskModal = ({
   const { t } = useTranslation();
 
   const createTaskSchema = Yup.object().shape({
-    url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
+    search_type: Yup.string().required(),
+    url: Yup.string().when('search_type', {
+      is: 'url',
+      then: () => Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
+      otherwise: () => Yup.string().notRequired(),
+    }),
+    optional_keywords: Yup.string().when('search_type', {
+        is: 'keywords',
+        then: () => Yup.string().required(t('content_tracker.task_modal.validation.keywords_required')),
+        otherwise: () => Yup.string().notRequired(),
+    }),
+    precise_search: Yup.boolean(),
     search_sources: Yup.string().required(t('content_tracker.task_modal.validation.search_sources_required')),
     count: Yup.number()
       .min(1, t('content_tracker.task_modal.validation.count_min'))
@@ -56,11 +67,25 @@ const TaskModal = ({
         return;
       }
       
-      // In create mode, handle schedule fields based on is_scheduled
-      const { is_scheduled, schedule_days, interval_hours, ...rest } = values;
+      // In create mode, handle schedule fields and search type
+      const { 
+        is_scheduled, 
+        schedule_days, 
+        interval_hours, 
+        search_type, 
+        url, 
+        optional_keywords, 
+        ...rest 
+      } = values;
       
       // Prepare base submission data
       const submissionData = { ...rest };
+
+      if (search_type === 'url') {
+        submissionData.url = url;
+      } else {
+        submissionData.optional_keywords = optional_keywords.split('\n').filter(kw => kw.trim() !== '');
+      }
       
       // Only include schedule-related fields if task is scheduled
       if (is_scheduled) {

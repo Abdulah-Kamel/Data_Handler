@@ -15,16 +15,16 @@ const FormField = ({
 
   return (
     <div className={`mb-3 ${className}`}>
-      {label && type !== 'checkbox' && (
+      {label && type !== "checkbox" && type !== "radio" && (
         <label htmlFor={fieldId} className="form-label">
           {label}
         </label>
       )}
-      
-      {type === 'select' ? (
+
+      {type === "select" ? (
         <select
           id={fieldId}
-          className={`form-select ${hasError ? 'is-invalid' : ''}`}
+          className={`form-select ${hasError ? "is-invalid" : ""}`}
           {...field}
           {...props}
         >
@@ -34,12 +34,12 @@ const FormField = ({
             </option>
           ))}
         </select>
-      ) : type === 'checkbox' ? (
+      ) : type === "checkbox" ? (
         <div className="form-check">
           <input
             id={fieldId}
             type="checkbox"
-            className={`form-check-input ${hasError ? 'is-invalid' : ''}`}
+            className={`form-check-input ${hasError ? "is-invalid" : ""}`}
             checked={field.value}
             {...field}
             {...props}
@@ -50,23 +50,36 @@ const FormField = ({
             </label>
           )}
         </div>
+      ) : type === "radio" ? (
+        <div className="form-check">
+          <input
+            type="radio"
+            className={`form-check-input ${hasError ? "is-invalid" : ""}`}
+            {...field}
+            {...props}
+            checked={field.value === props.value}
+          />
+          {label && (
+            <label className="form-check-label" htmlFor={props.id}>
+              {label}
+            </label>
+          )}
+        </div>
       ) : (
         <input
           id={fieldId}
           type={type}
-          className={`form-control ${hasError ? 'is-invalid' : ''}`}
+          className={`form-control ${hasError ? "is-invalid" : ""}`}
           {...field}
           {...props}
         />
       )}
-      
-<ErrorMessage name={name}>
+
+      <ErrorMessage name={name}>
         {(msg) => <div className="invalid-feedback">{msg}</div>}
       </ErrorMessage>
       {props.apiErrors?.[name] && (
-        <div className="invalid-feedback d-block">
-          {props.apiErrors[name]}
-        </div>
+        <div className="invalid-feedback d-block">{props.apiErrors[name]}</div>
       )}
     </div>
   );

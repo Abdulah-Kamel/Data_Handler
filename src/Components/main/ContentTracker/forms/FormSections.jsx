@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useFormikContext } from 'formik';
 import FormField from './FormField';
 
 const getCommonSearchOptions = (t) => [
@@ -16,15 +17,66 @@ const getSearchTimeOptions = (t) => [
   { value: 'past_year', label: t('content_tracker.form_sections.time_options.past_year') }
 ];
 
+const SearchTypeSelection = () => {
+  const { t } = useTranslation();
+  const { values } = useFormikContext();
+
+  return (
+    <div className="mb-3">
+      <label className="form-label">{t('content_tracker.form_sections.search_type.label')}</label>
+      <div className="d-flex gap-3">
+        <div className="form-check">
+          <FormField
+            name="search_type"
+            type="radio"
+            value="url"
+            id="search_type_url"
+            label={t('content_tracker.form_sections.search_type.url')}
+          />
+        </div>
+        <div className="form-check">
+          <FormField
+            name="search_type"
+            type="radio"
+            value="keywords"
+            id="search_type_keywords"
+            label={t('content_tracker.form_sections.search_type.keywords')}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const CommonFields = ({ apiErrors }) => {
   const { t } = useTranslation();
+  const { values } = useFormikContext();
+
   return (
-    <FormField
-      name="url"
-      label={t('content_tracker.form_sections.common.original_article_url')}
-      type="url"
-      apiErrors={apiErrors}
-    />
+    <>
+      <SearchTypeSelection />
+      {values.search_type === 'url' ? (
+        <FormField
+          name="url"
+          label={t('content_tracker.form_sections.common.original_article_url')}
+          type="url"
+          apiErrors={apiErrors}
+        />
+      ) : (
+        <FormField
+          name="optional_keywords"
+          label={t('content_tracker.form_sections.common.optional_keywords')}
+          type="textarea"
+          apiErrors={apiErrors}
+        />
+      )}
+      <FormField
+        name="precise_search"
+        label={t('content_tracker.form_sections.common.precise_search')}
+        type="checkbox"
+        apiErrors={apiErrors}
+      />
+    </>
   );
 };
 

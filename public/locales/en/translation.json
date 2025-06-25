@@ -474,6 +474,7 @@
       "validation": {
         "url_invalid": "Invalid URL",
         "url_required": "URL is required",
+        "keywords_required": "Keywords are required",
         "search_sources_required": "Search sources are required",
         "count_min": "Count must be greater than zero",
         "count_max": "Maximum results is 100",
@@ -504,8 +505,15 @@
         "past_month": "Past month",
         "past_year": "Past year"
       },
+      "search_type": {
+        "label": "Search Type",
+        "url": "URL",
+        "keywords": "Keywords"
+      },
       "common": {
-        "original_article_url": "Original Article URL"
+        "original_article_url": "Original Article URL",
+        "optional_keywords": "Optional Keywords",
+        "precise_search": "Precise Search"
       },
       "create": {
         "info_alert": "Enter the original article link and we will search for sites that have copied the content.",

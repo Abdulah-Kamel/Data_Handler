@@ -21,7 +21,7 @@ const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
       {isCreateMode ? (
         <>
           <CreateTaskFields apiErrors={apiErrors} />
-          <ScheduleToggle apiErrors={apiErrors} />
+          {/* <ScheduleToggle apiErrors={apiErrors} /> */}
           {values.is_scheduled && <ScheduleFields apiErrors={apiErrors} />}
         </>
       ) : (
