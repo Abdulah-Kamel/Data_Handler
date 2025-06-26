@@ -143,14 +143,4 @@ export const ScheduleToggle = ({ apiErrors }) => {
   );
 };
 
-export const EditTaskFields = ({ apiErrors }) => {
-  const { t } = useTranslation();
-  return (
-    <FormField
-      name="title"
-      label={t('content_tracker.form_sections.edit.article_title')}
-      type="text"
-      apiErrors={apiErrors}
-    />
-  );
-};
+

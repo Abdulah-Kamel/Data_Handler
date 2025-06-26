@@ -14,8 +14,6 @@ const ContentTracker = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const [modalMode, setModalMode] = useState('create');
-  const [selectedTask, setSelectedTask] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -50,9 +48,7 @@ const ContentTracker = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
 
-  const handleShowModal = (mode, task = null) => {
-    setModalMode(mode);
-    setSelectedTask(task);
+  const handleShowModal = () => {
     setShowModal(true);
   };
 
@@ -63,11 +59,7 @@ const ContentTracker = () => {
   const handleModalSubmit = async (values) => {
     setModalLoading(true);
     try {
-      if (modalMode === 'edit') {
-        await contentTrackerService.updateTask(accessToken, selectedTask.id, values);
-      } else if (modalMode === 'create') {
-        await contentTrackerService.createTask(accessToken, values);
-      }
+      await contentTrackerService.createTask(accessToken, values);
       handleRefresh();
       setShowModal(false);
     } catch (error) {
@@ -116,7 +108,7 @@ const ContentTracker = () => {
         <div className="d-flex gap-3">
           <button
             className="btn d-flex align-items-center primary-btn"
-            onClick={() => handleShowModal("create")}
+            onClick={handleShowModal}
           >
             {t('content_tracker.add_new_task_button')}
             <i className="fas fa-plus me-2"></i>
@@ -146,7 +138,6 @@ const ContentTracker = () => {
           onUpdate={handleTaskUpdate}
           handleRefresh={handleRefresh}
           onDelete={handleDeleteTask}
-          onEdit={(task) => handleShowModal("edit", task)}
           handleShowResults={handleShowResults}
         />
       )}
@@ -154,8 +145,6 @@ const ContentTracker = () => {
       <TaskModal
         show={showModal}
         onHide={() => setShowModal(false)}
-        mode={modalMode}
-        task={selectedTask}
         onSubmit={handleModalSubmit}
         loading={modalLoading}
       />

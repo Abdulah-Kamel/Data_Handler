@@ -8,8 +8,6 @@ import TaskForm from './TaskForm';
 const TaskModal = ({
   show,
   onHide,
-  mode,
-  task,
   onSubmit: onSubmitProp,
   loading,
 }) => {
@@ -41,24 +39,11 @@ const TaskModal = ({
     })
   });
 
-  const editTaskSchema = Yup.object().shape({
-    url: Yup.string().url(t('content_tracker.task_modal.validation.url_invalid')).required(t('content_tracker.task_modal.validation.url_required')),
-    title: Yup.string().required(t('content_tracker.task_modal.validation.title_required'))
-  });
-
   const [apiErrors, setApiErrors] = useState({});
-  const isCreateMode = mode === 'create';
 
   const handleSubmit = async (values) => {
     setApiErrors({});
     try {
-      // If not in create mode, submit as is
-      if (!isCreateMode) {
-        await onSubmitProp(values);
-        return;
-      }
-      
-      // In create mode, handle schedule fields and search type
       const data = { ...values };
 
       // Handle optional keywords
@@ -96,7 +81,7 @@ const TaskModal = ({
           <div className="modal-content">
             <div className="modal-header primary-bg text-white">
               <h5 className="modal-title">
-                {isCreateMode ? t('content_tracker.task_modal.create_title') : t('content_tracker.task_modal.edit_title')}
+                {t('content_tracker.task_modal.create_title')}
               </h5>
               <button
                 type="button"
@@ -107,15 +92,15 @@ const TaskModal = ({
             </div>
             <div className="modal-body">
               <Formik
-                initialValues={task || initialValues()}
-                validationSchema={isCreateMode ? createTaskSchema : editTaskSchema}
+                initialValues={initialValues()}
+                validationSchema={createTaskSchema}
                 onSubmit={handleSubmit}
                 enableReinitialize
               >
                 {(formikProps) => (
                   <TaskForm
                     {...formikProps}
-                    isCreateMode={isCreateMode}
+                    isCreateMode={true}
                     loading={loading}
                     apiErrors={apiErrors}
                     onHide={onHide}
@@ -131,3 +116,4 @@ const TaskModal = ({
 };
 
 export default TaskModal;
+

@@ -473,7 +473,6 @@
     },
     "task_modal": {
       "create_title": "إضافة مهمة جديدة",
-      "edit_title": "تعديل المهمة",
       "errors": {
         "unexpected": "حدث خطأ غير متوقع"
       },
@@ -497,8 +496,7 @@
     },
     "task_form": {
       "cancel_button": "إلغاء",
-      "add_button": "إضافة",
-      "save_changes_button": "حفظ التغييرات"
+      "add_button": "إضافة"
     },
     "form_sections": {
       "search_options": {
@@ -534,9 +532,6 @@
       },
       "schedule_toggle": {
         "label": "جدولة المهمة"
-      },
-      "edit": {
-        "article_title": "عنوان المقال"
       }
     },
     "results_view": {

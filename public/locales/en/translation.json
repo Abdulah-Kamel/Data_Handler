@@ -467,7 +467,6 @@
     },
     "task_modal": {
       "create_title": "Add New Task",
-      "edit_title": "Edit Task",
       "errors": {
         "unexpected": "An unexpected error occurred"
       },
@@ -491,8 +490,7 @@
     },
     "task_form": {
       "cancel_button": "Cancel",
-      "add_button": "Add",
-      "save_changes_button": "Save Changes"
+      "add_button": "Add"
     },
     "form_sections": {
       "search_options": {
@@ -505,7 +503,6 @@
         "past_month": "Past month",
         "past_year": "Past year"
       },
-
       "common": {
         "original_article_url": "Original Article URL",
         "optional_keywords": "Optional Keywords",
@@ -529,9 +526,6 @@
       },
       "schedule_toggle": {
         "label": "Schedule Task"
-      },
-      "edit": {
-        "article_title": "Article Title"
       }
     },
     "results_view": {

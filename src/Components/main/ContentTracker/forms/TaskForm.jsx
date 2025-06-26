@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, useFormikContext } from 'formik';
 import { PulseLoader } from 'react-spinners';
-import { CommonFields, CreateTaskFields, ScheduleFields, ScheduleToggle, EditTaskFields } from './FormSections';
+import { CommonFields, CreateTaskFields, ScheduleFields, ScheduleToggle } from './FormSections';
 
-const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
+const TaskForm = ({ loading, apiErrors, onHide }) => {
   const { t } = useTranslation();
   const { values } = useFormikContext();
   
@@ -18,15 +18,11 @@ const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
 
       <CommonFields apiErrors={apiErrors} />
 
-      {isCreateMode ? (
-        <>
-          <CreateTaskFields apiErrors={apiErrors} />
-          {/* <ScheduleToggle apiErrors={apiErrors} /> */}
-          {values.is_scheduled && <ScheduleFields apiErrors={apiErrors} />}
-        </>
-      ) : (
-        <EditTaskFields apiErrors={apiErrors} />
-      )}
+      <>
+        <CreateTaskFields apiErrors={apiErrors} />
+        {/* <ScheduleToggle apiErrors={apiErrors} /> */}
+        {values.is_scheduled && <ScheduleFields apiErrors={apiErrors} />}
+      </>
 
       <div className="d-flex justify-content-end gap-2 mt-4">
         <button
@@ -39,15 +35,13 @@ const TaskForm = ({ isCreateMode, loading, apiErrors, onHide }) => {
         </button>
         <button
           type="submit"
-          className={`btn ${isCreateMode ? 'btn-success' : 'btn-primary'}`}
+          className="btn btn-success"
           disabled={loading}
         >
           {loading ? (
             <PulseLoader color="#ffffff" size={8} />
-          ) : isCreateMode ? (
-            t('content_tracker.task_form.add_button')
           ) : (
-            t('content_tracker.task_form.save_changes_button')
+            t('content_tracker.task_form.add_button')
           )}
         </button>
       </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 import DataTable from "react-data-table-component";
 
-const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
+const TasksTable = ({ tasks, onDelete, handleShowResults }) => {
   const { t } = useTranslation();
   const columns = [
     {
@@ -55,13 +55,7 @@ const TasksTable = ({ tasks, onDelete, handleShowResults, onEdit }) => {
             {t('content_tracker.tasks_table.show_results_button')}
             <i className="fas fa-eye me-1"></i>
           </button>
-          <button
-            className="btn btn-outline-success btn-sm rounded-pill"
-            onClick={() => onEdit(row)}
-          >
-            {t('content_tracker.tasks_table.edit_button')}
-            <i className="fas fa-edit me-1"></i>
-          </button>
+
           <button
             className="btn btn-outline-danger btn-sm rounded-pill"
             onClick={() => onDelete(row)}
