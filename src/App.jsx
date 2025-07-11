@@ -17,7 +17,6 @@ import { AuthProvider } from "./Context/AuthContext";
 import ContentTracker from './Components/main/ContentTracker/ContentTracker';
 import ExcludedDomains from './Components/main/ExcludedDomains/ExcludedDomains';
 import ResultsView from "./Components/main/ContentTracker/ResultsView";
-import ExternalTasksPage from "./Components/main/ContentTracker/ExternalTasksPage";
 
 function App() {
   return (
@@ -57,7 +56,6 @@ function App() {
             />
             <Route path="/dashboard/content-tracker" element={<ContentTracker />} />
             <Route path="/dashboard/excluded-domains" element={<ExcludedDomains />} />
-            <Route path="/dashboard/content-tracker/running" element={<ExternalTasksPage />} />
             <Route path="/dashboard/content-tracker/results/:taskId" element={<ResultsView />} />
           </Route>
         </Routes>

@@ -445,26 +445,6 @@
       "edit_button": "Edit",
       "delete_button": "Delete"
     },
-    "external_tasks_page": {
-      "page_title": "Data Handler - Ongoing Tracking",
-      "page_description": "Data Handler - Ongoing Tracking",
-      "main_title": "Ongoing Tracking",
-      "refresh_button": "Refresh",
-      "retry_button": "Retry",
-      "errors": {
-        "fetch_failed": "Failed to load ongoing tracking"
-      }
-    },
-    "external_tasks_table": {
-      "title": "Title",
-      "original_link": "Original Link",
-      "article_link_button": "Article Link",
-      "creation_date": "Creation Date",
-      "status": "Status",
-      "active": "Active",
-      "inactive": "Inactive",
-      "retry_button": "Retry"
-    },
     "task_modal": {
       "create_title": "Add New Task",
       "errors": {
@@ -554,7 +534,10 @@
       "cancel_button": "Cancel",
       "generating_file_button": "Generating file...",
       "create_file_button": "Create file",
-      "download_file_button": "Download file"
+      "download_file_button": "Download file",
+      "update_error": "An error occurred while updating the task",
+      "update_task_button": "Update Task",
+      "update_task_success": "task updated successfully"
     },
     "confirmation_modal": {
       "default_title": "Confirm Action",

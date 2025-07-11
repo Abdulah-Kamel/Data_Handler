@@ -20,7 +20,7 @@ const ResultsView = () => {
   const [downloadLink, setDownloadLink] = useState(null);
   const [generatingLink, setGeneratingLink] = useState(false);
   const [generationError, setGenerationError] = useState(null);
-
+  const [updating, setUpdating] = useState(false);
   useEffect(() => {
     const fetchTaskDetails = async () => {
       setLoading(true);
@@ -89,6 +89,25 @@ const ResultsView = () => {
     }
   };
 
+  const handleUpdateTask = async ()=>{
+    setUpdating(true);
+    try {
+      const { data, error } = await contentTrackerService.updateTask(accessToken, taskId);
+      console.log(data);
+
+      if (data && data.status === 200) {
+        console.log(data);
+        console.log(updating);
+        setRefreshTrigger(prev => prev + 1);
+      }
+    } catch (err){
+      setError(t('content_tracker.results_view.update_error'));
+      setUpdating(false);
+    }finally {
+      setUpdating(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: "70vh" }}>
@@ -131,6 +150,14 @@ const ResultsView = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="m-0">{t('content_tracker.results_view.search_results_title')}</h2>
         <div className="d-flex align-items-center gap-2">
+          <button className="btn primary-btn" onClick={handleUpdateTask} disabled={updating}>
+            {t('content_tracker.results_view.update_task_button')}
+            {updating === true ? (
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                ):
+                <i className="fas fa-sync me-2"></i>
+            }
+          </button>
           {!downloadLink ? (
             <button
               className="btn primary-btn"
@@ -145,7 +172,7 @@ const ResultsView = () => {
               ) : (
                 <>
                   {t('content_tracker.results_view.create_file_button')}
-                  <i className="fas fa-file-alt ms-2"></i>
+                  <i className="fas fa-file-alt me-2"></i>
                 </>
               )}
             </button>
@@ -157,9 +184,10 @@ const ResultsView = () => {
               className="btn btn-success d-flex align-items-center"
             >
               {t('content_tracker.results_view.download_file_button')}
-              <i className="fas fa-download ms-2"></i>
+              <i className="fas fa-download me-2"></i>
             </a>
           )}
+
           <Link 
             to="/dashboard/content-tracker" 
             className="btn btn-outline-secondary d-flex align-items-center"

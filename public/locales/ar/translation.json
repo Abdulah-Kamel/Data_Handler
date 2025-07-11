@@ -451,26 +451,6 @@
       "edit_button": "تعديل",
       "delete_button": "حذف"
     },
-    "external_tasks_page": {
-      "page_title": "معالج البيانات - التتبع الجاري",
-      "page_description": "معالج البيانات - التتبع الجاري",
-      "main_title": "التتبع الجاري",
-      "refresh_button": "تحديث",
-      "retry_button": "إعادة المحاولة",
-      "errors": {
-        "fetch_failed": "فشل في تحميل التتبع الجاري"
-      }
-    },
-    "external_tasks_table": {
-      "title": "العنوان",
-      "original_link": "الرابط الأصلي",
-      "article_link_button": "رابط المقال",
-      "creation_date": "تاريخ الإنشاء",
-      "status": "الحالة",
-      "active": "نشط",
-      "inactive": "غير نشط",
-      "retry_button": "إعادة المحاولة"
-    },
     "task_modal": {
       "create_title": "إضافة مهمة جديدة",
       "errors": {
@@ -560,7 +540,10 @@
       "cancel_button": "إلغاء",
       "generating_file_button": "جاري إنشاء الملف...",
       "create_file_button": "إنشاء ملف",
-      "download_file_button": "تحميل الملف"
+      "download_file_button": "تحميل الملف",
+      "update_error": "حدث خطاء في تحديث  النتائج",
+      "update_task_button": "تحديث المهمة",
+      "update_task_success": "تم تحديث المهمة بنجاح"
     },
     "confirmation_modal": {
       "default_title": "تأكيد الإجراء",

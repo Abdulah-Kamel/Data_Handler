@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, useFormikContext } from 'formik';
+import { Form } from 'formik';
 import { PulseLoader } from 'react-spinners';
-import { CommonFields, CreateTaskFields, ScheduleFields, ScheduleToggle } from './FormSections';
+import { CommonFields, CreateTaskFields, } from './FormSections';
 
 const TaskForm = ({ loading, apiErrors, onHide }) => {
   const { t } = useTranslation();
-  const { values } = useFormikContext();
-  
+
   return (
     <Form>
       {apiErrors.general && (
@@ -20,8 +19,6 @@ const TaskForm = ({ loading, apiErrors, onHide }) => {
 
       <>
         <CreateTaskFields apiErrors={apiErrors} />
-        {/* <ScheduleToggle apiErrors={apiErrors} /> */}
-        {values.is_scheduled && <ScheduleFields apiErrors={apiErrors} />}
       </>
 
       <div className="d-flex justify-content-end gap-2 mt-4">

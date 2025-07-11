@@ -45,11 +45,6 @@ const Sidebar = () => {
       to: "/dashboard/content-tracker",
     },
     {
-      icon: "fa-solid fa-magnifying-glass",
-      label: t("sidebar.menu.running_search"),
-      to: "/dashboard/content-tracker/running",
-    },
-    {
       icon: "fa-solid fa-ban",
       label: t("sidebar.menu.excluded_domains"),
       to: "/dashboard/excluded-domains",

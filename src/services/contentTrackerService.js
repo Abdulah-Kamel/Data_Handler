@@ -39,11 +39,13 @@ const contentTrackerService = {
     }
   },
 
-  updateTask: async (token, taskId, taskData) => {
+  updateTask: async (token, taskId) => {
     try {
-      const response = await axios.patch(
-        `${catchTheThiefBaseUrl}/get_the_thief/tasks-with-results/${taskId}/`,
-        taskData,
+      const response = await axios.put(
+        `${catchTheThiefBaseUrl}/get_the_thief/check-articles/`,
+          {
+            task_id: taskId
+          },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -114,21 +116,6 @@ const contentTrackerService = {
     }
   },
 
-  getExternalTasks: async (token) => {
-    try {
-      const response = await axios.get('https://catch-the-thief.onrender.com/get_the_thief/search-tasks/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return { data: response.data, error: null };
-    } catch (error) {
-      return {
-        data: null,
-        error: error.response?.data?.detail || 'فشل في جلب المهام الخارجية'
-      };
-    }
-  }
 };
 
 export default contentTrackerService;
