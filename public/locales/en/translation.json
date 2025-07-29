@@ -456,7 +456,7 @@
         "keywords_required": "Keywords are required",
         "search_sources_required": "Search sources are required",
         "count_min": "Count must be greater than zero",
-        "count_max": "Maximum results is 100",
+        "count_max": "Maximum results is 500",
         "count_required": "Number of results is required",
         "search_time_required": "Search time is required",
         "start_date_required": "Start date is required",

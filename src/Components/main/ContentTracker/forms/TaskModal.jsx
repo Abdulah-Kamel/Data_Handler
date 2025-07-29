@@ -20,7 +20,7 @@ const TaskModal = ({
     search_sources: Yup.string().required(t('content_tracker.task_modal.validation.search_sources_required')),
     count: Yup.number()
       .min(1, t('content_tracker.task_modal.validation.count_min'))
-      .max(100, t('content_tracker.task_modal.validation.count_max'))
+      .max(500, t('content_tracker.task_modal.validation.count_max'))
       .required(t('content_tracker.task_modal.validation.count_required')),
     search_time: Yup.string().required(t('content_tracker.task_modal.validation.search_time_required')),
     save_to_excel: Yup.boolean(),

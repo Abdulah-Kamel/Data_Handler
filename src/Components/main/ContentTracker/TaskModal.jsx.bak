@@ -7,7 +7,7 @@ import { PulseLoader } from "react-spinners";
 const createTaskSchema = Yup.object().shape({
   url: Yup.string().url("رابط غير صالح").required("الرابط مطلوب"),
   search_sources: Yup.string().required("مصادر البحث مطلوبة"),
-  count: Yup.number().min(1, "يجب أن يكون العدد أكبر من الصفر").max(100, "الحد الأقصى للنتائج هو 100").required("عدد النتائج مطلوب"),
+  count: Yup.number().min(1, "يجب أن يكون العدد أكبر من الصفر").max(500, "الحد الأقصى للنتائج هو 500").required("عدد النتائج مطلوب"),
   search_time: Yup.string().required("وقت البحث مطلوب"),
   save_to_excel: Yup.boolean(),
   // Optional fields for scheduled tasks

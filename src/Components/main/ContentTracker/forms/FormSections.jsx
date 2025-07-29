@@ -65,7 +65,7 @@ export const CreateTaskFields = ({ apiErrors }) => {
         label={t("content_tracker.form_sections.create.results_count")}
         type="number"
         min="1"
-        max="100"
+        max="500"
         apiErrors={apiErrors}
       />
 

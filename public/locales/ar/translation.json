@@ -461,7 +461,7 @@
         "url_required": "الرابط مطلوب",
         "search_sources_required": "مصادر البحث مطلوبة",
         "count_min": "يجب أن يكون العدد أكبر من الصفر",
-        "count_max": "الحد الأقصى للنتائج هو 100",
+        "count_max": "الحد الأقصى للنتائج هو 500",
         "count_required": "عدد النتائج مطلوب",
         "search_time_required": "وقت البحث مطلوب",
         "start_date_required": "تاريخ البدء مطلوب",
