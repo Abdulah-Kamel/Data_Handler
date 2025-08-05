@@ -486,7 +486,9 @@
       "common": {
         "original_article_url": "Original Article URL",
         "optional_keywords": "Optional Keywords",
-        "precise_search": "Precise Search"
+        "precise_search": "Precise Search",
+        "optional": "Optional",
+        "has_url": "With original article URL"
       },
       "create": {
         "info_alert": "Enter the original article link and we will search for sites that have copied the content.",
@@ -629,6 +631,6 @@
     "send_button": "Send"
   },
   "footer": {
-    "copyright": "© All rights reserved"
+    "copyright": " All rights reserved"
   }
 }

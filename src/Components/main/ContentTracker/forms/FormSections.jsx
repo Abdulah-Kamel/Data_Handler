@@ -27,15 +27,27 @@ export const CommonFields = ({ apiErrors }) => {
   return (
     <>
       <FormField
-        name="url"
-        label={t("content_tracker.form_sections.common.original_article_url")}
-        type="url"
+        name="has_url"
+        label={t("content_tracker.form_sections.common.has_url")}
+        type="checkbox"
         apiErrors={apiErrors}
       />
-      <div className="alert alert-info mb-4">
-        <i className="fas fa-info-circle me-2"></i>
-        {t("content_tracker.form_sections.create.info_alert")}
-      </div>
+      
+      {values.has_url && (
+        <>
+          <FormField
+            name="url"
+            label={t("content_tracker.form_sections.common.original_article_url")}
+            type="url"
+            apiErrors={apiErrors}
+          />
+          <div className="alert alert-info mb-4">
+            <i className="fas fa-info-circle me-2"></i>
+            {t("content_tracker.form_sections.create.info_alert")}
+          </div>
+        </>
+      )}
+      
       <TagInput
         name="optional_keywords"
         label={t("content_tracker.form_sections.common.optional_keywords")}
@@ -94,4 +106,3 @@ export const CreateTaskFields = ({ apiErrors }) => {
     </>
   );
 };
-

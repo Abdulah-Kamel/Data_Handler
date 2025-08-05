@@ -492,7 +492,9 @@
       "common": {
         "original_article_url": "رابط المقال الأصلي",
         "optional_keywords": "الكلمات المفتاحية",
-        "precise_search": "بحث دقيق"
+        "precise_search": "بحث دقيق",
+        "optional": "اختيارى",
+        "has_url": "مع رابط المقال الأصلي"
       },
       "create": {
         "info_alert": "أدخل رابط المقال الأصلي وسيتم البحث عن المواقع التي نقلت المحتوى",

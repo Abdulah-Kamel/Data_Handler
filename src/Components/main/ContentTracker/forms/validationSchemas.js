@@ -1,5 +1,6 @@
 export const initialValues = () => ({
   url: "",
+  has_url: false,
   search_sources: "both",
   count: 10,
   search_time: "any",
@@ -11,4 +12,3 @@ export const initialValues = () => ({
   optional_keywords: [],
   precise_search: false,
 });
-
