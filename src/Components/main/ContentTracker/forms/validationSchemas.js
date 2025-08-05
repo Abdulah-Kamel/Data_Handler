@@ -1,6 +1,6 @@
 export const initialValues = () => ({
   url: "",
-  has_url: false,
+  has_url: true,
   search_sources: "both",
   count: 10,
   search_time: "any",
