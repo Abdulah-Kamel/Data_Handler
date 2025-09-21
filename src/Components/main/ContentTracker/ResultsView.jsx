@@ -28,7 +28,20 @@ const ResultsView = () => {
             if (data) {
                 const foundTask = data.find(t => t.id === taskId);
                 if (foundTask) {
-                    setTask(foundTask);
+
+                    const hasImage = (r) => !!(r?.image_url && String(r.image_url).trim().length > 0);
+                    const sortedResults = Array.isArray(foundTask.results)
+                        ? [...foundTask.results].sort((a, b) => {
+                            if (hasImage(a) && !hasImage(b)) return -1;
+                            if (!hasImage(a) && hasImage(b)) return 1;
+                            return 0;
+                        })
+                        : [];
+
+                    setTask({
+                        ...foundTask,
+                        results: sortedResults,
+                    });
                     setError(null);
                 } else {
                     setError(t('content_tracker.results_view.task_not_found_error'));
@@ -239,23 +252,26 @@ const ResultsView = () => {
                     {task.results.map((result, index) => (
                         <div key={index} className="col-md-6">
                             <div className="card h-100 shadow-sm">
-                                <div className="position-relative">
-                                    <img
-                                        src={result.image_url}
-                                        className="card-img-top"
-                                        alt={result.title}
-                                        style={{maxHeight: "400px", objectFit: "cover"}}
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = `https://via.placeholder.com/300x200?text=${t('content_tracker.results_view.image_not_available')}`;
-                                        }}
-                                    />
-                                    <div
-                                        className={`position-absolute top-0 end-0 m-2 badge ${result.same_event === 'نعم' ? 'bg-success' : 'bg-warning'}`}
-                                    >
-                                        {result.same_event === 'نعم' ? t('content_tracker.results_view.same_content_badge') : t('content_tracker.results_view.different_content_badge')}
+                                {
+                                    result.image_url &&
+                                    <div className="position-relative">
+                                        <img
+                                            src={result.image_url}
+                                            className="card-img-top"
+                                            alt={result.title}
+                                            style={{maxHeight: "400px", objectFit: "cover"}}
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.src = `https://via.placeholder.com/300x200?text=${t('content_tracker.results_view.image_not_available')}`;
+                                            }}
+                                        />
+                                        <div
+                                            className={`position-absolute top-0 end-0 m-2 badge ${result.same_event === 'نعم' ? 'bg-success' : 'bg-warning'}`}
+                                        >
+                                            {result.same_event === 'نعم' ? t('content_tracker.results_view.same_content_badge') : t('content_tracker.results_view.different_content_badge')}
+                                        </div>
                                     </div>
-                                </div>
+                                }
                                 <div className="card-body d-flex flex-column">
                                     <h5 className="card-title">{result.title}</h5>
                                     <p className="card-text text-muted mb-3">{result.snippet}</p>
