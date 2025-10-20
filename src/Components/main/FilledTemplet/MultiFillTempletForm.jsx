@@ -315,79 +315,79 @@ const MultiFillTempletForm = ({token}) => {
                                             ))}
                                         </Field>
                                     </div>
+                                </div>
 
-                                    <div className="row">
-                                        {/* Template Selection */}
-                                        <div className="col-md-5 mb-3">
-                                            <label htmlFor="template_id" className="form-label">
-                                                {t("multi_fill_templet_form.template_label")}
-                                            </label>
-                                            <Field
-                                                as="select"
-                                                className={`form-select ${
-                                                    touched.template_id &&
-                                                    errors.template_id &&
-                                                    !values.word_file
-                                                        ? "is-invalid"
-                                                        : ""
-                                                }`}
-                                                id="template_id"
-                                                name="template_id"
-                                                disabled={
-                                                    loading ||
-                                                    formSubmitting ||
-                                                    values.word_file ||
-                                                    !selectedCategory
-                                                }
-                                                onChange={(e) => {
-                                                    handleTemplateChange(e.target.value, setFieldValue);
-                                                    handleChange(e);
-                                                }}
-                                            >
-                                                <option
-                                                    value="">{t("multi_fill_templet_form.select_template_placeholder")}</option>
-                                                {templates.map((template) => (
-                                                    <option key={template.id} value={template.id}>
-                                                        {template.name}
-                                                    </option>
-                                                ))}
-                                            </Field>
-                                            <ErrorMessage
-                                                name="template_id"
-                                                component="div"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
-                                        <div
-                                            className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
-                                            {t("multi_fill_templet_form.or_divider")}
-                                        </div>
-                                        {/* Word File Upload */}
-                                        <div className="col-md-5 mb-3 mt-3 mt-sm-0">
-                                            <label htmlFor="word_file" className="form-label">
-                                                {t("multi_fill_templet_form.word_file_label")}
-                                            </label>
-                                            <input
-                                                type="file"
-                                                className={`form-control ${
-                                                    touched.word_file && errors.word_file
-                                                        ? "is-invalid"
-                                                        : ""
-                                                }`}
-                                                id="word_file"
-                                                accept=".docx,.doc"
-                                                onChange={(e) => handleWordFileChange(e, setFieldValue)}
-                                                disabled={loading || formSubmitting || values.template_id}
-                                            />
-                                            <small className="text-muted d-block mt-1">
-                                                {t("multi_fill_templet_form.word_file_hint")}
-                                            </small>
-                                            <ErrorMessage
-                                                name="word_file"
-                                                component="div"
-                                                className="invalid-feedback"
-                                            />
-                                        </div>
+                                <div className="row">
+                                    {/* Template Selection */}
+                                    <div className="col-md-5 mb-3">
+                                        <label htmlFor="template_id" className="form-label">
+                                            {t("multi_fill_templet_form.template_label")}
+                                        </label>
+                                        <Field
+                                            as="select"
+                                            className={`form-select ${
+                                                touched.template_id &&
+                                                errors.template_id &&
+                                                !values.word_file
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
+                                            id="template_id"
+                                            name="template_id"
+                                            disabled={
+                                                loading ||
+                                                formSubmitting ||
+                                                values.word_file ||
+                                                !selectedCategory
+                                            }
+                                            onChange={(e) => {
+                                                handleTemplateChange(e.target.value, setFieldValue);
+                                                handleChange(e);
+                                            }}
+                                        >
+                                            <option
+                                                value="">{t("multi_fill_templet_form.select_template_placeholder")}</option>
+                                            {templates.map((template) => (
+                                                <option key={template.id} value={template.id}>
+                                                    {template.name}
+                                                </option>
+                                            ))}
+                                        </Field>
+                                        <ErrorMessage
+                                            name="template_id"
+                                            component="div"
+                                            className="invalid-feedback"
+                                        />
+                                    </div>
+                                    <div
+                                        className="col-md-2 divider d-flex align-items-center justify-content-center fs-5">
+                                        {t("multi_fill_templet_form.or_divider")}
+                                    </div>
+                                    {/* Word File Upload */}
+                                    <div className="col-md-5 mb-3 mt-3 mt-sm-0">
+                                        <label htmlFor="word_file" className="form-label">
+                                            {t("multi_fill_templet_form.word_file_label")}
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className={`form-control ${
+                                                touched.word_file && errors.word_file
+                                                    ? "is-invalid"
+                                                    : ""
+                                            }`}
+                                            id="word_file"
+                                            accept=".docx,.doc"
+                                            onChange={(e) => handleWordFileChange(e, setFieldValue)}
+                                            disabled={loading || formSubmitting || values.template_id}
+                                        />
+                                        <small className="text-muted d-block mt-1">
+                                            {t("multi_fill_templet_form.word_file_hint")}
+                                        </small>
+                                        <ErrorMessage
+                                            name="word_file"
+                                            component="div"
+                                            className="invalid-feedback"
+                                        />
                                     </div>
                                 </div>
 
