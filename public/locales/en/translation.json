@@ -343,6 +343,7 @@
     "file_type_both": "Both",
     "create_files_button": "Create Files",
     "creating_button": "Creating...",
+    "available_variables_label": "available Variables",
     "errors": {
       "fetch_categories": "An error occurred while fetching categories.",
       "fetch_bulk_data": "An error occurred while fetching data sets.",

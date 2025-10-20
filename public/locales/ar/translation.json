@@ -349,6 +349,7 @@
     "file_type_both": "كلاهما",
     "create_files_button": "إنشاء الملفات",
     "creating_button": "جاري الإنشاء...",
+    "available_variables_label": "المتغيرات المتاحه",
     "errors": {
       "fetch_categories": "حدث خطأ أثناء جلب الفئات.",
       "fetch_bulk_data": "حدث خطأ أثناء جلب مجموعات البيانات.",
