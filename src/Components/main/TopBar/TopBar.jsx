@@ -43,6 +43,9 @@ const TopBar = () => {
     if (pathname.startsWith("/dashboard/excluded-domains")) {
       return t("topbar.paths.excluded_domains");
     }
+    if (pathname.startsWith("/dashboard/structures")) {
+      return t("topbar.paths.structures_management");
+    }
     return "";
   }, [pathname, t]);
   useEffect(() => {

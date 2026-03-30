@@ -49,6 +49,11 @@ const Sidebar = () => {
       label: t("sidebar.menu.excluded_domains"),
       to: "/dashboard/excluded-domains",
     },
+    {
+      icon: "fa-solid fa-sitemap",
+      label: t("sidebar.menu.structures_management"),
+      to: "/dashboard/structures",
+    },
   ].filter(Boolean);
 
   const handleLogout = () => {

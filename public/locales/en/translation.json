@@ -33,7 +33,8 @@
       "user_management": "User Management",
       "content_tracker": "Content Tracker",
       "excluded_domains": "Excluded Domains",
-      "running_search": "Running Search"
+      "running_search": "Running Search",
+      "structures_management": "Structures Management"
     },
     "date_label": "Date"
   },
@@ -47,7 +48,8 @@
       "user_management": "User Management",
       "content_tracker": "Content Tracker",
       "running_search": "Running Search",
-      "excluded_domains": "Excluded Domains"
+      "excluded_domains": "Excluded Domains",
+      "structures_management": "Structures Management"
     }
   },
   "bulk_data": {
@@ -635,5 +637,135 @@
   },
   "footer": {
     "copyright": " All rights reserved"
+  },
+  "structures": {
+    "page_title": "Data Handler - Structures Management",
+    "page_description": "Manage organizational structures and their associated lists",
+    "main_title": "Structures Management",
+    "subtitle": "Manage organizational structures and their associated lists. Upload Excel files to start tasks on your data.",
+    "search_placeholder": "Search for a structure or list...",
+    "add_new_structure": "Add New Structure",
+    "add_new_list": "Add New List",
+    "retry_button": "Retry",
+    "no_structures": "No structures available at the moment.",
+    "lists_count": "Lists",
+    "view_lists": "View Lists",
+    "upload_excel": "Upload Excel",
+    "start_mission": "Start Mission",
+    "edit": "Edit",
+    "delete": "Delete",
+    "errors": {
+      "fetch": "Error fetching structures",
+      "create": "Failed to create structure",
+      "update": "Failed to update structure",
+      "delete": "Failed to delete structure"
+    },
+    "modal": {
+      "add_title": "Add New Structure",
+      "edit_title": "Edit Structure"
+    },
+    "form": {
+      "labels": {
+        "name": "Structure Name"
+      },
+      "placeholders": {
+        "name": "Enter structure name"
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "add": "Add",
+        "update": "Update",
+        "adding": "Adding...",
+        "updating": "Updating..."
+      },
+      "validation": {
+        "name_min": "Structure name is too short",
+        "name_max": "Structure name is too long",
+        "name_required": "Structure name is required"
+      }
+    },
+    "delete_modal": {
+      "title": "Confirm Deletion",
+      "confirmation_message": "Are you sure you want to delete \"{{name}}\"?",
+      "warning_message": "This structure has {{count}} lists. All associated lists will also be deleted.",
+      "buttons": {
+        "cancel": "Cancel",
+        "confirm": "Confirm Deletion",
+        "deleting": "Deleting..."
+      }
+    },
+    "excel_modal": {
+      "title": "Upload Excel File",
+      "file_label": "Excel File",
+      "select_structure": "Select Structure",
+      "select_structure_placeholder": "Select a structure...",
+      "selected_file": "Selected file",
+      "info": "The file must be in Excel format (.xlsx, .xls) and contain the required data.",
+      "cancel": "Cancel",
+      "upload": "Upload File",
+      "uploading": "Uploading...",
+      "validation": {
+        "file_required": "File is required",
+        "invalid_format": "Invalid file format. Must be Excel (.xlsx, .xls)"
+      }
+    },
+    "lists": {
+      "page_title": "Data Handler - Structure Lists",
+      "main_title": "Lists for: {{name}}",
+      "main_title_default": "Lists",
+      "back_button": "Go Back",
+      "add_new": "Add New List",
+      "search_placeholder": "Search for a list...",
+      "no_lists": "No lists available in this structure.",
+      "errors": {
+        "fetch": "Error fetching lists",
+        "save": "Failed to save list",
+        "delete": "Failed to delete list"
+      },
+      "table": {
+        "name": "List Name",
+        "records_count": "Records",
+        "creation_date": "Created",
+        "actions": "Actions",
+        "view_data": "View Data",
+        "edit": "Edit",
+        "delete": "Delete"
+      }
+    },
+    "list_modal": {
+      "add_title": "Add New List",
+      "edit_title": "Edit List",
+      "name_label": "List Name",
+      "name_placeholder": "Enter list name",
+      "cancel": "Cancel",
+      "add": "Add",
+      "update": "Update",
+      "adding": "Adding...",
+      "updating": "Updating...",
+      "validation": {
+        "name_min": "List name is too short",
+        "name_max": "List name is too long",
+        "name_required": "List name is required"
+      }
+    },
+    "data_view": {
+      "page_title": "Data Handler - List Details",
+      "title": "Mission Details: [{{list}}]",
+      "back_button": "Go Back",
+      "structure_id": "Structure ID",
+      "list_id": "List ID",
+      "mission_id": "Mission ID",
+      "upload_excel": "Upload Excel",
+      "start_mission": "Start Mission",
+      "mission_loading": "Processing...",
+      "mission_success": "Mission started successfully!",
+      "export_pdf": "Export PDF",
+      "export_excel": "Export Excel",
+      "export_error": "Failed to export file",
+      "no_data": "No data available. Upload an Excel file to add data.",
+      "option_add_language": "Add Language",
+      "option_add_last_updated": "Add Last Updated",
+      "option_remove_duplicates": "Remove Duplicates"
+    }
   }
 }
