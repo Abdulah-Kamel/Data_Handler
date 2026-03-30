@@ -17,6 +17,9 @@ import { AuthProvider } from "./Context/AuthContext";
 import ContentTracker from './Components/main/ContentTracker/ContentTracker';
 import ExcludedDomains from './Components/main/ExcludedDomains/ExcludedDomains';
 import ResultsView from "./Components/main/ContentTracker/ResultsView";
+import Structures from "./Components/main/Structures/Structures";
+import StructureLists from "./Components/main/Structures/StructureLists";
+import ListDataView from "./Components/main/Structures/ListDataView";
 
 function App() {
   return (
@@ -54,9 +57,27 @@ function App() {
                 </AdminRoute>
               }
             />
-            <Route path="/dashboard/content-tracker" element={<ContentTracker />} />
-            <Route path="/dashboard/excluded-domains" element={<ExcludedDomains />} />
-            <Route path="/dashboard/content-tracker/results/:taskId" element={<ResultsView />} />
+            <Route
+              path="/dashboard/content-tracker"
+              element={<ContentTracker />}
+            />
+            <Route
+              path="/dashboard/excluded-domains"
+              element={<ExcludedDomains />}
+            />
+            <Route
+              path="/dashboard/content-tracker/results/:taskId"
+              element={<ResultsView />}
+            />
+            <Route path="/dashboard/structures" element={<Structures />} />
+            <Route
+              path="/dashboard/structures/:structureId/lists"
+              element={<StructureLists />}
+            />
+            <Route
+              path="/dashboard/structures/:structureId/lists/:listId"
+              element={<ListDataView />}
+            />
           </Route>
         </Routes>
       </AuthProvider>

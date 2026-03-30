@@ -24,7 +24,9 @@ const ContentTracker = () => {
     const fetchTasks = async () => {
         const {data, error} = await contentTrackerService.getAllTasks(accessToken);
         if (data) {
-            setTasks(data);
+            console.log(data);
+            
+            setTasks(data?.results);
             setError(null);
         } else {
             setError(error);

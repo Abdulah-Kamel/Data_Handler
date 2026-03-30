@@ -32,7 +32,8 @@
       "user_management": "أداره المستخدمين",
       "content_tracker": "تتبع المحتوى",
       "excluded_domains": "الدومينات المستبعده",
-      "running_search": "البحث الجارى"
+      "running_search": "البحث الجارى",
+      "structures_management": "إدارة الهياكل"
     },
     "date_label": "التاريخ"
   },
@@ -46,7 +47,8 @@
       "user_management": "إدارة المستخدمين",
       "content_tracker": "تتبع المحتوى",
       "running_search": "البحث الجارى",
-      "excluded_domains": "دومينات المستبعدة"
+      "excluded_domains": "دومينات المستبعدة",
+      "structures_management": "إدارة الهياكل"
     }
   },
   "bulk_data": {
@@ -641,5 +643,135 @@
   },
   "footer": {
     "copyright": "© جميع الحقوق محفوظة"
+  },
+  "structures": {
+    "page_title": "معالج البيانات - إدارة الهياكل",
+    "page_description": "إدارة الهياكل التنظيمية والقوائم المرتبطة بها",
+    "main_title": "إدارة الهياكل",
+    "subtitle": "تسمح هذه الصفحة بإدارة الهياكل التنظيمية والقوائم المرتبطة بها، ورفع ملفات Excel للبدء بمهام على البيانات.",
+    "search_placeholder": "ابحث عن هيكل أو قائمة...",
+    "add_new_structure": "إضافة هيكل جديد",
+    "add_new_list": "إضافة قائمة جديدة",
+    "retry_button": "إعادة المحاولة",
+    "no_structures": "لا توجد هياكل متاحة حالياً.",
+    "lists_count": "عدد القوائم",
+    "view_lists": "عرض القوائم",
+    "upload_excel": "رفع ملف Excel",
+    "start_mission": "بدء مهمة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "errors": {
+      "fetch": "خطأ في جلب الهياكل",
+      "create": "فشل في إنشاء الهيكل",
+      "update": "فشل في تعديل الهيكل",
+      "delete": "فشل في حذف الهيكل"
+    },
+    "modal": {
+      "add_title": "إضافة هيكل جديد",
+      "edit_title": "تعديل الهيكل"
+    },
+    "form": {
+      "labels": {
+        "name": "اسم الهيكل"
+      },
+      "placeholders": {
+        "name": "أدخل اسم الهيكل"
+      },
+      "buttons": {
+        "cancel": "إلغاء",
+        "add": "إضافة",
+        "update": "تعديل",
+        "adding": "جاري الإضافة...",
+        "updating": "جاري التعديل..."
+      },
+      "validation": {
+        "name_min": "اسم الهيكل قصير جدًا",
+        "name_max": "اسم الهيكل طويل جدًا",
+        "name_required": "اسم الهيكل مطلوب"
+      }
+    },
+    "delete_modal": {
+      "title": "تأكيد الحذف",
+      "confirmation_message": "هل أنت متأكد من حذف \"{{name}}\"؟",
+      "warning_message": "يحتوي هذا الهيكل على {{count}} قائمة. سيتم حذف جميع القوائم المرتبطة.",
+      "buttons": {
+        "cancel": "إلغاء",
+        "confirm": "تأكيد الحذف",
+        "deleting": "جاري الحذف..."
+      }
+    },
+    "excel_modal": {
+      "title": "رفع ملف Excel",
+      "file_label": "ملف Excel",
+      "select_structure": "اختر الهيكل",
+      "select_structure_placeholder": "اختر هيكل...",
+      "selected_file": "الملف المختار",
+      "info": "يجب أن يكون الملف بصيغة Excel (.xlsx, .xls) ويحتوي على البيانات المطلوبة.",
+      "cancel": "إلغاء",
+      "upload": "رفع الملف",
+      "uploading": "جاري الرفع...",
+      "validation": {
+        "file_required": "الملف مطلوب",
+        "invalid_format": "صيغة الملف غير صالحة. يجب أن يكون بصيغة Excel (.xlsx, .xls)"
+      }
+    },
+    "lists": {
+      "page_title": "معالج البيانات - قوائم الهيكل",
+      "main_title": "قوائم هيكل: {{name}}",
+      "main_title_default": "القوائم",
+      "back_button": "العودة",
+      "add_new": "إضافة قائمة جديدة",
+      "search_placeholder": "ابحث عن قائمة...",
+      "no_lists": "لا توجد قوائم في هذا الهيكل.",
+      "errors": {
+        "fetch": "خطأ في جلب القوائم",
+        "save": "فشل في حفظ القائمة",
+        "delete": "فشل في حذف القائمة"
+      },
+      "table": {
+        "name": "اسم القائمة",
+        "records_count": "عدد السجلات",
+        "creation_date": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+        "view_data": "عرض البيانات",
+        "edit": "تعديل",
+        "delete": "حذف"
+      }
+    },
+    "list_modal": {
+      "add_title": "إضافة قائمة جديدة",
+      "edit_title": "تعديل القائمة",
+      "name_label": "اسم القائمة",
+      "name_placeholder": "أدخل اسم القائمة",
+      "cancel": "إلغاء",
+      "add": "إضافة",
+      "update": "تعديل",
+      "adding": "جاري الإضافة...",
+      "updating": "جاري التعديل...",
+      "validation": {
+        "name_min": "اسم القائمة قصير جدًا",
+        "name_max": "اسم القائمة طويل جدًا",
+        "name_required": "اسم القائمة مطلوب"
+      }
+    },
+    "data_view": {
+      "page_title": "معالج البيانات - تفاصيل القائمة",
+      "title": "تفاصيل المهمة: [{{list}}]",
+      "back_button": "العودة",
+      "structure_id": "ID الهيكل",
+      "list_id": "ID القائمة",
+      "mission_id": "معرّف المهمة",
+      "upload_excel": "رفع ملف Excel",
+      "start_mission": "بدء المهمة",
+      "mission_loading": "جاري التنفيذ...",
+      "mission_success": "تم بدء المهمة بنجاح!",
+      "export_pdf": "تصدير PDF",
+      "export_excel": "تصدير Excel",
+      "export_error": "فشل في تصدير الملف",
+      "no_data": "لا توجد بيانات. قم برفع ملف Excel لإضافة البيانات.",
+      "option_add_language": "إضافة اللغة",
+      "option_add_last_updated": "إضافة آخر تحديث",
+      "option_remove_duplicates": "إزالة التكرارات"
+    }
   }
 }

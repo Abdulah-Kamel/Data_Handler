@@ -26,7 +26,7 @@ const ResultsView = () => {
         try {
             const {data, error: apiError} = await contentTrackerService.getAllTasks(accessToken);
             if (data) {
-                const foundTask = data.find(t => t.id === taskId);
+                const foundTask = data?.results.find(t => t.id === taskId);
                 if (foundTask) {
 
                     const hasImage = (r) => !!(r?.image_url && String(r.image_url).trim().length > 0);
