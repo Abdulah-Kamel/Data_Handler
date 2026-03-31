@@ -33,7 +33,7 @@
       "content_tracker": "تتبع المحتوى",
       "excluded_domains": "الدومينات المستبعده",
       "running_search": "البحث الجارى",
-      "structures_management": "إدارة الهياكل"
+      "structures_management": "تنظيم بيانات المراسلة"
     },
     "date_label": "التاريخ"
   },
@@ -48,7 +48,7 @@
       "content_tracker": "تتبع المحتوى",
       "running_search": "البحث الجارى",
       "excluded_domains": "دومينات المستبعدة",
-      "structures_management": "إدارة الهياكل"
+      "structures_management": "تنظيم بيانات المراسلة"
     }
   },
   "bulk_data": {
@@ -645,12 +645,12 @@
     "copyright": "© جميع الحقوق محفوظة"
   },
   "structures": {
-    "page_title": "معالج البيانات - إدارة الهياكل",
-    "page_description": "إدارة الهياكل التنظيمية والقوائم المرتبطة بها",
-    "main_title": "إدارة الهياكل",
-    "subtitle": "تسمح هذه الصفحة بإدارة الهياكل التنظيمية والقوائم المرتبطة بها، ورفع ملفات Excel للبدء بمهام على البيانات.",
-    "search_placeholder": "ابحث عن هيكل أو قائمة...",
-    "add_new_structure": "إضافة هيكل جديد",
+    "page_title": "معالج البيانات - تنظيم بيانات المراسلة",
+    "page_description": "تنظيم بيانات المراسلة التنظيمية والقوائم المرتبطة بها",
+    "main_title": "تنظيم بيانات المراسلة",
+    "subtitle": "تسمح هذه الصفحة بتنظيم بيانات المراسلة التنظيمية والقوائم المرتبطة بها، ورفع ملفات Excel للبدء بمهام على البيانات.",
+    "search_placeholder": "ابحث عن تصنيف أو قائمة...",
+    "add_new_structure": "إضافة تصنيف جديد",
     "add_new_list": "إضافة قائمة جديدة",
     "retry_button": "إعادة المحاولة",
     "no_structures": "لا توجد هياكل متاحة حالياً.",
@@ -662,20 +662,20 @@
     "delete": "حذف",
     "errors": {
       "fetch": "خطأ في جلب الهياكل",
-      "create": "فشل في إنشاء الهيكل",
-      "update": "فشل في تعديل الهيكل",
-      "delete": "فشل في حذف الهيكل"
+      "create": "فشل في إنشاء التصنيف",
+      "update": "فشل في تعديل التصنيف",
+      "delete": "فشل في حذف التصنيف"
     },
     "modal": {
-      "add_title": "إضافة هيكل جديد",
-      "edit_title": "تعديل الهيكل"
+      "add_title": "إضافة تصنيف جديد",
+      "edit_title": "تعديل التصنيف"
     },
     "form": {
       "labels": {
-        "name": "اسم الهيكل"
+        "name": "اسم التصنيف"
       },
       "placeholders": {
-        "name": "أدخل اسم الهيكل"
+        "name": "أدخل اسم التصنيف"
       },
       "buttons": {
         "cancel": "إلغاء",
@@ -685,15 +685,15 @@
         "updating": "جاري التعديل..."
       },
       "validation": {
-        "name_min": "اسم الهيكل قصير جدًا",
-        "name_max": "اسم الهيكل طويل جدًا",
-        "name_required": "اسم الهيكل مطلوب"
+        "name_min": "اسم التصنيف قصير جدًا",
+        "name_max": "اسم التصنيف طويل جدًا",
+        "name_required": "اسم التصنيف مطلوب"
       }
     },
     "delete_modal": {
       "title": "تأكيد الحذف",
       "confirmation_message": "هل أنت متأكد من حذف \"{{name}}\"؟",
-      "warning_message": "يحتوي هذا الهيكل على {{count}} قائمة. سيتم حذف جميع القوائم المرتبطة.",
+      "warning_message": "يحتوي هذا التصنيف على {{count}} قائمة. سيتم حذف جميع القوائم المرتبطة.",
       "buttons": {
         "cancel": "إلغاء",
         "confirm": "تأكيد الحذف",
@@ -703,8 +703,8 @@
     "excel_modal": {
       "title": "رفع ملف Excel",
       "file_label": "ملف Excel",
-      "select_structure": "اختر الهيكل",
-      "select_structure_placeholder": "اختر هيكل...",
+      "select_structure": "اختر التصنيف",
+      "select_structure_placeholder": "اختر تصنيف...",
       "selected_file": "الملف المختار",
       "info": "يجب أن يكون الملف بصيغة Excel (.xlsx, .xls) ويحتوي على البيانات المطلوبة.",
       "cancel": "إلغاء",
@@ -716,13 +716,13 @@
       }
     },
     "lists": {
-      "page_title": "معالج البيانات - قوائم الهيكل",
-      "main_title": "قوائم هيكل: {{name}}",
+      "page_title": "معالج البيانات - قوائم التصنيف",
+      "main_title": "قوائم تصنيف: {{name}}",
       "main_title_default": "القوائم",
       "back_button": "العودة",
       "add_new": "إضافة قائمة جديدة",
       "search_placeholder": "ابحث عن قائمة...",
-      "no_lists": "لا توجد قوائم في هذا الهيكل.",
+      "no_lists": "لا توجد قوائم في هذا التصنيف.",
       "errors": {
         "fetch": "خطأ في جلب القوائم",
         "save": "فشل في حفظ القائمة",
@@ -758,7 +758,7 @@
       "page_title": "معالج البيانات - تفاصيل القائمة",
       "title": "تفاصيل المهمة: [{{list}}]",
       "back_button": "العودة",
-      "structure_id": "ID الهيكل",
+      "structure_id": "ID التصنيف",
       "list_id": "ID القائمة",
       "mission_id": "معرّف المهمة",
       "upload_excel": "رفع ملف Excel",
