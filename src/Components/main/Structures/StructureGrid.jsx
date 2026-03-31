@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 
-const StructureGrid = ({ structures, loading, onEdit, onDelete, onUploadExcel }) => {
+const StructureGrid = ({
+  structures,
+  loading,
+  onEdit,
+  onDelete,
+  onUploadExcel,
+}) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log(structures);
+  }, []);
 
   return (
     <div className="mt-3">
@@ -32,7 +42,7 @@ const StructureGrid = ({ structures, loading, onEdit, onDelete, onUploadExcel })
                     {t("structures.lists_count")}:
                     <span className="fw-bold">
                       {" "}
-                      {structure.lists?.length || 0}
+                      {structure?.data_lists_count}
                     </span>
                   </div>
                 </div>
