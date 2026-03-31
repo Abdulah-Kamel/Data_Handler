@@ -197,39 +197,16 @@ const ListDataView = () => {
 
       {/* Info bar */}
       <div className="card mb-4 border-0 shadow-sm">
-        <div className="card-body">
+        <div className="card-body d-flex justify-content-between">
           <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
-            <div className="d-flex flex-wrap gap-4">
-              <div>
-                <small className="text-muted">
-                  {t("structures.data_view.structure_id")}:
-                </small>
-                <span className="ms-1 fw-bold">{structureId}</span>
-              </div>
-              <div>
-                <small className="text-muted">
-                  {t("structures.data_view.list_id")}:
-                </small>
-                <span className="ms-1 fw-bold">{listId}</span>
-              </div>
-              {listData?.mission_id && (
-                <div>
-                  <small className="text-muted">
-                    {t("structures.data_view.mission_id")}:
-                  </small>
-                  <span className="ms-1 fw-bold">{listData.mission_id}</span>
-                </div>
-              )}
-            </div>
-
             {/* Action buttons */}
             <div className="d-flex flex-wrap gap-2">
               <button
                 className="btn primary-btn-outline btn-sm d-flex align-items-center"
                 onClick={() => setShowExcelModal(true)}
               >
-                <i className="fas fa-file-upload me-1"></i>
                 {t("structures.data_view.upload_excel")}
+                <i className="fas fa-file-upload me-1"></i>
               </button>
 
               <button
@@ -247,8 +224,8 @@ const ListDataView = () => {
                   </>
                 ) : (
                   <>
-                    <i className="fas fa-play me-1"></i>
                     {t("structures.data_view.start_mission")}
+                    <i className="fas fa-play me-1"></i>
                   </>
                 )}
               </button>
@@ -258,12 +235,12 @@ const ListDataView = () => {
                 onClick={() => handleExport("pdf")}
                 disabled={exportLoading === "pdf"}
               >
+                {t("structures.data_view.export_pdf")}
                 {exportLoading === "pdf" ? (
                   <span className="spinner-border spinner-border-sm me-1"></span>
                 ) : (
                   <i className="fas fa-file-pdf me-1"></i>
                 )}
-                {t("structures.data_view.export_pdf")}
               </button>
 
               <button
@@ -271,12 +248,12 @@ const ListDataView = () => {
                 onClick={() => handleExport("excel")}
                 disabled={exportLoading === "excel"}
               >
+                {t("structures.data_view.export_excel")}
                 {exportLoading === "excel" ? (
                   <span className="spinner-border spinner-border-sm me-1"></span>
                 ) : (
                   <i className="fas fa-file-excel me-1"></i>
                 )}
-                {t("structures.data_view.export_excel")}
               </button>
             </div>
           </div>
