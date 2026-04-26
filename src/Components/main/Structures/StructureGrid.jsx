@@ -8,7 +8,6 @@ const StructureGrid = ({
   loading,
   onEdit,
   onDelete,
-  onUploadExcel,
 }) => {
   const { t } = useTranslation();
 
@@ -74,15 +73,6 @@ const StructureGrid = ({
                     {t("structures.view_lists")}
                     <i className="fas fa-eye me-1"></i>
                   </Link>
-
-                  <button
-                    className="btn btn-outline-info btn-sm d-flex align-items-center"
-                    onClick={() => onUploadExcel(structure)}
-                    title={t("structures.upload_excel")}
-                  >
-                    <i className="fas fa-file-excel"></i>
-                  </button>
-
                   <button
                     className="btn btn-outline-success btn-sm d-flex align-items-center"
                     onClick={() => onEdit(structure)}

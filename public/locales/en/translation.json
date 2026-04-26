@@ -704,9 +704,18 @@
       "cancel": "Cancel",
       "upload": "Upload File",
       "uploading": "Uploading...",
+      "add": "Add",
+      "update": "Update",
+      "adding": "Adding...",
+      "updating": "Updating...",
+      "file_help": "The file must be in Excel format (.xlsx, .xls) and contain the required data.",
       "validation": {
         "file_required": "File is required",
-        "invalid_format": "Invalid file format. Must be Excel (.xlsx, .xls)"
+        "file_type": "Invalid file format. Must be Excel (.xlsx, .xls)",
+        "file_size": "File size must be less than 10MB",
+        "name_min": "Name is too short",
+        "name_max": "Name is too long",
+        "name_required": "Name is required"
       }
     },
     "lists": {

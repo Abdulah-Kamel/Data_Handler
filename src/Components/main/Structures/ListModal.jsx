@@ -16,9 +16,32 @@ const ListModal = ({
 
   const ListSchema = Yup.object().shape({
     name: Yup.string()
-      .min(2, t("structures.list_modal.validation.name_min"))
-      .max(100, t("structures.list_modal.validation.name_max"))
-      .required(t("structures.list_modal.validation.name_required")),
+      .min(2, t("structures.excel_modal.validation.name_min"))
+      .max(100, t("structures.excel_modal.validation.name_max"))
+      .required(t("structures.excel_modal.validation.name_required")),
+    file: Yup.mixed()
+      .required(t("structures.excel_modal.validation.file_required"))
+      .test(
+        "file-type",
+        t("structures.excel_modal.validation.file_type"),
+        (value) => {
+          if (!value) return true;
+          const validTypes = [
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "application/vnd.ms-excel",
+            "text/csv",
+          ];
+          return validTypes.includes(value.type);
+        }
+      )
+      .test(
+        "file-size",
+        t("structures.excel_modal.validation.file_size"),
+        (value) => {
+          if (!value) return true;
+          return value.size <= 10 * 1024 * 1024; // 10MB limit
+        }
+      ),
   });
 
   return (
@@ -76,6 +99,28 @@ const ListModal = ({
                       className="invalid-feedback"
                     />
                   </div>
+                  <div className="mb-3">
+                    <label htmlFor="file" className="form-label">
+                      {t("structures.excel_modal.file_label")}
+                    </label>
+                    <Field
+                      type="file"
+                      className={`form-control ${
+                        errors.file && touched.file ? "is-invalid" : ""
+                      }`}
+                      id="file"
+                      name="file"
+                      accept=".xlsx,.xls,.csv"
+                    />
+                    <ErrorMessage
+                      name="file"
+                      component="div"
+                      className="invalid-feedback"
+                    />
+                    <div className="form-text">
+                      {t("structures.excel_modal.file_help")}
+                    </div>
+                  </div>
                   {error && (
                     <div className="alert alert-danger mt-3">{error}</div>
                   )}
@@ -86,7 +131,7 @@ const ListModal = ({
                     className="btn btn-secondary"
                     onClick={onHide}
                   >
-                    {t("structures.list_modal.cancel")}
+                    {t("structures.excel_modal.cancel")}
                   </button>
                   <button
                     type="submit"
@@ -100,13 +145,13 @@ const ListModal = ({
                           role="status"
                         ></span>
                         {isEditing
-                          ? t("structures.list_modal.updating")
-                          : t("structures.list_modal.adding")}
+                          ? t("structures.excel_modal.updating")
+                          : t("structures.excel_modal.adding")}
                       </>
                     ) : isEditing ? (
-                      t("structures.list_modal.update")
+                      t("structures.excel_modal.update")
                     ) : (
-                      t("structures.list_modal.add")
+                      t("structures.excel_modal.add")
                     )}
                   </button>
                 </div>

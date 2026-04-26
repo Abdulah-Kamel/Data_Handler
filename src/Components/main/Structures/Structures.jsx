@@ -25,11 +25,6 @@ const Structures = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { accessToken } = useAuth();
 
-  // Excel upload state
-  const [showExcelModal, setShowExcelModal] = useState(false);
-  const [excelUploadStructureId, setExcelUploadStructureId] = useState(null);
-  const [uploadLoading, setUploadLoading] = useState(false);
-
   const fetchStructures = async () => {
     const { data, error } = await structureService.getAll(accessToken);
     if (data) {
@@ -133,33 +128,6 @@ const Structures = () => {
     }
   };
 
-  const handleOpenExcelUpload = (structure) => {
-    setExcelUploadStructureId(structure.id);
-    setShowExcelModal(true);
-  };
-
-  const handleExcelUpload = async (file, { setSubmitting, resetForm }) => {
-    if (!file || !excelUploadStructureId) return;
-    setUploadLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      await structureService.uploadExcel(
-        accessToken,
-        excelUploadStructureId,
-        formData,
-      );
-      setShowExcelModal(false);
-      resetForm();
-      setRefreshTrigger((prev) => prev + 1);
-    } catch {
-      // handled by modal
-    } finally {
-      setUploadLoading(false);
-      setSubmitting(false);
-    }
-  };
-
   if (loading && structures.length === 0) {
     return (
       <div
@@ -204,16 +172,6 @@ const Structures = () => {
             {t("structures.add_new_structure")}
             <i className="fas fa-plus me-2"></i>
           </button>
-          <button
-            className="btn d-flex align-items-center primary-btn-outline mt-4 mt-md-0"
-            onClick={() => {
-              setExcelUploadStructureId(null);
-              setShowExcelModal(true);
-            }}
-          >
-            {t("structures.add_new_list")}
-            <i className="fas fa-plus me-2"></i>
-          </button>
         </div>
       </div>
 
@@ -243,7 +201,6 @@ const Structures = () => {
             setDeleteError(null);
             setShowDeleteModal(true);
           }}
-          onUploadExcel={handleOpenExcelUpload}
         />
       )}
 
@@ -275,18 +232,7 @@ const Structures = () => {
         isSubmitting={formSubmitting}
         error={deleteError}
       />
-
-      <ExcelUploadModal
-        show={showExcelModal}
-        onHide={() => setShowExcelModal(false)}
-        onSubmit={handleExcelUpload}
-        loading={uploadLoading}
-        structures={structures}
-        selectedStructureId={excelUploadStructureId}
-        onStructureSelect={setExcelUploadStructureId}
-      />
-
-      {(showModal || showDeleteModal || showExcelModal) && (
+      {(showModal || showDeleteModal) && (
         <div className="modal-backdrop fade show"></div>
       )}
     </div>
