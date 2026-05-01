@@ -236,7 +236,7 @@ const structureService = {
     } catch (error) {
       return {
         data: null,
-        error: error?.response?.data?.detail || "فشل في بدء المهمة",
+        error: error?.response?.data?.error || error?.response?.data?.detail || "فشل في بدء المهمة",
       };
     }
   },
