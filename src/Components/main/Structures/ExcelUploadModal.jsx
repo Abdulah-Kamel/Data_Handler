@@ -21,7 +21,10 @@ const ExcelUploadModal = ({
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/vnd.ms-excel",
       ];
-      if (!validTypes.includes(selectedFile.type)) {
+      const validExtensions = [".xlsx", ".xls"];
+      const fileExtension = selectedFile.name ? selectedFile.name.substring(selectedFile.name.lastIndexOf('.')).toLowerCase() : "";
+
+      if (!validTypes.includes(selectedFile.type) && !validExtensions.includes(fileExtension)) {
         setFileError(t("structures.excel_modal.validation.invalid_format"));
         setFile(null);
         return;

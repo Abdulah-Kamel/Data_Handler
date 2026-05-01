@@ -20,7 +20,15 @@ const ListModal = ({
       .max(100, t("structures.excel_modal.validation.name_max"))
       .required(t("structures.excel_modal.validation.name_required")),
     file: Yup.mixed()
-      .required(t("structures.excel_modal.validation.file_required"))
+      .test(
+        "file-required",
+        t("structures.excel_modal.validation.file_required"),
+        function (value) {
+          // file is required only when creating (not editing)
+          if (isEditing) return true;
+          return !!value;
+        }
+      )
       .test(
         "file-type",
         t("structures.excel_modal.validation.file_type"),
@@ -29,9 +37,15 @@ const ListModal = ({
           const validTypes = [
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             "application/vnd.ms-excel",
-            "text/csv",
           ];
-          return validTypes.includes(value.type);
+          const validExtensions = [".xlsx", ".xls"];
+          const fileExtension = value.name
+            ? value.name.substring(value.name.lastIndexOf(".")).toLowerCase()
+            : "";
+          return (
+            validTypes.includes(value.type) ||
+            validExtensions.includes(fileExtension)
+          );
         }
       )
       .test(
@@ -39,7 +53,7 @@ const ListModal = ({
         t("structures.excel_modal.validation.file_size"),
         (value) => {
           if (!value) return true;
-          return value.size <= 10 * 1024 * 1024; // 10MB limit
+          return value.size <= 10 * 1024 * 1024;
         }
       ),
   });
@@ -69,13 +83,13 @@ const ListModal = ({
 
           <Formik
             initialValues={
-              isEditing && list ? { name: list.name } : { name: "" }
+              isEditing && list ? { name: list.name } : { name: "", file: null }
             }
             enableReinitialize
             validationSchema={ListSchema}
             onSubmit={onSubmit}
           >
-            {({ isSubmitting, errors, touched }) => (
+            {({ isSubmitting, errors, touched, setFieldValue }) => (
               <Form>
                 <div className="modal-body">
                   <div className="mb-3">
@@ -99,18 +113,22 @@ const ListModal = ({
                       className="invalid-feedback"
                     />
                   </div>
-                  <div className="mb-3">
-                    <label htmlFor="file" className="form-label">
-                      {t("structures.excel_modal.file_label")}
-                    </label>
-                    <Field
-                      type="file"
+                  {!isEditing && (
+                    <div className="mb-3">
+                      <label htmlFor="file" className="form-label">
+                        {t("structures.excel_modal.file_label")}
+                      </label>
+                      <input
+                        type="file"
                       className={`form-control ${
                         errors.file && touched.file ? "is-invalid" : ""
                       }`}
                       id="file"
                       name="file"
                       accept=".xlsx,.xls,.csv"
+                      onChange={(event) => {
+                        setFieldValue("file", event.currentTarget.files[0]);
+                      }}
                     />
                     <ErrorMessage
                       name="file"
@@ -121,6 +139,7 @@ const ListModal = ({
                       {t("structures.excel_modal.file_help")}
                     </div>
                   </div>
+                  )}
                   {error && (
                     <div className="alert alert-danger mt-3">{error}</div>
                   )}

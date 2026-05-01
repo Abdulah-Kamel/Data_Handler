@@ -5,7 +5,6 @@ import { PulseLoader } from "react-spinners";
 import DataTable from "react-data-table-component";
 import structureService from "../../../services/structureService";
 import { useAuth } from "../../../Context/AuthContext";
-import ExcelUploadModal from "./ExcelUploadModal";
 
 const ListDataView = () => {
   const { t } = useTranslation();
@@ -16,7 +15,7 @@ const ListDataView = () => {
   const [listData, setListData] = useState(null);
   const [listName, setListName] = useState("");
   const [rows, setRows] = useState([]);
-  const [allKeys, setAllKeys] = useState([]);
+  const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,13 +32,9 @@ const ListDataView = () => {
   // Export states
   const [exportLoading, setExportLoading] = useState(null);
 
-  // Excel upload
-  const [showExcelModal, setShowExcelModal] = useState(false);
-  const [uploadLoading, setUploadLoading] = useState(false);
-
   const fetchData = async () => {
     setLoading(true);
-    const { data, error } = await structureService.getLists(
+    const { data, error: fetchError } = await structureService.getLists(
       accessToken,
       structureId,
     );
@@ -47,26 +42,27 @@ const ListDataView = () => {
       // Find the specific list within structure data
       const allLists = Array.isArray(data) ? data : data.lists || [];
       const currentList = allLists.find((l) => String(l.id) === String(listId));
-      console.log("currentList", currentList);
 
       if (currentList) {
-        setListName(currentList.original_filename);
-        const listRows = currentList.rows || [];
-        setRows(listRows);
+        setListName(currentList.original_filename || currentList.name);
         setListData(currentList);
 
-        // Extract all keys from row data
-        const keySet = new Set();
-        listRows.forEach((row) => {
-          if (row.data) {
-            Object.keys(row.data).forEach((key) => keySet.add(key));
-          }
-        });
-        setAllKeys(Array.from(keySet));
+        // If this list already has rows/columns from a previous mission, load them
+        if (currentList.rows && currentList.rows.length > 0) {
+          setRows(currentList.rows);
+          // Extract column keys from row data
+          const keySet = new Set();
+          currentList.rows.forEach((row) => {
+            if (row.data) {
+              Object.keys(row.data).forEach((key) => keySet.add(key));
+            }
+          });
+          setColumns(Array.from(keySet));
+        }
       }
       setError(null);
     } else {
-      setError(error);
+      setError(fetchError);
     }
     setLoading(false);
   };
@@ -81,34 +77,58 @@ const ListDataView = () => {
     setMissionLoading(true);
     setMissionError(null);
     setMissionSuccess(null);
-    const { error } = await structureService.startMission(
+    const { data, error: missionErr } = await structureService.startMission(
       accessToken,
       structureId,
       listId,
       missionOptions,
     );
-    if (error) {
-      setMissionError(error);
-    } else {
+    if (missionErr) {
+      setMissionError(missionErr);
+    } else if (data) {
       setMissionSuccess(t("structures.data_view.mission_success"));
-      // Refresh data after mission
-      setTimeout(() => fetchData(), 1500);
+
+      // Update list metadata from the response
+      if (data.data_list) {
+        setListData(data.data_list);
+        setListName(data.data_list.original_filename || data.data_list.name || listName);
+      }
+
+      // Set columns from the response
+      if (data.columns && Array.isArray(data.columns)) {
+        setColumns(data.columns);
+      }
+
+      // Set rows from the response
+      if (data.rows && Array.isArray(data.rows)) {
+        setRows(data.rows);
+      }
     }
     setMissionLoading(false);
   };
 
   const handleExport = async (type) => {
+    // If we have direct download URLs from the mission response, use them
+    if (type === "pdf" && listData?.cleaned_pdf_url) {
+      window.open(listData.cleaned_pdf_url, "_blank");
+      return;
+    }
+    if (type === "excel" && listData?.cleaned_excel_url) {
+      window.open(listData.cleaned_excel_url, "_blank");
+      return;
+    }
+
+    // Fallback to API-based export
     setExportLoading(type);
     try {
       const exportFn =
         type === "pdf"
           ? structureService.exportPdf
           : structureService.exportExcel;
-      const { data, error } = await exportFn(accessToken, structureId, listId);
-      if (error) {
-        setError(error);
+      const { data, error: exportErr } = await exportFn(accessToken, structureId, listId);
+      if (exportErr) {
+        setError(exportErr);
       } else if (data) {
-        // Download the blob
         const url = window.URL.createObjectURL(new Blob([data]));
         const link = document.createElement("a");
         link.href = url;
@@ -127,37 +147,22 @@ const ListDataView = () => {
     setExportLoading(null);
   };
 
-  const handleExcelUpload = async (file) => {
-    if (!file) return;
-    setUploadLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      await structureService.uploadExcel(accessToken, structureId, formData);
-      setShowExcelModal(false);
-      fetchData();
-    } catch {
-      // handled
-    } finally {
-      setUploadLoading(false);
-    }
-  };
-
   const generateColumns = () => {
-    if (allKeys.length === 0) return [];
+    if (columns.length === 0) return [];
 
     return [
       {
         name: "#",
-        selector: (row, index) => index + 1,
+        selector: (_row, index) => index + 1,
         width: "70px",
         sortable: true,
       },
-      ...allKeys.map((key) => ({
+      ...columns.map((key) => ({
         name: key,
         selector: (row) =>
-          row.data && row.data[key] !== undefined ? row.data[key] : "",
+          row.data && row.data[key] !== undefined ? String(row.data[key]) : "",
         sortable: true,
+        wrap: true,
       })),
     ];
   };
@@ -195,20 +200,50 @@ const ListDataView = () => {
         </button>
       </div>
 
+      {/* Mission Stats — shown when we have processed data */}
+      {listData?.status === "completed" && (
+        <div className="row g-3 mb-4">
+          <div className="col-6 col-md-3">
+            <div className="card border-0 shadow-sm text-center">
+              <div className="card-body py-3">
+                <div className="fs-3 fw-bold main-color">{listData.total_rows_input ?? "—"}</div>
+                <small className="text-muted">{t("structures.data_view.stats_total_input")}</small>
+              </div>
+            </div>
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="card border-0 shadow-sm text-center">
+              <div className="card-body py-3">
+                <div className="fs-3 fw-bold text-success">{listData.rows_kept ?? "—"}</div>
+                <small className="text-muted">{t("structures.data_view.stats_rows_kept")}</small>
+              </div>
+            </div>
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="card border-0 shadow-sm text-center">
+              <div className="card-body py-3">
+                <div className="fs-3 fw-bold text-danger">{listData.rows_removed ?? "—"}</div>
+                <small className="text-muted">{t("structures.data_view.stats_rows_removed")}</small>
+              </div>
+            </div>
+          </div>
+          <div className="col-6 col-md-3">
+            <div className="card border-0 shadow-sm text-center">
+              <div className="card-body py-3">
+                <div className="fs-3 fw-bold text-warning">{listData.duplicates_removed ?? "—"}</div>
+                <small className="text-muted">{t("structures.data_view.stats_duplicates")}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Info bar */}
       <div className="card mb-4 border-0 shadow-sm">
         <div className="card-body d-flex justify-content-between">
           <div className="d-flex flex-wrap gap-3 align-items-center justify-content-between">
             {/* Action buttons */}
             <div className="d-flex flex-wrap gap-2">
-              <button
-                className="btn primary-btn-outline btn-sm d-flex align-items-center"
-                onClick={() => setShowExcelModal(true)}
-              >
-                {t("structures.data_view.upload_excel")}
-                <i className="fas fa-file-upload me-1"></i>
-              </button>
-
               <button
                 className="btn primary-btn btn-sm d-flex align-items-center"
                 onClick={handleStartMission}
@@ -233,7 +268,7 @@ const ListDataView = () => {
               <button
                 className="btn btn-outline-danger btn-sm d-flex align-items-center"
                 onClick={() => handleExport("pdf")}
-                disabled={exportLoading === "pdf"}
+                disabled={exportLoading === "pdf" || rows.length === 0}
               >
                 {t("structures.data_view.export_pdf")}
                 {exportLoading === "pdf" ? (
@@ -246,7 +281,7 @@ const ListDataView = () => {
               <button
                 className="btn btn-outline-success btn-sm d-flex align-items-center"
                 onClick={() => handleExport("excel")}
-                disabled={exportLoading === "excel"}
+                disabled={exportLoading === "excel" || rows.length === 0}
               >
                 {t("structures.data_view.export_excel")}
                 {exportLoading === "excel" ? (
@@ -380,16 +415,6 @@ const ListDataView = () => {
           },
         }}
       />
-
-      <ExcelUploadModal
-        show={showExcelModal}
-        onHide={() => setShowExcelModal(false)}
-        onSubmit={handleExcelUpload}
-        loading={uploadLoading}
-        selectedStructureId={structureId}
-      />
-
-      {showExcelModal && <div className="modal-backdrop fade show"></div>}
     </div>
   );
 };

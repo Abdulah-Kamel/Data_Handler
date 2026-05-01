@@ -151,18 +151,28 @@ const StructureLists = () => {
     },
     {
       name: t("structures.lists.table.name"),
-      selector: (row) => row.original_filename,
+      selector: (row) => row.name,
       sortable: true,
     },
     {
+      name: t("structures.lists.table.status"),
+      selector: (row) => row?.status,
+      sortable: true,
+      cell: (row) => (
+        <span
+          className={`text-white p-2 badge text-bg-${row?.status === "completed" ? "success" : "warning"}`}
+        >
+          {row.status}
+        </span>
+      ),
+    },
+    {
       name: t("structures.lists.table.records_count"),
-      selector: (row) => row.rows?.length || row.records_count || 0,
+      selector: (row) => row.rows?.total_rows_input || 0,
       sortable: true,
       width: "150px",
       cell: (row) => (
-        <span className="badge primary-bg">
-          {row.rows?.length || row.records_count || 0}
-        </span>
+        <span className="badge primary-bg">{row.total_rows_input || 0}</span>
       ),
     },
     {
@@ -311,7 +321,7 @@ const StructureLists = () => {
             },
             cells: {
               style: {
-                fontSize: "15px",
+                fontSize: "18px",
                 paddingTop: "12px",
                 paddingBottom: "12px",
               },

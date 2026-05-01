@@ -109,13 +109,19 @@ const structureService = {
 
   createList: async (token, structureId, data) => {
     try {
+      // data should have { name, file } — send as FormData for file upload
+      const formData = new FormData();
+      formData.append("name", data.name);
+      if (data.file) {
+        formData.append("file", data.file);
+      }
       const response = await axios.post(
-        `${BASE_URL}/data-cleaner/structures/${structureId}/lists/`,
-        data,
+        `${BASE_URL}/data-cleaner/structures/${structureId}/upload/`,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            // let the browser set Content-Type with boundary automatically
           },
         }
       );
@@ -123,20 +129,28 @@ const structureService = {
     } catch (error) {
       return {
         data: null,
-        error: error?.response?.data?.name?.[0] || "فشل في إنشاء القائمة",
+        error:
+          error?.response?.data?.name?.[0] ||
+          error?.response?.data?.file?.[0] ||
+          error?.response?.data?.detail ||
+          "فشل في إنشاء القائمة",
       };
     }
   },
 
   updateList: async (token, structureId, listId, data) => {
     try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      if (data.file) {
+        formData.append("file", data.file);
+      }
       const response = await axios.put(
         `${BASE_URL}/data-cleaner/structures/${structureId}/lists/${listId}/`,
-        data,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
           },
         }
       );
@@ -144,7 +158,11 @@ const structureService = {
     } catch (error) {
       return {
         data: null,
-        error: error?.response?.data?.name?.[0] || "فشل في تعديل القائمة",
+        error:
+          error?.response?.data?.name?.[0] ||
+          error?.response?.data?.file?.[0] ||
+          error?.response?.data?.detail ||
+          "فشل في تعديل القائمة",
       };
     }
   },

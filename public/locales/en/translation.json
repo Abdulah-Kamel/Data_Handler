@@ -736,6 +736,7 @@
         "records_count": "Records",
         "creation_date": "Created",
         "actions": "Actions",
+      "status": "Status",
         "view_data": "View Data",
         "edit": "Edit",
         "delete": "Delete"
@@ -774,7 +775,11 @@
       "no_data": "No data available. Upload an Excel file to add data.",
       "option_add_language": "Add Language",
       "option_add_last_updated": "Add Last Updated",
-      "option_remove_duplicates": "Remove Duplicates"
+      "option_remove_duplicates": "Remove Duplicates",
+      "stats_total_input": "Total Rows Input",
+      "stats_rows_kept": "Rows Kept",
+      "stats_rows_removed": "Rows Removed",
+      "stats_duplicates": "Duplicates Removed"
     }
   }
 }

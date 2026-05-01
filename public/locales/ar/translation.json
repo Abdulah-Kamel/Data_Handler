@@ -740,6 +740,7 @@
       "table": {
         "name": "اسم القائمة",
         "records_count": "عدد السجلات",
+        "status": "الحالة",
         "creation_date": "تاريخ الإنشاء",
         "actions": "الإجراءات",
         "view_data": "عرض البيانات",
@@ -780,7 +781,11 @@
       "no_data": "لا توجد بيانات. قم برفع ملف Excel لإضافة البيانات.",
       "option_add_language": "إضافة اللغة",
       "option_add_last_updated": "إضافة آخر تحديث",
-      "option_remove_duplicates": "إزالة التكرارات"
+      "option_remove_duplicates": "إزالة التكرارات",
+      "stats_total_input": "إجمالي الصفوف المدخلة",
+      "stats_rows_kept": "الصفوف المحتفظ بها",
+      "stats_rows_removed": "الصفوف المحذوفة",
+      "stats_duplicates": "التكرارات المزالة"
     }
   }
 }
