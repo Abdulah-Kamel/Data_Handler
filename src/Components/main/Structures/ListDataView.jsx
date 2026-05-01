@@ -34,32 +34,26 @@ const ListDataView = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const { data, error: fetchError } = await structureService.getLists(
+    const { data, error: fetchError } = await structureService.getListDetails(
       accessToken,
       structureId,
+      listId,
     );
     if (data) {
-      // Find the specific list within structure data
-      const allLists = Array.isArray(data) ? data : data.lists || [];
-      const currentList = allLists.find((l) => String(l.id) === String(listId));
-
-      if (currentList) {
-        setListName(currentList.original_filename || currentList.name);
-        setListData(currentList);
-
-        // If this list already has rows/columns from a previous mission, load them
-        if (currentList.rows && currentList.rows.length > 0) {
-          setRows(currentList.rows);
-          // Extract column keys from row data
-          const keySet = new Set();
-          currentList.rows.forEach((row) => {
-            if (row.data) {
-              Object.keys(row.data).forEach((key) => keySet.add(key));
-            }
-          });
-          setColumns(Array.from(keySet));
-        }
+      // data shape: { data_list, columns, rows }
+      if (data.data_list) {
+        setListData(data.data_list);
+        setListName(data.data_list.name || "");
       }
+
+      if (data.columns && Array.isArray(data.columns)) {
+        setColumns(data.columns);
+      }
+
+      if (data.rows && Array.isArray(data.rows)) {
+        setRows(data.rows);
+      }
+
       setError(null);
     } else {
       setError(fetchError);
@@ -91,7 +85,7 @@ const ListDataView = () => {
       // Update list metadata from the response
       if (data.data_list) {
         setListData(data.data_list);
-        setListName(data.data_list.original_filename || data.data_list.name || listName);
+        setListName(data.data_list.name);
       }
 
       // Set columns from the response
@@ -108,7 +102,7 @@ const ListDataView = () => {
   };
 
   const handleExport = async (type) => {
-    // If we have direct download URLs from the mission response, use them
+    // If we have direct download URLs from listData, use them
     if (type === "pdf" && listData?.cleaned_pdf_url) {
       window.open(listData.cleaned_pdf_url, "_blank");
       return;
@@ -118,7 +112,7 @@ const ListDataView = () => {
       return;
     }
 
-    // Fallback to API-based export
+    // Fallback to API endpoint which returns a download URL
     setExportLoading(type);
     try {
       const exportFn =
@@ -129,17 +123,11 @@ const ListDataView = () => {
       if (exportErr) {
         setError(exportErr);
       } else if (data) {
-        const url = window.URL.createObjectURL(new Blob([data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          `${listName || "export"}.${type === "pdf" ? "pdf" : "xlsx"}`,
-        );
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        window.URL.revokeObjectURL(url);
+        // API returns a URL — open it in a new tab
+        const url = data.url || data.download_url || data;
+        if (typeof url === "string") {
+          window.open(url, "_blank");
+        }
       }
     } catch {
       setError(t("structures.data_view.export_error"));

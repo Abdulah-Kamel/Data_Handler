@@ -95,6 +95,18 @@ const structureService = {
     }
   },
 
+  getListDetails: async (token, structureId, listId) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/data-cleaner/structures/${structureId}/lists/${listId}/`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return { data: response.data, error: null };
+    } catch {
+      return { data: null, error: "خطأ في جلب تفاصيل القائمة" };
+    }
+  },
+
   searchLists: async (token, structureId, query) => {
     try {
       const response = await axios.get(
@@ -236,7 +248,6 @@ const structureService = {
         `${BASE_URL}/data-cleaner/structures/${structureId}/lists/${listId}/download_excel/`,
         {
           headers: { Authorization: `Bearer ${token}` },
-          responseType: "blob",
         }
       );
       return { data: response.data, error: null };
@@ -254,7 +265,6 @@ const structureService = {
         `${BASE_URL}/data-cleaner/structures/${structureId}/lists/${listId}/download_pdf/`,
         {
           headers: { Authorization: `Bearer ${token}` },
-          responseType: "blob",
         }
       );
       return { data: response.data, error: null };
